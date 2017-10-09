@@ -1,4 +1,4 @@
 /external/
 /myGame/lib/
-/myGame/build/
+/myGame/build/*
 !/myGame/build/build.sln
