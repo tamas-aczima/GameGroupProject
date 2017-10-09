@@ -1,0 +1,9 @@
+﻿  A subdirectory or file D:\Suli\DirectX\GameGroupProject\myGame\build\Debug\Content already exists.
+  D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Effects\BasicEffect.cso
+  D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Effects\BasicEffect.fx
+  D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Fonts\Arial_14_Regular.spritefont
+  3 File(s) copied
+  TriangleDemo.cpp
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  Game.vcxproj -> D:\Suli\DirectX\GameGroupProject\myGame\build\Debug\Game.exe
+  Game.vcxproj -> D:\Suli\DirectX\GameGroupProject\myGame\build\Debug\Game.pdb (Partial PDB)
