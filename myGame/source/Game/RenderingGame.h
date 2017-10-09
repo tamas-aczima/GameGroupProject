@@ -24,6 +24,7 @@ namespace Library
 namespace Rendering
 {
 	class TriangleDemo;
+	class CubeDemo;
 
 	class RenderingGame : public Game
 	{
@@ -48,6 +49,7 @@ namespace Rendering
 		FpsComponent* mFpsComponent;
 
 		TriangleDemo* mDemo;
+		CubeDemo* mDemo2;
 
 		SpriteBatch* mSpriteBatch;
 		SpriteFont* mSpriteFont;

@@ -107,9 +107,17 @@ namespace Rendering
 		// Create the vertex buffer
 		BasicEffectVertex vertices[] =
 		{
-			BasicEffectVertex(XMFLOAT4(-1.0f, 0.0f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Red))),
-			BasicEffectVertex(XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Green))),
-			BasicEffectVertex(XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Blue)))
+			/*BasicEffectVertex(XMFLOAT4(-1.0f, -1.0f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Red))),
+			BasicEffectVertex(XMFLOAT4(0.0f, 0.5f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Green))),
+			BasicEffectVertex(XMFLOAT4(1.0f, -1.0f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Blue))),*/
+
+			BasicEffectVertex(XMFLOAT4(-1.0f, -1.0f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Red))),
+			BasicEffectVertex(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Green))),
+			BasicEffectVertex(XMFLOAT4(1.0f, -1.0f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Blue))),
+
+			BasicEffectVertex(XMFLOAT4(-1.0f, -1.0f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Red))),
+			BasicEffectVertex(XMFLOAT4(0.0f, 1.0f, -1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Green))),
+			BasicEffectVertex(XMFLOAT4(1.0f, -1.0f, 0.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Blue))),
 		};
 
 		D3D11_BUFFER_DESC vertexBufferDesc;
@@ -130,7 +138,7 @@ namespace Rendering
 	void TriangleDemo::Update(const GameTime& gameTime)
 	{
 		mAngle += XM_PI * static_cast<float>(gameTime.ElapsedGameTime());
-		XMStoreFloat4x4(&mWorldMatrix, XMMatrixRotationZ(mAngle));
+		XMStoreFloat4x4(&mWorldMatrix, XMMatrixRotationY(mAngle));
 	}
 
 	void TriangleDemo::Draw(const GameTime& gameTime)
@@ -149,6 +157,6 @@ namespace Rendering
 
 		mPass->Apply(0, direct3DDeviceContext);
 
-		direct3DDeviceContext->Draw(3, 0);
+		direct3DDeviceContext->Draw(9, 0);
 	}
 }

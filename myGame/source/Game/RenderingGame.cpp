@@ -10,6 +10,7 @@
 #include "ColorHelper.h"
 #include "FirstPersonCamera.h"
 #include "TriangleDemo.h"
+#include "CubeDemo.h"
 
 namespace Rendering
 {
@@ -48,8 +49,11 @@ namespace Rendering
 		mFpsComponent = new FpsComponent(*this);
 		mComponents.push_back(mFpsComponent);
 
-		mDemo = new TriangleDemo(*this, *mCamera);
-		mComponents.push_back(mDemo);
+		//mDemo = new TriangleDemo(*this, *mCamera);
+		//mComponents.push_back(mDemo);
+
+		mDemo2 = new CubeDemo(*this, *mCamera);
+		mComponents.push_back(mDemo2);
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
@@ -58,7 +62,7 @@ namespace Rendering
 
 		Game::Initialize();
 
-		mCamera->SetPosition(0.0f, 0.0f, 5.0f);
+		mCamera->SetPosition(0.0f, 0.0f, 10.0f);
 	}
 
 	void RenderingGame::Update(const GameTime &gameTime)
