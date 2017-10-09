@@ -2,8 +2,13 @@
   D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Effects\BasicEffect.cso
   D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Effects\BasicEffect.fx
   D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Fonts\Arial_14_Regular.spritefont
+  D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Models\california.obj
+  4 File(s) copied
+  D:\Suli\DirectX\GameGroupProject\myGame\source\Game\Content\Effects\BasicEffect.fx
+  D:\Suli\DirectX\GameGroupProject\myGame\source\Game\Content\Fonts\Arial_14_Regular.spritefont
+  D:\Suli\DirectX\GameGroupProject\myGame\source\Game\Content\Models\chest.obj
   3 File(s) copied
-  CubeDemo.cpp
+  ModelDemo.cpp
   c:\program files (x86)\windows kits\10\include\10.0.15063.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
   Game.vcxproj -> D:\Suli\DirectX\GameGroupProject\myGame\build\Debug\Game.exe
   Game.vcxproj -> D:\Suli\DirectX\GameGroupProject\myGame\build\Debug\Game.pdb (Partial PDB)

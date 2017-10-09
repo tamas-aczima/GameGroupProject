@@ -90,19 +90,19 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library;$(SolutionDir)..\..\external\Effects11\include;$(SolutionDir)..\..\external\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library;$(SolutionDir)..\..\external\Effects11\include;$(SolutionDir)..\..\external\DirectXTK\include;$(SolutionDir)..\..\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;DirectXTK.lib;d3dcompiler.lib;Effects11d.lib;dinput8.lib;dxguid.lib;Shlwapi.lib;Libraryd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x86);$(SolutionDir)..\lib;$(SolutionDir)..\..\external\Effects11\lib\x86;$(SolutionDir)..\..\external\DirectXTK\lib\Win32\Debug;$(SolutionDir)..\..\external\assimp\lib\assimp_debug-dll_win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;DirectXTK.lib;d3dcompiler.lib;Effects11d.lib;assimp.lib;dinput8.lib;dxguid.lib;Shlwapi.lib;Libraryd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x86);$(SolutionDir)..\lib;$(SolutionDir)..\..\external\Effects11\lib\x86;$(SolutionDir)..\..\external\DirectXTK\lib\Win32\Debug;$(SolutionDir)..\..\external\assimp\lib\assimp_release-dll_win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>mkdir "$(OutDir)Content"
 IF EXIST "$(SolutionDir)..\content" xcopy /E /Y "$(SolutionDir)..\content" "$(OutDir)Content\"
-
+IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content\"
 
 </Command>
     </PreBuildEvent>
@@ -159,12 +159,14 @@ IF EXIST "$(SolutionDir)..\content" xcopy /E /Y "$(SolutionDir)..\content" "$(Ou
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CubeDemo.cpp" />
+    <ClCompile Include="ModelDemo.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
     <ClCompile Include="TriangleDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeDemo.h" />
+    <ClInclude Include="ModelDemo.h" />
     <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="TriangleDemo.h" />
   </ItemGroup>

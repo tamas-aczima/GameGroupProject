@@ -11,6 +11,7 @@
 #include "FirstPersonCamera.h"
 #include "TriangleDemo.h"
 #include "CubeDemo.h"
+#include "ModelDemo.h"
 
 namespace Rendering
 {
@@ -52,8 +53,11 @@ namespace Rendering
 		//mDemo = new TriangleDemo(*this, *mCamera);
 		//mComponents.push_back(mDemo);
 
-		mDemo2 = new CubeDemo(*this, *mCamera);
-		mComponents.push_back(mDemo2);
+		//mDemo2 = new CubeDemo(*this, *mCamera);
+		//mComponents.push_back(mDemo2);
+
+		mDemo3 = new ModelDemo(*this, *mCamera);
+		mComponents.push_back(mDemo3);
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 

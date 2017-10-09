@@ -93,7 +93,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\..\external\DirectXTK\include;$(SolutionDir)..\..\external\Effects11\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\..\external\DirectXTK\include;$(SolutionDir)..\..\external\Effects11\include;$(SolutionDir)..\..\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -175,6 +175,9 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="MatrixHelper.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelMaterial.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="RenderStateHelper.h" />
     <ClInclude Include="RTTI.h" />
@@ -195,6 +198,9 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="MatrixHelpercpp.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelMaterial.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="RenderStateHelper.cpp" />
     <ClCompile Include="ServiceContainer.cpp" />

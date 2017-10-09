@@ -25,6 +25,7 @@ namespace Rendering
 {
 	class TriangleDemo;
 	class CubeDemo;
+	class ModelDemo;
 
 	class RenderingGame : public Game
 	{
@@ -50,6 +51,7 @@ namespace Rendering
 
 		TriangleDemo* mDemo;
 		CubeDemo* mDemo2;
+		ModelDemo* mDemo3;
 
 		SpriteBatch* mSpriteBatch;
 		SpriteFont* mSpriteFont;
