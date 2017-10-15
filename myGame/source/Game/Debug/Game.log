@@ -3,12 +3,17 @@
   D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Effects\BasicEffect.fx
   D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Fonts\Arial_14_Regular.spritefont
   D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Models\california.obj
-  4 File(s) copied
+  D:\Suli\DirectX\GameGroupProject\myGame\build\..\content\Models\chest.obj
+  5 File(s) copied
   D:\Suli\DirectX\GameGroupProject\myGame\source\Game\Content\Effects\BasicEffect.fx
   D:\Suli\DirectX\GameGroupProject\myGame\source\Game\Content\Fonts\Arial_14_Regular.spritefont
   D:\Suli\DirectX\GameGroupProject\myGame\source\Game\Content\Models\chest.obj
-  3 File(s) copied
-  ModelDemo.cpp
+  D:\Suli\DirectX\GameGroupProject\myGame\source\Game\Content\Models\Sphere.obj
+  4 File(s) copied
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see D:\Suli\DirectX\GameGroupProject\myGame\build\Debug\Content\Effects\BasicEffect.cso
+  MaterialDemo.cpp
   c:\program files (x86)\windows kits\10\include\10.0.15063.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
   Game.vcxproj -> D:\Suli\DirectX\GameGroupProject\myGame\build\Debug\Game.exe
   Game.vcxproj -> D:\Suli\DirectX\GameGroupProject\myGame\build\Debug\Game.pdb (Partial PDB)

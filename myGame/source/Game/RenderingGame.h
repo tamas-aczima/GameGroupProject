@@ -26,6 +26,7 @@ namespace Rendering
 	class TriangleDemo;
 	class CubeDemo;
 	class ModelDemo;
+	class MaterialDemo;
 
 	class RenderingGame : public Game
 	{
@@ -48,10 +49,12 @@ namespace Rendering
 		Mouse* mMouse;
 		FirstPersonCamera* mCamera;
 		FpsComponent* mFpsComponent;
+		RenderStateHelper* mRenderStateHelper;
 
 		TriangleDemo* mDemo;
 		CubeDemo* mDemo2;
 		ModelDemo* mDemo3;
+		MaterialDemo* mDemo4;
 
 		SpriteBatch* mSpriteBatch;
 		SpriteFont* mSpriteFont;
