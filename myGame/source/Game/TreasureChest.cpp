@@ -1,4 +1,4 @@
-#include "MaterialDemo.h"
+#include "TreasureChest.h"
 #include "Game.h"
 #include "GameException.h"
 #include "MatrixHelper.h"
@@ -11,9 +11,9 @@
 
 namespace Rendering
 {
-	RTTI_DEFINITIONS(MaterialDemo)
+	RTTI_DEFINITIONS(TreasureChest)
 
-	MaterialDemo::MaterialDemo(Game& game, Camera& camera)
+		TreasureChest::TreasureChest(Game& game, Camera& camera)
 		: DrawableGameComponent(game, camera),
 		mTextureMaterial(nullptr), mTextureEffect(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
@@ -22,7 +22,7 @@ namespace Rendering
 		mWorldMatrix = MatrixHelper::Identity;
 	}
 
-	MaterialDemo::~MaterialDemo()
+	TreasureChest::~TreasureChest()
 	{
 		ReleaseObject(mColorTextureVariable);
 		ReleaseObject(mTextureShaderResourceView);
@@ -32,12 +32,12 @@ namespace Rendering
 		ReleaseObject(mIndexBuffer);
 	}
 
-	void MaterialDemo::Initialize()
+	void TreasureChest::Initialize()
 	{
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
 		// Load the model
-		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\Sphere.obj", true));
+		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\bench.3ds", true));
 
 		// Initialize the material
 		mTextureEffect = new Effect(*mGame);
@@ -53,17 +53,16 @@ namespace Rendering
 
 		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
 		//Load the texture
-		mTextureName = L"Content\\Textures\\earth.jpg";
+		mTextureName = L"Content\\Textures\\bench.jpg";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
-
-		/*if (FAILED(hr = DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView)))
-		{
-			throw GameException("CreateWICTextureFromFile() failed.", hr);
-		}*/
 	}
 
-	void MaterialDemo::Draw(const GameTime& gameTime)
+	void TreasureChest::Update(const GameTime& gameTime)
+	{
+	}
+
+	void TreasureChest::Draw(const GameTime& gameTime)
 	{
 		ID3D11DeviceContext* direct3DDeviceContext = mGame->Direct3DDeviceContext();
 		direct3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

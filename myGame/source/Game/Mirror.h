@@ -12,21 +12,22 @@ namespace Library
 
 namespace Rendering
 {
-	class MaterialDemo : public DrawableGameComponent
+	class Mirror : public DrawableGameComponent
 	{
-		RTTI_DECLARATIONS(MaterialDemo, DrawableGameComponent)
+		RTTI_DECLARATIONS(Mirror, DrawableGameComponent)
 
 	public:
-		MaterialDemo(Game& game, Camera& camera);
-		~MaterialDemo();
+		Mirror(Game& game, Camera& camera);
+		~Mirror();
 
 		virtual void Initialize() override;
+		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
 	private:
-		MaterialDemo();
-		MaterialDemo(const MaterialDemo& rhs);
-		MaterialDemo& operator=(const MaterialDemo& rhs);
+		Mirror();
+		Mirror(const Mirror& rhs);
+		Mirror& operator=(const Mirror& rhs);
 
 		Effect* mTextureEffect;
 		TextureMaterial* mTextureMaterial;

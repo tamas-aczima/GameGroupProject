@@ -187,6 +187,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="RTTI.h" />
     <ClInclude Include="ServiceContainer.h" />
     <ClInclude Include="Technique.h" />
+    <ClInclude Include="TextureMaterial.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Variable.h" />
     <ClInclude Include="VectorHelper.h" />
@@ -215,6 +216,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="RenderStateHelper.cpp" />
     <ClCompile Include="ServiceContainer.cpp" />
     <ClCompile Include="Technique.cpp" />
+    <ClCompile Include="TextureMaterial.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Variable.cpp" />
     <ClCompile Include="VectorHelper.cpp" />

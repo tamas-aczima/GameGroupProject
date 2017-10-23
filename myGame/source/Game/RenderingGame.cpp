@@ -14,6 +14,7 @@
 #include "ModelDemo.h"
 #include "MaterialDemo.h"
 #include "RenderStateHelper.h"
+#include "TreasureChest.h"
 
 namespace Rendering
 {
@@ -21,7 +22,7 @@ namespace Rendering
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
 		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mDemo(nullptr),
-		mDemo2(nullptr), mDemo3(nullptr), mDemo4(nullptr), mRenderStateHelper(nullptr)
+		mDemo2(nullptr), mDemo3(nullptr), mDemo4(nullptr), mRenderStateHelper(nullptr), mTreasureChest(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -67,8 +68,12 @@ namespace Rendering
 		//mDemo3 = new ModelDemo(*this, *mCamera);
 		//mComponents.push_back(mDemo3);
 
-		mDemo4 = new MaterialDemo(*this, *mCamera);
-		mComponents.push_back(mDemo4);
+		//mDemo4 = new MaterialDemo(*this, *mCamera);
+		//mComponents.push_back(mDemo4);
+		//mDemo4->SetPosition(0, 0, -5, 0, 0, 0, 2);
+
+		mTreasureChest = new TreasureChest(*this, *mCamera);
+		mComponents.push_back(mTreasureChest);
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 

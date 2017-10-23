@@ -27,6 +27,7 @@ namespace Rendering
 	class CubeDemo;
 	class ModelDemo;
 	class MaterialDemo;
+	class TreasureChest;
 
 	class RenderingGame : public Game
 	{
@@ -55,6 +56,8 @@ namespace Rendering
 		CubeDemo* mDemo2;
 		ModelDemo* mDemo3;
 		MaterialDemo* mDemo4;
+
+		TreasureChest* mTreasureChest;
 
 		SpriteBatch* mSpriteBatch;
 		SpriteFont* mSpriteFont;

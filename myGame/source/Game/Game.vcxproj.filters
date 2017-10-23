@@ -36,6 +36,12 @@
     <ClCompile Include="MaterialDemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mirror.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TreasureChest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h">
@@ -53,9 +59,18 @@
     <ClInclude Include="MaterialDemo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mirror.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TreasureChest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Content\Effects\BasicEffect.fx">
+      <Filter>Resource Files\Effects</Filter>
+    </FxCompile>
+    <FxCompile Include="Content\Effects\TextureEffect.fx">
       <Filter>Resource Files\Effects</Filter>
     </FxCompile>
   </ItemGroup>

@@ -12,21 +12,22 @@ namespace Library
 
 namespace Rendering
 {
-	class MaterialDemo : public DrawableGameComponent
+	class TreasureChest : public DrawableGameComponent
 	{
-		RTTI_DECLARATIONS(MaterialDemo, DrawableGameComponent)
+		RTTI_DECLARATIONS(TreasureChest, DrawableGameComponent)
 
 	public:
-		MaterialDemo(Game& game, Camera& camera);
-		~MaterialDemo();
+		TreasureChest(Game& game, Camera& camera);
+		~TreasureChest();
 
 		virtual void Initialize() override;
+		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
 	private:
-		MaterialDemo();
-		MaterialDemo(const MaterialDemo& rhs);
-		MaterialDemo& operator=(const MaterialDemo& rhs);
+		TreasureChest();
+		TreasureChest(const TreasureChest& rhs);
+		TreasureChest& operator=(const TreasureChest& rhs);
 
 		Effect* mTextureEffect;
 		TextureMaterial* mTextureMaterial;
