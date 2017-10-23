@@ -1,28 +1,54 @@
 /************* Resources *************/
 
+#define FLIP_TEXTURE_Y 0
+
 cbuffer CBufferPerObject
 {
 	float4x4 WorldViewProjection : WORLVIEWPROJECTION;
 }
+
+Texture2D ColorTexture <
+	string ResourceName = "Content\\Textures\\earth.jpg";
+	string UIName = "Color Texture";
+	string ResourceType = "2D";
+>;
+
+SamplerState ColorSampler
+{
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = WRAP;
+	AddressV = WRAP;
+};
 
 /************* Data Structures *************/
 
 struct VS_INPUT
 {
 	float4 ObjectPosition : POSITION;
-	float4 Color : COLOR;
+	float2 TextureCoordinate: TEXCOORD;
 };
 
 struct VS_OUTPUT
 {
 	float4 Position : SV_Position;
-	float4 Color : COLOR;
+	float2 TextureCoordinate: TEXCOORD;
 };
 
 RasterizerState DisableCulling
 {
 	CullMode = NONE;
 };
+
+/*** Utility Functions ***/
+
+float2 get_corrected_texture_coordinate(float2 textureCoordinate)
+{
+#if FLIP_TEXTURE_Y
+	return float2(textureCoordinate.x, 1.0 - textureCoordinate.y);
+#else
+	return textureCoordinate;
+#endif
+}
 
 /************* Vertex Shader *************/
 
@@ -31,7 +57,7 @@ VS_OUTPUT vertex_shader(VS_INPUT IN)
 	VS_OUTPUT OUT = (VS_OUTPUT)0;
 
 	OUT.Position = mul(IN.ObjectPosition, WorldViewProjection);
-	OUT.Color = IN.Color;
+	OUT.TextureCoordinate = get_corrected_texture_coordinate(IN.TextureCoordinate);
 
 	return OUT;
 }
@@ -40,7 +66,7 @@ VS_OUTPUT vertex_shader(VS_INPUT IN)
 
 float4 pixel_shader(VS_OUTPUT IN) : SV_Target
 {
-	return IN.Color;
+	return ColorTexture.Sample(ColorSampler, IN.TextureCoordinate);
 }
 
 /************* Techniques *************/
