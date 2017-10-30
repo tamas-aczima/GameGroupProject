@@ -28,6 +28,7 @@ namespace Rendering
 	class ModelDemo;
 	class MaterialDemo;
 	class TreasureChest;
+	class Rock;
 
 	class RenderingGame : public Game
 	{
@@ -58,6 +59,7 @@ namespace Rendering
 		MaterialDemo* mDemo4;
 
 		TreasureChest* mTreasureChest;
+		Rock* mRock;
 
 		SpriteBatch* mSpriteBatch;
 		SpriteFont* mSpriteFont;

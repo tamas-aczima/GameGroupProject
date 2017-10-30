@@ -15,6 +15,7 @@
 #include "MaterialDemo.h"
 #include "RenderStateHelper.h"
 #include "TreasureChest.h"
+#include "Rock.h"
 
 namespace Rendering
 {
@@ -74,6 +75,16 @@ namespace Rendering
 
 		mTreasureChest = new TreasureChest(*this, *mCamera);
 		mComponents.push_back(mTreasureChest);
+
+		mTreasureChest->SetPosition(0, 0, -50.0f, -1.57f, 0, 0, 0.15f);
+
+		mRock = new Rock(*this, *mCamera);
+		mComponents.push_back(mRock);
+		mRock->SetPosition(300, 0, -50, 0, 0, 0, 20);
+
+		Rock* mRock2 = new Rock(*this, *mCamera);
+		mComponents.push_back(mRock2);
+		mRock2->SetPosition(300, 0, -300, 0, 0, 0, 20);
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
