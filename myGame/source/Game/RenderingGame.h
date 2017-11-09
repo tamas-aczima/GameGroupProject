@@ -23,10 +23,7 @@ namespace Library
 
 namespace Rendering
 {
-	class TriangleDemo;
-	class CubeDemo;
-	class ModelDemo;
-	class MaterialDemo;
+	class Level;
 	class TreasureChest;
 
 	class RenderingGame : public Game
@@ -52,11 +49,8 @@ namespace Rendering
 		FpsComponent* mFpsComponent;
 		RenderStateHelper* mRenderStateHelper;
 
-		TriangleDemo* mDemo;
-		CubeDemo* mDemo2;
-		ModelDemo* mDemo3;
-		MaterialDemo* mDemo4;
 
+		Level* mLevel;
 		TreasureChest* mTreasureChest;
 
 		SpriteBatch* mSpriteBatch;

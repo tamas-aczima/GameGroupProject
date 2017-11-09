@@ -83,22 +83,22 @@ namespace Library
 		{
 			if (mKeyboard->IsKeyDown(DIK_W))
 			{
-				movementAmount.y = 10.0f;
+				movementAmount.y = 1.0f;
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_S))
 			{
-				movementAmount.y = -10.0f;
+				movementAmount.y = -1.0f;
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_A))
 			{
-				movementAmount.x = -10.0f;
+				movementAmount.x = -1.0f;
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_D))
 			{
-				movementAmount.x = 10.0f;
+				movementAmount.x = 1.0f;
 			}
 		}
 

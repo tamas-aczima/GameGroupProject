@@ -9,11 +9,8 @@
 #include "Utility.h"
 #include "ColorHelper.h"
 #include "FirstPersonCamera.h"
-#include "TriangleDemo.h"
-#include "CubeDemo.h"
-#include "ModelDemo.h"
-#include "MaterialDemo.h"
 #include "RenderStateHelper.h"
+#include "Level.h"
 #include "TreasureChest.h"
 
 namespace Rendering
@@ -21,8 +18,8 @@ namespace Rendering
 	const XMVECTORF32 RenderingGame::BackGroundColor = ColorHelper::CornflowerBlue;
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
-		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mDemo(nullptr),
-		mDemo2(nullptr), mDemo3(nullptr), mDemo4(nullptr), mRenderStateHelper(nullptr), mTreasureChest(nullptr)
+		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr),
+		 mRenderStateHelper(nullptr), mTreasureChest(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -58,19 +55,9 @@ namespace Rendering
 		//mComponents.push_back(mFpsComponent);
 
 		mRenderStateHelper = new RenderStateHelper(*this);
-		
-		//mDemo = new TriangleDemo(*this, *mCamera);
-		//mComponents.push_back(mDemo);
 
-		//mDemo2 = new CubeDemo(*this, *mCamera);
-		//mComponents.push_back(mDemo2);
-
-		//mDemo3 = new ModelDemo(*this, *mCamera);
-		//mComponents.push_back(mDemo3);
-
-		//mDemo4 = new MaterialDemo(*this, *mCamera);
-		//mComponents.push_back(mDemo4);
-		//mDemo4->SetPosition(0, 0, -5, 0, 0, 0, 2);
+		mLevel = new Level(*this, *mCamera);
+		mComponents = mLevel->UpdateComponent(mComponents);
 
 		mTreasureChest = new TreasureChest(*this, *mCamera);
 		mComponents.push_back(mTreasureChest);
@@ -128,8 +115,6 @@ namespace Rendering
 
 	void RenderingGame::Shutdown()
 	{
-		DeleteObject(mDemo);
-		DeleteObject(mDemo4);
 		DeleteObject(mRenderStateHelper);
 		DeleteObject(mKeyboard);
 		DeleteObject(mMouse);

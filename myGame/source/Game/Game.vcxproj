@@ -164,23 +164,23 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CubeDemo.cpp" />
-    <ClCompile Include="MaterialDemo.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="Mirror.cpp" />
     <ClCompile Include="ModelDemo.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
     <ClCompile Include="TreasureChest.cpp" />
     <ClCompile Include="TriangleDemo.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CubeDemo.h" />
-    <ClInclude Include="MaterialDemo.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="Mirror.h" />
     <ClInclude Include="ModelDemo.h" />
     <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="TreasureChest.h" />
     <ClInclude Include="TriangleDemo.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Content\Effects\BasicEffect.fx">

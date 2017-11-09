@@ -27,19 +27,19 @@
     <ClCompile Include="TriangleDemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CubeDemo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ModelDemo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MaterialDemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mirror.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TreasureChest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,19 +50,19 @@
     <ClInclude Include="TriangleDemo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CubeDemo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ModelDemo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialDemo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mirror.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TreasureChest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

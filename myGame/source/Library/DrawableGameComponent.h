@@ -24,7 +24,7 @@ namespace Library
 
 		virtual void Draw(const GameTime& gameTime);
 		void SetPosition(const float translateX, const float translateY, const float translateZ,
-			const float rotateX, const float rotateY, const float rotateZ, const float scale);
+			const float rotateX, const float rotateY, const float rotateZ, const float scaleX, const float scaleY, const float scaleZ);
 
 	protected:
 		bool mVisible;

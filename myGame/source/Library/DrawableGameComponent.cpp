@@ -49,15 +49,15 @@ namespace Library
 	}
 
 	void DrawableGameComponent::SetPosition(const float translateX, const float translateY, const float translateZ,
-		const float rotateX, const float rotateY, const float rotateZ, const float scale)
+		const float rotateX, const float rotateY, const float rotateZ, const float scaleX, const float scaleY, const float scaleZ)
 	{
 		XMMATRIX worldMatrix = XMLoadFloat4x4(&mWorldMatrix);
 		XMMATRIX translationMatrix = XMMatrixTranslation(translateX, translateY, translateZ);
 		XMMATRIX rotationXMatrix = XMMatrixRotationX(rotateX);
-		XMMATRIX rotationYMatrix = XMMatrixRotationX(rotateY);
-		XMMATRIX rotationZMatrix = XMMatrixRotationX(rotateZ);
-		XMMATRIX scaleMatrix = XMMatrixScaling(scale, scale, scale);
-		worldMatrix = rotationZMatrix * rotationYMatrix * rotationXMatrix * scaleMatrix * translationMatrix;
+		XMMATRIX rotationYMatrix = XMMatrixRotationY(rotateY);
+		XMMATRIX rotationZMatrix = XMMatrixRotationZ(rotateZ);
+		XMMATRIX scaleMatrix = XMMatrixScaling(scaleX, scaleY, scaleZ);
+		worldMatrix = scaleMatrix * rotationZMatrix * rotationYMatrix * rotationXMatrix * translationMatrix;
 
 		XMStoreFloat4x4(&mWorldMatrix, worldMatrix);
 	}
