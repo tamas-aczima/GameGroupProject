@@ -48,9 +48,9 @@ namespace Library
 		return mCurrentTechnique;
 	}
 
-	void Material::SetCurrentTechnique(Technique& currentTechnique)
+	void Material::SetCurrentTechnique(Technique* currentTechnique)
 	{
-		mCurrentTechnique = &currentTechnique;
+		mCurrentTechnique = currentTechnique;
 	}
 
 	const std::map<Pass*, ID3D11InputLayout*>& Material::InputLayouts() const
@@ -58,7 +58,7 @@ namespace Library
 		return mInputLayouts;
 	}
 
-	void Material::Initialize(Effect& effect)
+	void Material::Initialize(Effect* effect)
 	{
 		for (std::pair<Pass*, ID3D11InputLayout*> inputLayout : mInputLayouts)
 		{
@@ -66,7 +66,7 @@ namespace Library
 		}
 		mInputLayouts.clear();
 
-		mEffect = &effect;
+		mEffect = effect;
 
 		Technique* defaultTechnique = nullptr;
 		assert(mEffect->Techniques().size() > 0);
@@ -80,7 +80,7 @@ namespace Library
 			defaultTechnique = mEffect->Techniques().at(0);
 		}
 
-		SetCurrentTechnique(*defaultTechnique);
+		SetCurrentTechnique(defaultTechnique);
 	}
 
 	void Material::CreateVertexBuffer(ID3D11Device* device, const Model& model, std::vector<ID3D11Buffer*>& vertexBuffers) const

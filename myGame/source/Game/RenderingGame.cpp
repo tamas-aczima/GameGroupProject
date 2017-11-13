@@ -65,13 +65,13 @@ namespace Rendering
 
 		mTreasureChest->SetPosition(0, 0, -50.0f, -1.57f, 0, 0, 0.15f, 0.15f, 0.15f);
 
-		mRock = new Rock(*this, *mCamera);
+		/*mRock = new Rock(*this, *mCamera);
 		mComponents.push_back(mRock);
 		mRock->SetPosition(300, 0, -50, 0, 0, 0, 20);
 
 		Rock* mRock2 = new Rock(*this, *mCamera);
 		mComponents.push_back(mRock2);
-		mRock2->SetPosition(300, 0, -300, 0, 0, 0, 20);
+		mRock2->SetPosition(300, 0, -300, 0, 0, 0, 20);*/
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 

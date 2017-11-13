@@ -40,17 +40,13 @@ namespace Library
 		ID3D10Blob* compiledShader = nullptr;
 		ID3D10Blob* errorMessages = nullptr;
 		HRESULT hr = D3DCompileFromFile(filename.c_str(), nullptr, nullptr, nullptr, "fx_5_0", shaderFlags, 0, &compiledShader, &errorMessages);
-		if (errorMessages != nullptr)
+		if (FAILED(hr))
 		{
-			GameException ex((char*)errorMessages->GetBufferPointer(), hr);
+			char* errorMessage = (errorMessages != nullptr ? (char*)errorMessages->GetBufferPointer() : "D3DX11CompileFromFile() failed");
+			GameException ex(errorMessage, hr);
 			ReleaseObject(errorMessages);
 
 			throw ex;
-		}
-
-		if (FAILED(hr))
-		{
-			throw GameException("D3DX11CompileFromFile() failed.", hr);
 		}
 
 		hr = D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), NULL, direct3DDevice, effect);

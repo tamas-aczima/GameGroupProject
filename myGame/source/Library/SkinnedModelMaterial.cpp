@@ -30,7 +30,7 @@ namespace Library
 	MATERIAL_VARIABLE_DEFINITION(SkinnedModelMaterial, BoneTransforms)
 	MATERIAL_VARIABLE_DEFINITION(SkinnedModelMaterial, ColorTexture)
 
-	void SkinnedModelMaterial::Initialize(Effect& effect)
+	void SkinnedModelMaterial::Initialize(Effect* effect)
 	{
 		Material::Initialize(effect);
 
