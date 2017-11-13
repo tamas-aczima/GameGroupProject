@@ -37,11 +37,11 @@ namespace Rendering
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
 		// Load the model
-		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\bench.3ds", true));
+		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\treasure_chest.obj", true));
 
 		// Initialize the material
 		mTextureEffect = new Effect(*mGame);
-		mTextureEffect->LoadCompiledEffect(L"Content\\Effects\\TextureEffect.cso");
+		mTextureEffect->CompileFromFile(L"Content\\Effects\\TextureEffect.fx");
 		mTextureMaterial = new TextureMaterial();
 		mTextureMaterial->Initialize(mTextureEffect);
 
@@ -53,7 +53,7 @@ namespace Rendering
 
 		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
 		//Load the texture
-		mTextureName = L"Content\\Textures\\bench.jpg";
+		mTextureName = L"Content\\Textures\\treasure_chest.jpg";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
 	}
