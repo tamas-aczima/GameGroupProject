@@ -48,6 +48,15 @@
     <ClCompile Include="GoldKey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BronzeKey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h">
@@ -75,6 +84,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GoldKey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BronzeKey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
