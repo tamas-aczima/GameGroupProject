@@ -143,6 +143,8 @@ namespace Library
 	{
 		XMVECTOR eyePosition = XMLoadFloat3(&mPosition);
 		XMVECTOR direction = XMLoadFloat3(&mDirection);
+		//XMFLOAT3 mDirection = XMFLOAT3(1, 1, 0);
+		//XMVECTOR direction = XMLoadFloat3(&mDirection);
 		XMVECTOR upDirection = XMLoadFloat3(&mUp);
 
 		XMMATRIX viewMatrix = XMMatrixLookToRH(eyePosition, direction, upDirection);

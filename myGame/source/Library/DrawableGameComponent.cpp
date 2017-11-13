@@ -53,6 +53,11 @@ namespace Library
 	{
 		XMMATRIX worldMatrix = XMLoadFloat4x4(&mWorldMatrix);
 		XMMATRIX translationMatrix = XMMatrixTranslation(translateX, translateY, translateZ);
+		////New position var added
+		//x = translateX;
+		//y = translateY;
+		//z = translateZ;
+
 		XMMATRIX rotationXMatrix = XMMatrixRotationX(rotateX);
 		XMMATRIX rotationYMatrix = XMMatrixRotationY(rotateY);
 		XMMATRIX rotationZMatrix = XMMatrixRotationZ(rotateZ);
@@ -61,4 +66,12 @@ namespace Library
 
 		XMStoreFloat4x4(&mWorldMatrix, worldMatrix);
 	}
+
+	/*XMMATRIX DrawableGameComponent::getPostion()
+	{
+
+		return XMMATRIX(x,y,z);
+	}*/
+
+
 }

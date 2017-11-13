@@ -74,14 +74,27 @@ namespace Library
 		mMouse = (Mouse*)mGame->Services().GetService(Mouse::TypeIdClass());
 
 		Camera::Initialize();
+
+		//Camera Rotation ----------------------------
+		XMFLOAT2 rotation = XMFLOAT2(0,-0.6);
+
+		//XMVECTOR rotationVector = XMLoadFloat2(&rotationAmount) * mRotationRate * elapsedTime;
+		XMVECTOR rotationVector = XMLoadFloat2(&rotation);
+
+		XMVECTOR right = XMLoadFloat3(&mRight);
+		XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
+		XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
+
+		ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
+		//--------------------------------------
 	}
 
 	void FirstPersonCamera::Update(const GameTime& gameTime)
 	{
-		XMFLOAT2 movementAmount = Vector2Helper::Zero;
+		XMFLOAT3 movementAmount = Vector3Helper::Zero;
 		if (mKeyboard != nullptr)
 		{
-			if (mKeyboard->IsKeyDown(DIK_W))
+			/*if (mKeyboard->IsKeyDown(DIK_W))
 			{
 				movementAmount.y = 1.0f;
 			}
@@ -99,7 +112,29 @@ namespace Library
 			if (mKeyboard->IsKeyDown(DIK_D))
 			{
 				movementAmount.x = 1.0f;
+			}	*/
+
+			if (mKeyboard->IsKeyDown(DIK_W))
+			{
+				movementAmount.z = 1.0f;
 			}
+
+			if (mKeyboard->IsKeyDown(DIK_S))
+			{
+				movementAmount.z = -1.0f;
+			}
+
+			if (mKeyboard->IsKeyDown(DIK_A))
+			{
+				movementAmount.x = -1.0f;
+			}
+
+			if (mKeyboard->IsKeyDown(DIK_D))
+			{
+				movementAmount.x = 1.0f;
+			}
+
+
 		}
 
 		XMFLOAT2 rotationAmount = Vector2Helper::Zero;
@@ -110,22 +145,30 @@ namespace Library
 			rotationAmount.y = -mouseState->lY * mMouseSensitivity;
 		}
 
+		/*if (mKeyboard->IsKeyDown(DIK_Q))
+		{
+			rotationAmount.y = -10.0f;
+		}*/
+
 		float elapsedTime = (float)gameTime.ElapsedGameTime();
-		XMVECTOR rotationVector = XMLoadFloat2(&rotationAmount) * mRotationRate * elapsedTime;
-		XMVECTOR right = XMLoadFloat3(&mRight);
+		//XMFLOAT2 rotation = XMFLOAT2(0, 10);
+		////XMVECTOR rotationVector = XMLoadFloat2(&rotationAmount) * mRotationRate * elapsedTime;
+		//XMVECTOR rotationVector = XMLoadFloat2(&rotation);
 
-		XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
-		XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
+		XMVECTOR right = XMLoadFloat3(&mRight);		
+		//XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
+		//XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
 
-		ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
+		//ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
 
 		XMVECTOR position = XMLoadFloat3(&mPosition);
-		XMVECTOR movement = XMLoadFloat2(&movementAmount) * mMovementRate * elapsedTime;
+		XMVECTOR movement = XMLoadFloat3(&movementAmount) * mMovementRate * elapsedTime;
 
 		XMVECTOR strafe = right * XMVectorGetX(movement);
 		position += strafe;
 
-		XMVECTOR forward = XMLoadFloat3(&mDirection) * XMVectorGetY(movement);
+		//XMVECTOR forward = XMLoadFloat3(&mDirection) * XMVectorGetY(movement);
+		XMVECTOR forward = XMLoadFloat3(&mDirection) * movement;
 		position += forward;
 
 		XMStoreFloat3(&mPosition, position);

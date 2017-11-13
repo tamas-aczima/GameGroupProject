@@ -13,6 +13,7 @@
 #include "Level.h"
 #include "TreasureChest.h"
 #include "Rock.h"
+#include "Player.h"
 
 namespace Rendering
 {
@@ -63,15 +64,19 @@ namespace Rendering
 		mTreasureChest = new TreasureChest(*this, *mCamera);
 		mComponents.push_back(mTreasureChest);
 
-		mTreasureChest->SetPosition(0, 0, -50.0f, -1.57f, 0, 0, 0.15f);
+		mTreasureChest->SetPosition(0, 0, -50.0f, -1.57f, 0, 0, 1,1,1);
 
 		mRock = new Rock(*this, *mCamera);
 		mComponents.push_back(mRock);
-		mRock->SetPosition(300, 0, -50, 0, 0, 0, 20);
+		mRock->SetPosition(300, 0, -50, 0, 0, 0, 20,1,1);
 
 		Rock* mRock2 = new Rock(*this, *mCamera);
 		mComponents.push_back(mRock2);
-		mRock2->SetPosition(300, 0, -300, 0, 0, 0, 20);
+		mRock2->SetPosition(300, 0, -300, 0, 0, 0, 20,1,1);
+
+	    player = new Player(*this, *mCamera);
+		mComponents.push_back(player);
+		player->SetPosition(0,0,10.0f,0,0,0,1,1,1);
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
@@ -80,7 +85,8 @@ namespace Rendering
 
 		Game::Initialize();
 
-		mCamera->SetPosition(0.0f, 0.0f, 25.0f);
+		mCamera->SetPosition(0.0f, 15.0f, 20.0f);
+		
 	}
 
 	void RenderingGame::Update(const GameTime &gameTime)
@@ -92,7 +98,27 @@ namespace Rendering
 			Exit();
 		}
 
+		//Player movement------
+		if (mKeyboard->IsKeyDown(DIK_D))
+		{
+			player->x += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+		}
 
+		if (mKeyboard->IsKeyDown(DIK_A))
+		{
+			player->x -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+		}
+
+		if (mKeyboard->IsKeyDown(DIK_W))
+		{
+			player->z -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+		}
+
+		if (mKeyboard->IsKeyDown(DIK_S))
+		{
+			player->z += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+		}
+		//----------------------------
 
 		Game::Update(gameTime);
 	}
@@ -113,6 +139,13 @@ namespace Rendering
 		std::wostringstream mouseLabel;
 		mouseLabel << L"Mouse Position: " << mMouse->X() << ", " << mMouse->Y() << " Mouse Wheel: " << mMouse->Wheel();
 		mSpriteFont->DrawString(mSpriteBatch, mouseLabel.str().c_str(), mMouseTextPosition);
+
+		//Player Location
+		std::wostringstream playerLocation;
+		XMFLOAT2 messageLoc = XMFLOAT2(Game::DefaultScreenWidth - 100, 5);
+		playerLocation << "x " << player->getPosition().x << "\n" << "z " << player->getPosition().z;
+		mSpriteFont->DrawString(mSpriteBatch, playerLocation.str().c_str(), messageLoc, Colors::Red);
+
 
 		mSpriteBatch->End();
 

@@ -25,6 +25,13 @@ namespace Rendering
 		virtual void Initialize() override;
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
+		void SetUpPosition(float X, float Y, float Z);
+
+		float x;
+		float y;
+		float z;
+
+		XMFLOAT3 getPosition();
 
 	private:
 		Player();
@@ -42,7 +49,9 @@ namespace Rendering
 		ID3D11ShaderResourceView* mTextureShaderResourceView;
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;
 
-		Keyboard* mKb;
+		Keyboard* mKeyboard;
+
+		float mAngle;
 
 	};
 }

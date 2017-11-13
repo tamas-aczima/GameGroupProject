@@ -29,10 +29,6 @@ namespace Rendering
 		tempCompVector.push_back(wall);
 		wall->SetPosition(0, 0, 45, 0, 0, 0, 1, 0.5, 0.1);
 
-		Player* player = new Player(game, camera);
-		player->SetPosition(0, 0, 5, 0, 0, 0, 1, 1, 1);
-		tempCompVector.push_back(player);
-
 
 		//-------------------------
 		//instead of this way 

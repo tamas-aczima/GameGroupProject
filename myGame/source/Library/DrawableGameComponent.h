@@ -26,6 +26,8 @@ namespace Library
 		void SetPosition(const float translateX, const float translateY, const float translateZ,
 			const float rotateX, const float rotateY, const float rotateZ, const float scaleX, const float scaleY, const float scaleZ);
 
+		//XMMATRIX getPostion();
+
 	protected:
 		bool mVisible;
 		Camera* mCamera;
@@ -34,5 +36,8 @@ namespace Library
 	private:
 		DrawableGameComponent(const DrawableGameComponent& rhs);
 		DrawableGameComponent& operator=(const DrawableGameComponent& rhs);
+
+		//float x, y, z;
+
 	};
 }

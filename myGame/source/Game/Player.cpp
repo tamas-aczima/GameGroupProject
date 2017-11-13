@@ -8,6 +8,8 @@
 #include "Mesh.h"
 #include "TextureMaterial.h"
 #include <WICTextureLoader.h>
+#include "VectorHelper.h"
+#include "Mesh.h"
 
 #include "Keyboard.h"
 
@@ -22,7 +24,8 @@ namespace Rendering
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
-		mWorldMatrix = MatrixHelper::Identity;
+		mWorldMatrix = MatrixHelper::Identity;		
+		
 	}
 
 	Player::~Player()
@@ -61,13 +64,18 @@ namespace Rendering
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
 
-		
-
 	}
+
+	
 
 	void Rendering::Player::Update(const GameTime & gameTime)
 	{
+		
+		//mAngle += XM_PI * static_cast<float>(gameTime.ElapsedGameTime());
+		//x += XM_PI * static_cast<float>(gameTime.ElapsedGameTime());
 
+		//XMStoreFloat4x4(&mWorldMatrix, XMMatrixRotationY(mAngle));
+		XMStoreFloat4x4(&mWorldMatrix, XMMatrixTranslation(x, 0, z));
 	}
 
 	void Rendering::Player::Draw(const GameTime & gameTime)
@@ -95,6 +103,22 @@ namespace Rendering
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
 
 	}
+
+	//void Player::SetUpPosition(float X, float Y, float Z)
+	//{
+
+	//	x = X;
+	//	y = Y;
+	//	z = Z;
+	//	
+	//}
+
+	XMFLOAT3 Player::getPosition()
+	{
+		return XMFLOAT3(x,y,z);
+	}
+
+
 
 
 
