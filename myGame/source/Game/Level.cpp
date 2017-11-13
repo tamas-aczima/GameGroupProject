@@ -1,6 +1,7 @@
 #include "Level.h"
 #include "Wall.h"
 #include "Player.h"
+#include "GoldKey.h"
 
 namespace Rendering
 {
@@ -33,6 +34,10 @@ namespace Rendering
 		player->SetPosition(0, 0, 5, 0, 0, 0, 1, 1, 1);
 		tempCompVector.push_back(player);
 
+
+		GoldKey* goldKey = new GoldKey(game, camera);
+		goldKey->SetPosition(0, 0, 10, 0, 0, 0, 0.01, 0.01, 0.01);
+		tempCompVector.push_back(goldKey);
 
 		//-------------------------
 		//instead of this way 
