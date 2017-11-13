@@ -57,6 +57,9 @@
     <ClCompile Include="Door.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LightLock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h">
@@ -93,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Door.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightLock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

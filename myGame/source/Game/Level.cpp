@@ -4,6 +4,7 @@
 #include "GoldKey.h"
 #include "BronzeKey.h"
 #include "Door.h"
+#include "LightLock.h"
 
 namespace Rendering
 {
@@ -52,6 +53,10 @@ namespace Rendering
 		door = new Door(game, camera);
 		tempCompVector.push_back(door);
 		door->SetPosition(35, 20, 5, 0, 0, 3.14, 0.1, 0.1, 0.1);
+
+		LightLock* lightlock = new LightLock(game, camera);
+		tempCompVector.push_back(lightlock);
+		lightlock->SetPosition(25, 10, 5, 1.57, 0, 0, 1.1, 1.1, 1.1);
 
 		//-------------------------
 		//instead of this way 
