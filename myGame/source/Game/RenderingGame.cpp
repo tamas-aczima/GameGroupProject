@@ -63,7 +63,7 @@ namespace Rendering
 		mTreasureChest = new TreasureChest(*this, *mCamera);
 		mComponents.push_back(mTreasureChest);
 
-		mTreasureChest->SetPosition(0, 0, -50.0f, -1.57f, 0, 0, 0.15f);
+		mTreasureChest->SetPosition(0, 0, -50.0f, -1.57f, 0, 0, 0.15f, 0.15f, 0.15f);
 
 		mRock = new Rock(*this, *mCamera);
 		mComponents.push_back(mRock);

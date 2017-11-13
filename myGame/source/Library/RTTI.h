@@ -36,47 +36,34 @@ namespace Library
 		}
 	};
 
-	#define RTTI_DECLARATIONS(Type, ParentType)												\
-	public:																					\
-		typedef ParentType Parent;															\
-		static std::string TypeName() { return std::string(#Type); }						\
-		virtual const unsigned int& TypeIdInstance() const { return Type::TypeIdClass(); }	\
-		static const unsigned int& TypeIdClass() { return sRunTimeTypeId; }					\
-		virtual Library::RTTI* QueryInterface( const unsigned int id ) const				\
-		{																					\
-			if (id == sRunTimeTypeId)														\
-			{																				\
-				return (RTTI*)this;															\
-			}																				\
-			else																			\
-			{																				\
-				return Parent::QueryInterface(id);											\
-			}																				\
-		}																					\
-		virtual bool Is(const unsigned int id) const										\
-		{																					\
-			if (id == sRunTimeTypeId)														\
-			{																				\
-				return true;																\
-			}																				\
-			else																			\
-			{																				\
-				return Parent::Is(id);														\
-			}																				\
-		}																					\
-		virtual bool Is(const std::string& name) const										\
-		{																					\
-			if (name == TypeName())															\
-			{																				\
-				return true;																\
-			}																				\
-			else																			\
-			{																				\
-				return Parent::Is(name);													\
-			}																				\
-		}																					\
-		private:																			\
-			static unsigned int sRunTimeTypeId;												
+#define RTTI_DECLARATIONS(Type, ParentType)                                                              \
+        public:                                                                                              \
+            static std::string TypeName() { return std::string(#Type); }                                     \
+            virtual const unsigned int& TypeIdInstance() const { return Type::TypeIdClass(); }               \
+            static  const unsigned int& TypeIdClass() { return sRunTimeTypeId; }                             \
+            virtual Library::RTTI* QueryInterface( const unsigned int id ) const                             \
+            {                                                                                                \
+                if (id == sRunTimeTypeId)                                                                    \
+                    { return (RTTI*)this; }                                                                  \
+                else                                                                                         \
+					{ return ParentType::QueryInterface(id); }                                               \
+            }                                                                                                \
+            virtual bool Is(const unsigned int id) const                                                     \
+            {                                                                                                \
+                if (id == sRunTimeTypeId)                                                                    \
+                    { return true; }                                                                         \
+                else                                                                                         \
+                    { return ParentType::Is(id); }                                                           \
+            }                                                                                                \
+            virtual bool Is(const std::string& name) const                                                   \
+            {                                                                                                \
+                if (name == TypeName())                                                                      \
+                    { return true; }                                                                         \
+                else                                                                                         \
+                    { return ParentType::Is(name); }                                                         \
+            }                                                                                                \
+	   private:                                                                                              \
+            static unsigned int sRunTimeTypeId;
 
-		#define RTTI_DEFINITIONS(Type) unsigned int Type::sRunTimeTypeId = (unsigned int)& Type::sRunTimeTypeId;
+#define RTTI_DEFINITIONS(Type) unsigned int Type::sRunTimeTypeId = (unsigned int)& Type::sRunTimeTypeId;
 }
