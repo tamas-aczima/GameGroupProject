@@ -1,4 +1,4 @@
-#include "Wall.h"
+#include "Player.h"
 #include "Game.h"
 #include "GameException.h"
 #include "MatrixHelper.h"
@@ -9,11 +9,14 @@
 #include "TextureMaterial.h"
 #include <WICTextureLoader.h>
 
+#include "Keyboard.h"
+
 namespace Rendering
 {
-	RTTI_DEFINITIONS(Wall)
+	
+	RTTI_DEFINITIONS(Player)
 
-	Wall::Wall(Game& game, Camera& camera)
+	Player::Player(Game& game, Camera& camera)
 		: DrawableGameComponent(game, camera),
 		mTextureMaterial(nullptr), mTextureEffect(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
@@ -22,7 +25,7 @@ namespace Rendering
 		mWorldMatrix = MatrixHelper::Identity;
 	}
 
-	Wall::~Wall()
+	Player::~Player()
 	{
 		ReleaseObject(mColorTextureVariable);
 		ReleaseObject(mTextureShaderResourceView);
@@ -32,12 +35,13 @@ namespace Rendering
 		ReleaseObject(mIndexBuffer);
 	}
 
-	void Wall::Initialize()
+	void Rendering::Player::Initialize()
 	{
+
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
 		// Load the model
-		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\Cube.obj", true));
+		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\BEAR_BLK.obj", true));
 
 		// Initialize the material
 		mTextureEffect = new Effect(*mGame);
@@ -53,19 +57,20 @@ namespace Rendering
 
 		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
 		//Load the texture
-		mTextureName = L"Content\\Textures\\rock.jpg";
+		mTextureName = L"Content\\Textures\\BEAR_BK.tif";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
-	}
-
-	void Wall::Update(const GameTime& gameTime)
-	{
 
 		
 
 	}
 
-	void Wall::Draw(const GameTime& gameTime)
+	void Rendering::Player::Update(const GameTime & gameTime)
+	{
+
+	}
+
+	void Rendering::Player::Draw(const GameTime & gameTime)
 	{
 		ID3D11DeviceContext* direct3DDeviceContext = mGame->Direct3DDeviceContext();
 		direct3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -88,5 +93,9 @@ namespace Rendering
 		pass->Apply(0, direct3DDeviceContext);
 
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
+
 	}
+
+
+
 }

@@ -92,6 +92,8 @@ namespace Rendering
 			Exit();
 		}
 
+
+
 		Game::Update(gameTime);
 	}
 
