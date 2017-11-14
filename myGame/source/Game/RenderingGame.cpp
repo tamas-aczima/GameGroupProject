@@ -13,6 +13,7 @@
 #include "Level.h"
 #include "TreasureChest.h"
 #include "Rock.h"
+#include "PlayerAnimation.h"
 
 namespace Rendering
 {
@@ -72,6 +73,9 @@ namespace Rendering
 		Rock* mRock2 = new Rock(*this, *mCamera);
 		mComponents.push_back(mRock2);
 		mRock2->SetPosition(300, 0, -300, 0, 0, 0, 20);*/
+
+		mPlayerAnimation = new PlayerAnimation(*this, *mCamera);
+		mComponents.push_back(mPlayerAnimation);
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 

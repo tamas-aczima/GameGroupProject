@@ -1,6 +1,33 @@
-//#include "include\\Common.fxh"
-
 #define MaxBones 60
+
+/************* Constants *************/
+
+#define FLIP_TEXTURE_Y 0
+
+/************* Data Structures *************/
+
+struct DIRECTIONAL_LIGHT
+{
+	float3 Direction;
+	float4 Color;
+};
+
+struct POINT_LIGHT
+{
+	float3 Position : POSITION;
+	float LightRadius;
+	float4 Color : COLOR;
+};
+
+struct SPOT_LIGHT
+{
+	float3 Position;
+	float4 Direction;
+	float OuterAngle;
+	float InnerAngle;
+	float LightRadius;
+	float4 Color;
+};
 
 struct LIGHT_CONTRIBUTION_DATA
 {

@@ -26,6 +26,7 @@ namespace Rendering
 	class Level;
 	class TreasureChest;
 	class Rock;
+	class PlayerAnimation;
 
 	class RenderingGame : public Game
 	{
@@ -54,6 +55,7 @@ namespace Rendering
 		Level* mLevel;
 		TreasureChest* mTreasureChest;
 		Rock* mRock;
+		PlayerAnimation* mPlayerAnimation;
 
 		SpriteBatch* mSpriteBatch;
 		SpriteFont* mSpriteFont;
