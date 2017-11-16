@@ -1,6 +1,10 @@
 #include "Level.h"
 #include "Wall.h"
 #include "Player.h"
+#include "GoldKey.h"
+#include "BronzeKey.h"
+#include "Door.h"
+#include "LightLock.h"
 
 namespace Rendering
 {
@@ -29,6 +33,26 @@ namespace Rendering
 		tempCompVector.push_back(wall);
 		wall->SetPosition(0, 0, 45, 0, 0, 0, 1, 0.5, 0.1);
 
+
+		GoldKey* goldKey = new GoldKey(game, camera);
+		goldKey->SetPosition(0, 0, 10, 0, 0, 0, 0.01, 0.01, 0.01);
+		tempCompVector.push_back(goldKey);
+
+		BronzeKey* bronzeKey = new BronzeKey(game, camera);
+		bronzeKey->SetPosition(0, 0, 20, 0, 0, 0, 0.01, 0.01, 0.01);
+		tempCompVector.push_back(bronzeKey);
+
+		Door* door = new Door(game, camera);
+		tempCompVector.push_back(door);
+		door->SetPosition(15, 0, 5, 0, 0, 0, 0.1, 0.1, 0.1);
+
+		door = new Door(game, camera);
+		tempCompVector.push_back(door);
+		door->SetPosition(35, 20, 5, 0, 0, 3.14, 0.1, 0.1, 0.1);
+
+		LightLock* lightlock = new LightLock(game, camera);
+		tempCompVector.push_back(lightlock);
+		lightlock->SetPosition(25, 10, 5, 1.57, 0, 0, 1.1, 1.1, 1.1);
 
 		//-------------------------
 		//instead of this way 
