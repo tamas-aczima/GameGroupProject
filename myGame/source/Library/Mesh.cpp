@@ -1,5 +1,7 @@
 #include "Mesh.h"
 #include "Model.h"
+#include "Material.h"
+#include "Bone.h"
 #include "Game.h"
 #include "GameException.h"
 #include <assimp/scene.h>
@@ -7,7 +9,8 @@
 namespace Library
 {
 	Mesh::Mesh(Model& model, aiMesh& mesh)
-		: mModel(model), mMaterial(nullptr), mName(mesh.mName.C_Str()), mVertices(), mNormals(), mTangents(), mBiNormals(), mTextureCoordinates(), mVertexColors(), mFaceCount(0), mIndices()
+		: mModel(model), mMaterial(nullptr), mName(mesh.mName.C_Str()), mVertices(), mNormals(), mTangents(), mBiNormals(), mTextureCoordinates(), mVertexColors(),
+		mFaceCount(0), mIndices(), mBoneWeights(), mVertexBuffer(), mIndexBuffer()
 	{
 		mMaterial = mModel.Materials().at(mesh.mMaterialIndex);
 
@@ -84,6 +87,43 @@ namespace Library
 				}
 			}
 		}
+
+		// Bones
+		if (mesh.HasBones())
+		{
+			mBoneWeights.resize(mesh.mNumVertices);
+
+			for (UINT i = 0; i < mesh.mNumBones; i++)
+			{
+				aiBone* meshBone = mesh.mBones[i];
+
+				// Look up the bone in the model's hierarchy, or add it if not found.
+				UINT boneIndex = 0U;
+				std::string boneName = meshBone->mName.C_Str();
+				auto boneMappingIterator = mModel.mBoneIndexMapping.find(boneName);
+				if (boneMappingIterator != mModel.mBoneIndexMapping.end())
+				{
+					boneIndex = boneMappingIterator->second;
+				}
+				else
+				{
+					boneIndex = mModel.mBones.size();
+					XMMATRIX offsetMatrix = XMLoadFloat4x4(&(XMFLOAT4X4(reinterpret_cast<const float*>(meshBone->mOffsetMatrix[0]))));
+					XMFLOAT4X4 offset;
+					XMStoreFloat4x4(&offset, XMMatrixTranspose(offsetMatrix));
+
+					Bone* modelBone = new Bone(boneName, boneIndex, offset);
+					mModel.mBones.push_back(modelBone);
+					mModel.mBoneIndexMapping[boneName] = boneIndex;
+				}
+
+				for (UINT i = 0; i < meshBone->mNumWeights; i++)
+				{
+					aiVertexWeight vertexWeight = meshBone->mWeights[i];
+					mBoneWeights[vertexWeight.mVertexId].AddWeight(vertexWeight.mWeight, boneIndex);
+				}
+			}
+		}
 	}
 
 	Mesh::~Mesh()
@@ -97,6 +137,9 @@ namespace Library
 		{
 			delete vertexColors;
 		}
+
+		mVertexBuffer.ReleaseBuffer();
+		mIndexBuffer.ReleaseBuffer();
 	}
 
 	Model& Mesh::GetModel()
@@ -154,6 +197,35 @@ namespace Library
 		return mIndices;
 	}
 
+	const std::vector<BoneVertexWeights>& Mesh::BoneWeights() const
+	{
+		return mBoneWeights;
+	}
+
+	BufferContainer& Mesh::VertexBuffer()
+	{
+		return mVertexBuffer;
+	}
+
+	BufferContainer& Mesh::IndexBuffer()
+	{
+		return mIndexBuffer;
+	}
+
+	bool Mesh::HasCachedVertexBuffer() const
+	{
+		Mesh* mesh = const_cast<Mesh*>(this);
+
+		return mesh->mVertexBuffer.Buffer() != nullptr;
+	}
+
+	bool Mesh::HasCachedIndexBuffer() const
+	{
+		Mesh* mesh = const_cast<Mesh*>(this);
+
+		return mesh->mIndexBuffer.Buffer() != nullptr;
+	}
+
 	void Mesh::CreateIndexBuffer(ID3D11Buffer** indexBuffer)
 	{
 		assert(indexBuffer != nullptr);
@@ -171,5 +243,21 @@ namespace Library
 		{
 			throw GameException("ID3D11Device::CreateBuffer() failed.");
 		}
+	}
+
+	void Mesh::CreateCachedVertexAndIndexBuffers(ID3D11Device& device, const Material& material)
+	{
+		mVertexBuffer.ReleaseBuffer();
+		mIndexBuffer.ReleaseBuffer();
+
+		ID3D11Buffer* buffer = nullptr;
+		material.CreateVertexBuffer(&device, *this, &buffer);
+		mVertexBuffer.SetBuffer(buffer);
+		mVertexBuffer.SetElementCount(mVertices.size());
+
+		buffer = nullptr;
+		CreateIndexBuffer(&buffer);
+		mIndexBuffer.SetBuffer(buffer);
+		mIndexBuffer.SetElementCount(mIndices.size());
 	}
 }

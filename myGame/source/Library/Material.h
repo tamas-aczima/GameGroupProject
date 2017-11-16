@@ -33,6 +33,7 @@ namespace Library
 		Material& operator=(const Material& rhs);
 
 		virtual void CreateInputLayout(const std::string& techniqueName, const std::string& passName, D3D11_INPUT_ELEMENT_DESC* inputElementDescriptions, UINT inputElementDescriptionCount);
+		virtual void Material::CreateInputLayout(Pass& pass, D3D11_INPUT_ELEMENT_DESC* inputElementDescriptions, UINT inputElementDescriptionCount);
 
 		Effect* mEffect;
 		Technique* mCurrentTechnique;
@@ -40,14 +41,14 @@ namespace Library
 		std::map<Pass*, ID3D11InputLayout*> mInputLayouts;
 	};
 
-#define MATERIAL_VARIABLE_DECLARATION(VariableName)		\
+#define MATERIAL_VARIABLE_DECLARATION(VariableName)	\
 		public:											\
             Variable& VariableName() const;				\
 		private:										\
             Variable* m ## VariableName;
 
 
-#define MATERIAL_VARIABLE_DEFINITION(Material, VariableName)		\
+#define MATERIAL_VARIABLE_DEFINITION(Material, VariableName)	\
         Variable& Material::VariableName() const					\
         {															\
             return *m ## VariableName;								\
