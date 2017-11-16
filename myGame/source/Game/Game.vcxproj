@@ -168,6 +168,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="GoldKey.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LightLock.cpp" />
     <ClCompile Include="Mirror.cpp" />
     <ClCompile Include="ModelDemo.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -183,6 +184,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClInclude Include="Door.h" />
     <ClInclude Include="GoldKey.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="LightLock.h" />
     <ClInclude Include="Mirror.h" />
     <ClInclude Include="ModelDemo.h" />
     <ClInclude Include="Player.h" />
