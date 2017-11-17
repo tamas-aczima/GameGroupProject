@@ -172,6 +172,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClCompile Include="Mirror.cpp" />
     <ClCompile Include="ModelDemo.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerAnimation.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
     <ClCompile Include="Rock.cpp" />
@@ -188,6 +189,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClInclude Include="Mirror.h" />
     <ClInclude Include="ModelDemo.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerAnimation.h" />
     <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="TreasureChest.h" />

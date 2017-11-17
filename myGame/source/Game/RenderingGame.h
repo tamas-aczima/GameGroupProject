@@ -27,6 +27,7 @@ namespace Rendering
 	class TreasureChest;
 	class Rock;
 	class Player;
+	class PlayerAnimation;
 
 	class RenderingGame : public Game
 	{
@@ -60,6 +61,7 @@ namespace Rendering
 		SpriteFont* mSpriteFont;
 
 		Player* player;
+		PlayerAnimation* mAnimation;
 
 		XMFLOAT2 mMouseTextPosition;
 	};
