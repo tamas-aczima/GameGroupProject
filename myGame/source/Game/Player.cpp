@@ -13,6 +13,8 @@
 
 #include "Keyboard.h"
 
+#include "ScreenMessage.h"
+
 namespace Rendering
 {
 	
@@ -25,7 +27,7 @@ namespace Rendering
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
 		mWorldMatrix = MatrixHelper::Identity;		
-		
+
 	}
 
 	Player::~Player()
@@ -63,10 +65,11 @@ namespace Rendering
 		mTextureName = L"Content\\Textures\\BEAR_BK.tif";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
-
+		//ScreenMessage::Message.push_back("Player Initialized");
+		//ScreenMessage::message = "Player Initialized";
+		ScreenMessage::PushMessage("Player Initialized");
 	}
 
-	
 
 	void Rendering::Player::Update(const GameTime & gameTime)
 	{
@@ -76,6 +79,9 @@ namespace Rendering
 
 		//XMStoreFloat4x4(&mWorldMatrix, XMMatrixRotationY(mAngle));
 		XMStoreFloat4x4(&mWorldMatrix, XMMatrixTranslation(x, 0, z));
+		
+			
+
 	}
 
 	void Rendering::Player::Draw(const GameTime & gameTime)

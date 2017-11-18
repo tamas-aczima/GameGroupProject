@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Game.h"
+#include "ScreenMessage.h"
 
 using namespace Library;
 
@@ -64,5 +65,7 @@ namespace Rendering
 		PlayerAnimation* mAnimation;
 
 		XMFLOAT2 mMouseTextPosition;
+
+		void showMessages();
 	};
 }
