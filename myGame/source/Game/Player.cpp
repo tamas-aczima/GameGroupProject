@@ -110,14 +110,14 @@ namespace Rendering
 
 	}
 
-	//void Player::SetUpPosition(float X, float Y, float Z)
-	//{
-
-	//	x = X;
-	//	y = Y;
-	//	z = Z;
-	//	
-	//}
+	void Player::SetUpPosition(float X, float Y, float Z)
+	{
+		this->SetPosition(X, Y, Z, 0, 0, 0, 1, 1, 1);
+		x = X;
+		y = Y;
+		z = Z;
+		
+	}
 
 	XMFLOAT3 Player::getPosition()
 	{
