@@ -102,35 +102,40 @@ namespace Rendering
 	{
 		mFpsComponent->Update(gameTime);
 
-		//Update the camera position
-		mCamera->SetPosition(player->getPosition().x, 15.0f, player->getPosition().z + 20.0f);
+		
 
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_ESCAPE))
 		{
 			Exit();
 		}
 
-		//Player movement------
-		if (mKeyboard->IsKeyDown(DIK_D))
+		if (!mCamera->getIsEditing())
 		{
-			player->x += mCamera->MovementRate() * gameTime.ElapsedGameTime();
-		}
+			//Update the camera position
+			mCamera->SetPosition(player->getPosition().x, 15.0f, player->getPosition().z + 20.0f);
+			//Player movement------
+			if (mKeyboard->IsKeyDown(DIK_D))
+			{
+				player->x += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			}
 
-		if (mKeyboard->IsKeyDown(DIK_A))
-		{
-			player->x -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
-		}
+			if (mKeyboard->IsKeyDown(DIK_A))
+			{
+				player->x -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			}
 
-		if (mKeyboard->IsKeyDown(DIK_W))
-		{
-			player->z -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
-		}
+			if (mKeyboard->IsKeyDown(DIK_W))
+			{
+				player->z -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			}
 
-		if (mKeyboard->IsKeyDown(DIK_S))
-		{
-			player->z += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			if (mKeyboard->IsKeyDown(DIK_S))
+			{
+				player->z += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			}
+			//----------------------------
 		}
-		//----------------------------
+	
 
 		//Enable/Disabel Editing Mode
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_O))

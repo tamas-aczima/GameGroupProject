@@ -100,24 +100,27 @@ namespace Library
 			{
 				if (mKeyboard->IsKeyDown(DIK_W))
 				{
-				movementAmount.y = 1.0f;
+					movementAmount.y = 3.0f;
 				}
 
 				if (mKeyboard->IsKeyDown(DIK_S))
 				{
-				movementAmount.y = -1.0f;
+					movementAmount.y = -3.0f;
 				}
 
 				if (mKeyboard->IsKeyDown(DIK_A))
 				{
-				movementAmount.x = -1.0f;
+					movementAmount.x = -3.0f;
 				}
 
 				if (mKeyboard->IsKeyDown(DIK_D))
 				{
-				movementAmount.x = 1.0f;
+					movementAmount.x = 3.0f;
 				}
+
 			}
+
+		
 
 		}
 
@@ -151,9 +154,8 @@ namespace Library
 		{
 			XMFLOAT2 rotation = XMFLOAT2(0, 10);
 			XMVECTOR rotationVector = XMLoadFloat2(&rotationAmount) * mRotationRate * elapsedTime;
-			//XMVECTOR rotationVector = XMLoadFloat2(&rotation);
-
-			
+			right = XMLoadFloat3(&mRight);
+		
 			XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
 			XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
 
@@ -169,13 +171,25 @@ namespace Library
 		position += strafe;
 
 		//XMVECTOR forward = XMLoadFloat3(&mDirection) * XMVectorGetY(movement);
-		XMVECTOR forward = XMLoadFloat3(&mDirection) * movement;
+
+		XMVECTOR forward;
+
+		if(isEditing) forward = XMLoadFloat3(&mDirection) * XMVectorGetY(movement);
+		else forward = XMLoadFloat3(&mDirection) * movement;
 		position += forward;
+
+		if (isEditing)
+		{
+			XMVECTOR upDown = XMLoadFloat3(&mUp) * XMVectorGetZ(movement);
+			position += upDown;
+		}
 
 		XMStoreFloat3(&mPosition, position);
 
 		Camera::Update(gameTime);
 	}
+
+
 	void FirstPersonCamera::set_IsEditing_ON()
 	{
 		isEditing = true;

@@ -52,5 +52,7 @@ namespace Library
 
 		bool isEditing = false;
 
+		int zoom = 0;
+
 	};
 }
