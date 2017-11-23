@@ -19,6 +19,7 @@
 #include <sstream>
 #include <iomanip>
 #include "Shlwapi.h"
+#include <assimp\Importer.hpp>
 
 namespace Rendering
 {
@@ -65,7 +66,9 @@ namespace Rendering
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
 		// Load the model
-		mSkinnedModel = new Model(*mGame, "Content\\Models\\RunningSoldier.dae", true);
+		mSkinnedModel = new Model(*mGame, "Content\\Models\\Idle.dae", true);
+		mWalkAnimation = new Model(*mGame, "Content\\Models\\Walking.dae", true);
+		mJumpAnimation = new Model(*mGame, "Content\\Models\\Jump.dae", true);
 
 		// Initialize the material
 		mEffect = new Effect(*mGame);
@@ -116,7 +119,14 @@ namespace Rendering
 		mKeyboard = (Keyboard*)mGame->Services().GetService(Keyboard::TypeIdClass());
 		assert(mKeyboard != nullptr);
 
-		mAnimationPlayer = new AnimationPlayer(*mGame, *mSkinnedModel, false);
+		//mAnimationPlayer = new AnimationPlayer(*mGame, *mSkinnedModel, false);
+		//mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
+
+		mIdlePlayer = new AnimationPlayer(*mGame, *mSkinnedModel, false);
+		mWalkPlayer = new AnimationPlayer(*mGame, *mWalkAnimation, false);
+		mJumpPlayer = new AnimationPlayer(*mGame, *mJumpAnimation, false);
+
+		mAnimationPlayer = mIdlePlayer;
 		mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
 	}
 
@@ -126,7 +136,23 @@ namespace Rendering
 		UpdateAmbientLight(gameTime);
 		UpdateSpecularLight(gameTime);
 
-		if (mManualAdvanceMode == false)
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_W))
+		{
+			mAnimationPlayer = mWalkPlayer;
+			mAnimationPlayer->StartClip(*(mWalkAnimation->Animations().at(0)));
+		}
+		if (mKeyboard->WasKeyReleasedThisFrame(DIK_W))
+		{
+			mAnimationPlayer = mIdlePlayer;
+			mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
+		}
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_SPACE))
+		{
+			mAnimationPlayer = mJumpPlayer;
+			mAnimationPlayer->StartClip(*(mJumpAnimation->Animations().at(0)));
+		}
+
+		if (mManualAdvanceMode == true)
 		{
 			mAnimationPlayer->Update(gameTime);
 		}
@@ -209,18 +235,18 @@ namespace Rendering
 				mAnimationPlayer->SetCurrentKeyFrame(0);
 			}
 
-			if (mManualAdvanceMode && mKeyboard->WasKeyPressedThisFrame(DIK_SPACE))
-			{
-				// Advance the current keyframe
-				UINT currentKeyFrame = mAnimationPlayer->CurrentKeyframe();
-				currentKeyFrame++;
-				if (currentKeyFrame >= mAnimationPlayer->CurrentClip()->KeyframeCount())
-				{
-					currentKeyFrame = 0;
-				}
+			//if (mManualAdvanceMode && mKeyboard->WasKeyPressedThisFrame(DIK_SPACE))
+			//{
+			//	// Advance the current keyframe
+			//	UINT currentKeyFrame = mAnimationPlayer->CurrentKeyframe();
+			//	currentKeyFrame++;
+			//	if (currentKeyFrame >= mAnimationPlayer->CurrentClip()->KeyframeCount())
+			//	{
+			//		currentKeyFrame = 0;
+			//	}
 
-				mAnimationPlayer->SetCurrentKeyFrame(currentKeyFrame);
-			}
+			//	mAnimationPlayer->SetCurrentKeyFrame(currentKeyFrame);
+			//}
 		}
 	}
 

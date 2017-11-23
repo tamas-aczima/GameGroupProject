@@ -21,7 +21,7 @@ namespace Library
 
 		void AddWeight(float weight, UINT boneIndex);
 
-		static const UINT MaxBoneWeightsPerVertex = 4U;
+		static const UINT MaxBoneWeightsPerVertex = 5U;
 
 	private:
 		std::vector<VertexWeight> mWeights;

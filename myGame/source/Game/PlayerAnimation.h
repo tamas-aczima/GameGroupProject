@@ -12,6 +12,7 @@ namespace Library
 	class SkinnedModelMaterial;
 	class Model;
 	class AnimationPlayer;
+	class AnimationClip;
 }
 
 namespace DirectX
@@ -61,7 +62,12 @@ namespace Rendering
 		std::vector<ID3D11ShaderResourceView*> mColorTextures;
 
 		Model* mSkinnedModel;
+		Model* mWalkAnimation;
+		Model* mJumpAnimation;
 		AnimationPlayer* mAnimationPlayer;
+		AnimationPlayer* mIdlePlayer;
+		AnimationPlayer* mWalkPlayer;
+		AnimationPlayer* mJumpPlayer;
 
 		XMFLOAT2 mTextPosition;
 		bool mManualAdvanceMode;

@@ -1,4 +1,4 @@
-#define MaxBones 60
+#define MaxBones 100
 
 /************* Constants *************/
 
