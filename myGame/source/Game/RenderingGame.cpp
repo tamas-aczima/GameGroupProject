@@ -77,7 +77,8 @@ namespace Rendering
 
 	    player = new Player(*this, *mCamera);
 		mComponents.push_back(player);
-		player->SetPosition(0,0,10.0f,0,0,0,1,1,1);
+		player->SetUpPosition(0, 0, 0);
+		//player->SetPosition(0,0,10.0f,0,0,0,1,1,1);
 
 		/*mAnimation = new PlayerAnimation(*this, *mCamera);
 		mComponents.push_back(mAnimation);
@@ -90,7 +91,10 @@ namespace Rendering
 
 		Game::Initialize();
 
-		mCamera->SetPosition(0.0f, 15.0f, 20.0f);
+		mCamera->SetPosition(player->getPosition().x, 15.0f, player->getPosition().z + 20.0f);
+
+		//Test message
+		ScreenMessage::PushMessage("Rendering_game_Initialized");
 		
 	}
 
@@ -98,32 +102,55 @@ namespace Rendering
 	{
 		mFpsComponent->Update(gameTime);
 
+		
+
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_ESCAPE))
 		{
 			Exit();
 		}
 
-		//Player movement------
-		if (mKeyboard->IsKeyDown(DIK_D))
+		if (!mCamera->getIsEditing())
 		{
-			player->x += mCamera->MovementRate() * gameTime.ElapsedGameTime();
-		}
+			//Update the camera position
+			mCamera->SetPosition(player->getPosition().x, 15.0f, player->getPosition().z + 20.0f);
+			//Player movement------
+			if (mKeyboard->IsKeyDown(DIK_D))
+			{
+				player->x += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			}
 
-		if (mKeyboard->IsKeyDown(DIK_A))
-		{
-			player->x -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
-		}
+			if (mKeyboard->IsKeyDown(DIK_A))
+			{
+				player->x -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			}
 
-		if (mKeyboard->IsKeyDown(DIK_W))
-		{
-			player->z -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
-		}
+			if (mKeyboard->IsKeyDown(DIK_W))
+			{
+				player->z -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			}
 
-		if (mKeyboard->IsKeyDown(DIK_S))
-		{
-			player->z += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			if (mKeyboard->IsKeyDown(DIK_S))
+			{
+				player->z += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+			}
+			//----------------------------
 		}
-		//----------------------------
+	
+
+		//Enable/Disabel Editing Mode
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_O))
+		{
+			switch (mCamera->getIsEditing())
+			{
+			case true:
+				mCamera->set_IsEditing_OFF();
+				break;
+
+			case false:
+				mCamera->set_IsEditing_ON();
+				break;
+			}
+		}
 
 		Game::Update(gameTime);
 	}
@@ -147,12 +174,24 @@ namespace Rendering
 
 		//Player Location
 		std::wostringstream playerLocation;
-		XMFLOAT2 messageLoc = XMFLOAT2(Game::DefaultScreenWidth - 100, 5);
-		playerLocation << "x " << player->getPosition().x << "\n" << "z " << player->getPosition().z;
-		mSpriteFont->DrawString(mSpriteBatch, playerLocation.str().c_str(), messageLoc, Colors::Red);
+		XMFLOAT2 messageLoc = XMFLOAT2(5, 30);
+		playerLocation << "x " << player->getPosition().x << "    " << "z " << player->getPosition().z;
+		mSpriteFont->DrawString(mSpriteBatch, playerLocation.str().c_str(), messageLoc, Colors::White);
+		
+		/*playerLocation << ScreenMessage::Allmessages().at(0).c_str();
+		mSpriteFont->DrawString(mSpriteBatch, playerLocation.str().c_str(), messageLoc, Colors::White);*/
+
+		
+		
 
 
 		mSpriteBatch->End();
+
+		//On screen message system-----------------------
+
+		//showMessages();
+
+		//------------------------------------------------
 
 		mRenderStateHelper->RestoreAll();
 
@@ -177,4 +216,38 @@ namespace Rendering
 
 		Game::Shutdown();
 	}
+	
+	void RenderingGame::showMessages()
+	{
+		if (ScreenMessage::Allmessages().size() > 0)
+		{
+
+
+			std::vector<int> lines;
+			lines.push_back(5); // first line location
+
+			//init the lines location
+			for (int i = 0; i < ScreenMessage::Allmessages().size(); i++)
+			{
+				lines.push_back(i + 30);
+			}
+
+			mSpriteBatch->Begin();
+
+			for (int i = 0; i < ScreenMessage::Allmessages().size(); i++) // loop all messages
+			{
+				XMFLOAT2 messageLoc = XMFLOAT2(Game::DefaultScreenWidth - 200, lines.at(i));
+
+				std::wostringstream empty;
+				empty << ScreenMessage::Allmessages().at(i).c_str();
+				mSpriteFont->DrawString(mSpriteBatch, empty.str().c_str(), messageLoc, Colors::Red);
+			}
+
+			mSpriteBatch->End();
+			ScreenMessage::ClearMessages();
+		}
+		
+
+	}
+
 }

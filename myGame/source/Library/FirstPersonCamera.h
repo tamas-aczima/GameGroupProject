@@ -34,6 +34,10 @@ namespace Library
 		static const float DefaultRotationRate;
 		static const float DefaultMovementRate;
 
+		void set_IsEditing_ON();
+		void set_IsEditing_OFF();
+		bool getIsEditing();
+
 	protected:
 		float mMouseSensitivity;
 		float mRotationRate;
@@ -45,5 +49,10 @@ namespace Library
 	private:
 		FirstPersonCamera(const FirstPersonCamera& rhs);
 		FirstPersonCamera& operator-(const FirstPersonCamera& rhs);
+
+		bool isEditing = false;
+
+		int zoom = 0;
+
 	};
 }

@@ -17,6 +17,8 @@
 #include <iomanip>
 #include "Shlwapi.h"
 
+#include "ScreenMessage.h"
+
 namespace Rendering
 {
 	
@@ -30,7 +32,7 @@ namespace Rendering
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
 		mWorldMatrix = MatrixHelper::Identity;		
-		
+
 	}
 
 	Player::~Player()
@@ -76,6 +78,7 @@ namespace Rendering
 		mMaterial->Initialize(mEffect);
 
 		// Create the vertex and index buffers
+<<<<<<< HEAD
 		mVertexBuffers.resize(mSkinnedModel->Meshes().size());
 		mIndexBuffers.resize(mSkinnedModel->Meshes().size());
 		mIndexCounts.resize(mSkinnedModel->Meshes().size());
@@ -126,6 +129,24 @@ namespace Rendering
 		mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
 	}
 
+=======
+		Mesh* mesh = model->Meshes().at(0);
+		mTextureMaterial->CreateVertexBuffer(mGame->Direct3DDevice(), *mesh, &mVertexBuffer);
+		mesh->CreateIndexBuffer(&mIndexBuffer);
+		mIndexCount = mesh->Indices().size();
+
+		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
+		//Load the texture
+		mTextureName = L"Content\\Textures\\BEAR_BK.tif";
+
+		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
+		//ScreenMessage::Message.push_back("Player Initialized");
+		//ScreenMessage::message = "Player Initialized";
+		ScreenMessage::PushMessage("Player Initialized");
+	}
+
+
+>>>>>>> PlayerCreation
 	void Rendering::Player::Update(const GameTime & gameTime)
 	{
 		
@@ -136,6 +157,7 @@ namespace Rendering
 		XMStoreFloat4x4(&mWorldMatrix, XMMatrixScaling(0.05f, 0.05f, 0.05f));
 		XMStoreFloat4x4(&mWorldMatrix, XMMatrixTranslation(x, 0, z));
 		
+<<<<<<< HEAD
 
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_W))
 		{
@@ -154,6 +176,9 @@ namespace Rendering
 		}
 
 			mAnimationPlayer->Update(gameTime);
+=======
+			
+>>>>>>> PlayerCreation
 
 	}
 
@@ -194,14 +219,14 @@ namespace Rendering
 		}
 	}
 
-	//void Player::SetUpPosition(float X, float Y, float Z)
-	//{
-
-	//	x = X;
-	//	y = Y;
-	//	z = Z;
-	//	
-	//}
+	void Player::SetUpPosition(float X, float Y, float Z)
+	{
+		this->SetPosition(X, Y, Z, 0, 0, 0, 1, 1, 1);
+		x = X;
+		y = Y;
+		z = Z;
+		
+	}
 
 	XMFLOAT3 Player::getPosition()
 	{
