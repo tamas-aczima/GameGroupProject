@@ -79,9 +79,9 @@ namespace Rendering
 		mComponents.push_back(player);
 		player->SetPosition(0,0,10.0f,0,0,0,1,1,1);
 
-		mAnimation = new PlayerAnimation(*this, *mCamera);
+		/*mAnimation = new PlayerAnimation(*this, *mCamera);
 		mComponents.push_back(mAnimation);
-		mAnimation->SetPosition(0, 0, -10, 0, 0, 0, 1, 1, 1);
+		mAnimation->SetPosition(0, 0, -10, 0, 0, 0, 1, 1, 1);*/
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 

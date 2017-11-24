@@ -6,11 +6,13 @@ using namespace Library;
 
 namespace Library
 {
-	class Effect;
-	class TextureMaterial;
 	class Keyboard;
+	class Effect;
+	class SkinnedModelMaterial;
+	class Model;
+	class AnimationPlayer;
+	class AnimationClip;
 }
-
 
 namespace Rendering
 {
@@ -38,13 +40,23 @@ namespace Rendering
 		Player(const Player& rhs);
 		Player& operator=(const Player& rhs);
 
-		Effect* mTextureEffect;
-		TextureMaterial* mTextureMaterial;
-		ID3D11Buffer* mVertexBuffer;
-		ID3D11Buffer* mIndexBuffer;
-		UINT mIndexCount;
+		Effect* mEffect;
+		SkinnedModelMaterial* mMaterial;
 
-		std::wstring mTextureName;
+		XMFLOAT4X4 mWorldMatrix;
+
+		std::vector<ID3D11Buffer*> mVertexBuffers;
+		std::vector<ID3D11Buffer*> mIndexBuffers;
+		std::vector<UINT> mIndexCounts;
+		std::vector<ID3D11ShaderResourceView*> mColorTextures;
+
+		Model* mSkinnedModel;
+		Model* mWalkAnimation;
+		Model* mJumpAnimation;
+		AnimationPlayer* mAnimationPlayer;
+		AnimationPlayer* mIdlePlayer;
+		AnimationPlayer* mWalkPlayer;
+		AnimationPlayer* mJumpPlayer;
 
 		ID3D11ShaderResourceView* mTextureShaderResourceView;
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;

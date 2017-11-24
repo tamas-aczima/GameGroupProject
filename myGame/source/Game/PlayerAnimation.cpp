@@ -19,7 +19,6 @@
 #include <sstream>
 #include <iomanip>
 #include "Shlwapi.h"
-#include <assimp\Importer.hpp>
 
 namespace Rendering
 {

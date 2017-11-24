@@ -6,12 +6,16 @@
 #include "Utility.h"
 #include "Model.h"
 #include "Mesh.h"
-#include "TextureMaterial.h"
+#include "SkinnedModelMaterial.h"
 #include <WICTextureLoader.h>
 #include "VectorHelper.h"
-#include "Mesh.h"
-
+#include "AnimationPlayer.h"
+#include "AnimationClip.h"
 #include "Keyboard.h"
+#include "ModelMaterial.h"
+#include <sstream>
+#include <iomanip>
+#include "Shlwapi.h"
 
 namespace Rendering
 {
@@ -20,8 +24,9 @@ namespace Rendering
 
 	Player::Player(Game& game, Camera& camera)
 		: DrawableGameComponent(game, camera),
-		mTextureMaterial(nullptr), mTextureEffect(nullptr),
-		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
+		mMaterial(nullptr), mEffect(nullptr),
+		mVertexBuffers(), mIndexBuffers(), mIndexCounts(), mColorTextures(),
+		mSkinnedModel(nullptr), mAnimationPlayer(nullptr),
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
 		mWorldMatrix = MatrixHelper::Identity;		
@@ -32,10 +37,26 @@ namespace Rendering
 	{
 		ReleaseObject(mColorTextureVariable);
 		ReleaseObject(mTextureShaderResourceView);
-		DeleteObject(mTextureMaterial);
-		DeleteObject(mTextureEffect);
-		ReleaseObject(mVertexBuffer);
-		ReleaseObject(mIndexBuffer);
+
+		for (ID3D11Buffer* vertexBuffer : mVertexBuffers)
+		{
+			ReleaseObject(vertexBuffer);
+		}
+
+		for (ID3D11Buffer* indexBuffer : mIndexBuffers)
+		{
+			ReleaseObject(indexBuffer);
+		}
+
+		for (ID3D11ShaderResourceView* colorTexture : mColorTextures)
+		{
+			ReleaseObject(colorTexture);
+		}
+
+		DeleteObject(mSkinnedModel);
+		DeleteObject(mAnimationPlayer);
+		DeleteObject(mMaterial);
+		DeleteObject(mEffect);
 	}
 
 	void Rendering::Player::Initialize()
@@ -44,29 +65,66 @@ namespace Rendering
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
 		// Load the model
-		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\BEAR_BLK.obj", true));
+		mSkinnedModel = new Model(*mGame, "Content\\Models\\Idle.dae", true);
+		mWalkAnimation = new Model(*mGame, "Content\\Models\\Walking.dae", true);
+		mJumpAnimation = new Model(*mGame, "Content\\Models\\Jump.dae", true);
 
 		// Initialize the material
-		mTextureEffect = new Effect(*mGame);
-		mTextureEffect->CompileFromFile(L"Content\\Effects\\TextureEffect.fx");
-		mTextureMaterial = new TextureMaterial();
-		mTextureMaterial->Initialize(mTextureEffect);
+		mEffect = new Effect(*mGame);
+		mEffect->CompileFromFile(L"Content\\Effects\\SkinnedModel.fx");
+		mMaterial = new SkinnedModelMaterial();
+		mMaterial->Initialize(mEffect);
 
 		// Create the vertex and index buffers
-		Mesh* mesh = model->Meshes().at(0);
-		mTextureMaterial->CreateVertexBuffer(mGame->Direct3DDevice(), *mesh, &mVertexBuffer);
-		mesh->CreateIndexBuffer(&mIndexBuffer);
-		mIndexCount = mesh->Indices().size();
+		mVertexBuffers.resize(mSkinnedModel->Meshes().size());
+		mIndexBuffers.resize(mSkinnedModel->Meshes().size());
+		mIndexCounts.resize(mSkinnedModel->Meshes().size());
+		mColorTextures.resize(mSkinnedModel->Meshes().size());
+		for (UINT i = 0; i < mSkinnedModel->Meshes().size(); i++)
+		{
+			Mesh* mesh = mSkinnedModel->Meshes().at(i);
 
-		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
-		//Load the texture
-		mTextureName = L"Content\\Textures\\BEAR_BK.tif";
+			ID3D11Buffer* vertexBuffer = nullptr;
+			mMaterial->CreateVertexBuffer(mGame->Direct3DDevice(), *mesh, &vertexBuffer);
+			mVertexBuffers[i] = vertexBuffer;
 
-		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
+			ID3D11Buffer* indexBuffer = nullptr;
+			mesh->CreateIndexBuffer(&indexBuffer);
+			mIndexBuffers[i] = indexBuffer;
 
+			mIndexCounts[i] = mesh->Indices().size();
+
+			ID3D11ShaderResourceView* colorTexture = nullptr;
+			ModelMaterial* material = mesh->GetMaterial();
+
+			if (material != nullptr && material->Textures().find(TextureTypeDiffuse) != material->Textures().cend())
+			{
+				std::vector<std::wstring>* diffuseTextures = material->Textures().at(TextureTypeDiffuse);
+				std::wstring filename = PathFindFileName(diffuseTextures->at(0).c_str());
+
+				std::wostringstream textureName;
+				textureName << L"Content\\Textures\\" << filename.substr(0, filename.length() - 4) << L".png";
+				HRESULT hr = DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), textureName.str().c_str(), nullptr, &colorTexture);
+				if (FAILED(hr))
+				{
+					throw GameException("CreateWICTextureFromFile() failed.", hr);
+				}
+			}
+			mColorTextures[i] = colorTexture;
+		}
+
+		XMStoreFloat4x4(&mWorldMatrix, XMMatrixScaling(0.05f, 0.05f, 0.05f));
+
+		mKeyboard = (Keyboard*)mGame->Services().GetService(Keyboard::TypeIdClass());
+		assert(mKeyboard != nullptr);
+
+		mIdlePlayer = new AnimationPlayer(*mGame, *mSkinnedModel, false);
+		mWalkPlayer = new AnimationPlayer(*mGame, *mWalkAnimation, false);
+		mJumpPlayer = new AnimationPlayer(*mGame, *mJumpAnimation, false);
+
+		mAnimationPlayer = mIdlePlayer;
+		mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
 	}
-
-	
 
 	void Rendering::Player::Update(const GameTime & gameTime)
 	{
@@ -75,7 +133,28 @@ namespace Rendering
 		//x += XM_PI * static_cast<float>(gameTime.ElapsedGameTime());
 
 		//XMStoreFloat4x4(&mWorldMatrix, XMMatrixRotationY(mAngle));
+		XMStoreFloat4x4(&mWorldMatrix, XMMatrixScaling(0.05f, 0.05f, 0.05f));
 		XMStoreFloat4x4(&mWorldMatrix, XMMatrixTranslation(x, 0, z));
+		
+
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_W))
+		{
+			mAnimationPlayer = mWalkPlayer;
+			mAnimationPlayer->StartClip(*(mWalkAnimation->Animations().at(0)));
+		}
+		if (mKeyboard->WasKeyReleasedThisFrame(DIK_W))
+		{
+			mAnimationPlayer = mIdlePlayer;
+			mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
+		}
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_SPACE))
+		{
+			mAnimationPlayer = mJumpPlayer;
+			mAnimationPlayer->StartClip(*(mJumpAnimation->Animations().at(0)));
+		}
+
+			mAnimationPlayer->Update(gameTime);
+
 	}
 
 	void Rendering::Player::Draw(const GameTime & gameTime)
@@ -83,25 +162,36 @@ namespace Rendering
 		ID3D11DeviceContext* direct3DDeviceContext = mGame->Direct3DDeviceContext();
 		direct3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		Pass* pass = mTextureMaterial->CurrentTechnique()->Passes().at(0);
-		ID3D11InputLayout* inputLayout = mTextureMaterial->InputLayouts().at(pass);
+		Pass* pass = mMaterial->CurrentTechnique()->Passes().at(0);
+		ID3D11InputLayout* inputLayout = mMaterial->InputLayouts().at(pass);
 		direct3DDeviceContext->IASetInputLayout(inputLayout);
-
-		UINT stride = mTextureMaterial->VertexSize();
-		UINT offset = 0;
-		direct3DDeviceContext->IASetVertexBuffers(0, 1, &mVertexBuffer, &stride, &offset);
-		direct3DDeviceContext->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 		XMMATRIX worldMatrix = XMLoadFloat4x4(&mWorldMatrix);
 		XMMATRIX wvp = worldMatrix * mCamera->ViewMatrix() * mCamera->ProjectionMatrix();
-		mTextureMaterial->WorldViewProjection() << wvp;
 
-		mColorTextureVariable->SetResource(mTextureShaderResourceView);
+		UINT stride = mMaterial->VertexSize();
+		UINT offset = 0;
 
-		pass->Apply(0, direct3DDeviceContext);
+		for (UINT i = 0; i < mVertexBuffers.size(); i++)
+		{
+			ID3D11Buffer* vertexBuffer = mVertexBuffers[i];
+			ID3D11Buffer* indexBuffer = mIndexBuffers[i];
+			UINT indexCount = mIndexCounts[i];
+			ID3D11ShaderResourceView* colorTexture = mColorTextures[i];
 
-		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
+			direct3DDeviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+			direct3DDeviceContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
+			mMaterial->WorldViewProjection() << wvp;
+			mMaterial->World() << worldMatrix;
+			mMaterial->ColorTexture() << colorTexture;
+			mMaterial->CameraPosition() << mCamera->PositionVector();
+			mMaterial->BoneTransforms() << mAnimationPlayer->BoneTransforms();
+
+			pass->Apply(0, direct3DDeviceContext);
+
+			direct3DDeviceContext->DrawIndexed(indexCount, 0, 0);
+		}
 	}
 
 	//void Player::SetUpPosition(float X, float Y, float Z)
