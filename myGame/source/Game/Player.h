@@ -42,6 +42,7 @@ namespace Rendering
 
 		Effect* mEffect;
 		SkinnedModelMaterial* mMaterial;
+		XMCOLOR mAmbientColor;
 
 		XMFLOAT4X4 mWorldMatrix;
 

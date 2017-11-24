@@ -16,8 +16,8 @@
 #include <sstream>
 #include <iomanip>
 #include "Shlwapi.h"
-
 #include "ScreenMessage.h"
+#include "ColorHelper.h"
 
 namespace Rendering
 {
@@ -28,6 +28,7 @@ namespace Rendering
 		: DrawableGameComponent(game, camera),
 		mMaterial(nullptr), mEffect(nullptr),
 		mVertexBuffers(), mIndexBuffers(), mIndexCounts(), mColorTextures(),
+		mAmbientColor(reinterpret_cast<const float*>(&ColorHelper::White)),
 		mSkinnedModel(nullptr), mAnimationPlayer(nullptr),
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
@@ -138,8 +139,10 @@ namespace Rendering
 		//x += XM_PI * static_cast<float>(gameTime.ElapsedGameTime());
 
 		//XMStoreFloat4x4(&mWorldMatrix, XMMatrixRotationY(mAngle));
-		XMStoreFloat4x4(&mWorldMatrix, XMMatrixScaling(0.05f, 0.05f, 0.05f));
-		XMStoreFloat4x4(&mWorldMatrix, XMMatrixTranslation(x, 0, z));
+		XMMATRIX rotationMatrix = XMMatrixRotationY(3.14f);
+		XMMATRIX scaleMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f);
+		XMMATRIX translationMatrix = XMMatrixTranslation(x, 0, z);
+		XMStoreFloat4x4(&mWorldMatrix, scaleMatrix * rotationMatrix * translationMatrix);
 
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_W))
 		{
@@ -172,6 +175,7 @@ namespace Rendering
 
 		XMMATRIX worldMatrix = XMLoadFloat4x4(&mWorldMatrix);
 		XMMATRIX wvp = worldMatrix * mCamera->ViewMatrix() * mCamera->ProjectionMatrix();
+		XMVECTOR ambientColor = XMLoadColor(&mAmbientColor);
 
 		UINT stride = mMaterial->VertexSize();
 		UINT offset = 0;
@@ -188,6 +192,7 @@ namespace Rendering
 
 			mMaterial->WorldViewProjection() << wvp;
 			mMaterial->World() << worldMatrix;
+			mMaterial->AmbientColor() << ambientColor;
 			mMaterial->ColorTexture() << colorTexture;
 			mMaterial->CameraPosition() << mCamera->PositionVector();
 			mMaterial->BoneTransforms() << mAnimationPlayer->BoneTransforms();
