@@ -51,6 +51,16 @@ namespace Library
 		return mWheel;
 	}
 
+	void Mouse::WheelToZero()
+	{
+		// wheel speed parameters
+		if (mWheel > 0) mWheel -= 2;
+		if (mWheel > 3000) mWheel -= 20;
+
+		if (mWheel < 0) mWheel += 2;
+		if (mWheel < -3000) mWheel += 20;
+	}
+
 	void Mouse::Initialize()
 	{
 		if (FAILED(mDirectInput->CreateDevice(GUID_SysMouse, &mDevice, nullptr)))

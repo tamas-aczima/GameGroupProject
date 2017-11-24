@@ -67,5 +67,12 @@ namespace Rendering
 		XMFLOAT2 mMouseTextPosition;
 
 		void showMessages();
+
+		float zoomY = 20.0f;
+		float zoomZ = 20.0f;
+
+		float zoomingSpeed = 0;
+		bool isFPS = false;
+
 	};
 }

@@ -76,8 +76,10 @@ namespace Rendering
 		mRock2->SetPosition(300, 0, -300, 0, 0, 0, 20,1,1);
 
 	    player = new Player(*this, *mCamera);
-		mComponents.push_back(player);
+		player->Initialize();
 		player->SetUpPosition(0, 0, 0);
+		mComponents.push_back(player);
+	
 		//player->SetPosition(0,0,10.0f,0,0,0,1,1,1);
 
 		/*mAnimation = new PlayerAnimation(*this, *mCamera);
@@ -91,7 +93,7 @@ namespace Rendering
 
 		Game::Initialize();
 
-		mCamera->SetPosition(player->getPosition().x, 15.0f, player->getPosition().z + 20.0f);
+		mCamera->SetPosition(player->getPosition().x, 20.0f, player->getPosition().z + 20.0f);
 
 		//Test message
 		ScreenMessage::PushMessage("Rendering_game_Initialized");
@@ -112,7 +114,60 @@ namespace Rendering
 		if (!mCamera->getIsEditing())
 		{
 			//Update the camera position
-			mCamera->SetPosition(player->getPosition().x, 15.0f, player->getPosition().z + 20.0f);
+			mCamera->SetPosition(player->getPosition().x, zoomY, player->getPosition().z + zoomZ);
+			
+			// Camera Zoom In / Out --------------------------------------------------------------------	
+			if (!isFPS)
+			{
+				zoomingSpeed = (float)mMouse->Wheel() / 1000;
+				mMouse->WheelToZero();
+
+				//Zoom IN
+				if ((float)mMouse->Wheel() / 1000 > 0 && mCamera->Position().y > 13 && mCamera->Position().z > player->getPosition().z + 9)
+				{
+					zoomY -= 1 * zoomingSpeed * gameTime.ElapsedGameTime();
+					zoomZ -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
+				}
+
+				//Zoom Out
+				if ((float)mMouse->Wheel() / 1000 < 0 && mCamera->Position().y < 20 && mCamera->Position().z < player->getPosition().z + 20)
+				{
+					zoomY -= 1 * zoomingSpeed * gameTime.ElapsedGameTime();
+					zoomZ -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
+				}
+			}
+
+			//------------------------------------------------------------------------------------------			
+			
+			//Switch to First person Camera
+			if (mKeyboard->WasKeyPressedThisFrame(DIK_C))
+			{
+				switch (isFPS)
+				{
+				case true:
+					// 3d Person CAMERA---
+					zoomY = 20.0f;
+					zoomZ = 20;
+					//--------------------
+
+					mCamera->set_FPS_OFF();
+					isFPS = false;
+
+					break;
+
+				case false:
+					//FIRST PERSON CAMERA-----
+					zoomY = 5;
+					zoomZ = -2;
+					//--------------------------
+
+					mCamera->set_FPS_ON();
+					isFPS = true;
+
+					break;
+				}
+			}
+			
 			//Player movement------
 			if (mKeyboard->IsKeyDown(DIK_D))
 			{
@@ -178,11 +233,11 @@ namespace Rendering
 		playerLocation << "x " << player->getPosition().x << "    " << "z " << player->getPosition().z;
 		mSpriteFont->DrawString(mSpriteBatch, playerLocation.str().c_str(), messageLoc, Colors::White);
 		
-		/*playerLocation << ScreenMessage::Allmessages().at(0).c_str();
-		mSpriteFont->DrawString(mSpriteBatch, playerLocation.str().c_str(), messageLoc, Colors::White);*/
-
-		
-		
+		std::wostringstream CameraPositon;
+		XMFLOAT2 cameraPosLabelLoc = XMFLOAT2(5, 90);
+		CameraPositon << L"Camera Position: Y: " << mCamera->Position().y << ", " << " Z: " << mCamera->Position().z;
+		mSpriteFont->DrawString(mSpriteBatch, CameraPositon.str().c_str(), cameraPosLabelLoc);
+	
 
 
 		mSpriteBatch->End();

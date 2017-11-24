@@ -32,6 +32,8 @@ namespace Library
 		long Y() const;
 		long Wheel() const;
 
+		void WheelToZero();
+
 		bool IsButtonUp(MouseButtons button) const;
 		bool IsButtonDown(MouseButtons button) const;
 		bool WasButtonUp(MouseButtons button) const;

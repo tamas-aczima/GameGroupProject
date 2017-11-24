@@ -37,6 +37,9 @@ namespace Library
 		void set_IsEditing_ON();
 		void set_IsEditing_OFF();
 		bool getIsEditing();
+		
+		void set_FPS_ON();
+		void set_FPS_OFF();
 
 	protected:
 		float mMouseSensitivity;
@@ -51,8 +54,6 @@ namespace Library
 		FirstPersonCamera& operator-(const FirstPersonCamera& rhs);
 
 		bool isEditing = false;
-
-		int zoom = 0;
 
 	};
 }

@@ -119,7 +119,6 @@ namespace Library
 				}
 
 			}
-
 		
 
 		}
@@ -202,6 +201,38 @@ namespace Library
 	bool FirstPersonCamera::getIsEditing()
 	{
 		return isEditing;
+	}
+
+	void FirstPersonCamera::set_FPS_ON()
+	{
+		//Camera Rotation ----------------------------
+		XMFLOAT2 rotation = XMFLOAT2(0, 0.6);
+
+		//XMVECTOR rotationVector = XMLoadFloat2(&rotationAmount) * mRotationRate * elapsedTime;
+		XMVECTOR rotationVector = XMLoadFloat2(&rotation);
+
+		XMVECTOR right = XMLoadFloat3(&mRight);
+		XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
+		XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
+
+		ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
+		//--------------------------------------
+	}
+
+	void FirstPersonCamera::set_FPS_OFF()
+	{
+		//Camera Rotation ----------------------------
+		XMFLOAT2 rotation = XMFLOAT2(0, -0.6);
+
+		//XMVECTOR rotationVector = XMLoadFloat2(&rotationAmount) * mRotationRate * elapsedTime;
+		XMVECTOR rotationVector = XMLoadFloat2(&rotation);
+
+		XMVECTOR right = XMLoadFloat3(&mRight);
+		XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
+		XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
+
+		ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
+		//--------------------------------------
 	}
 
 }
