@@ -149,28 +149,28 @@ namespace Rendering
 		XMMATRIX translationMatrix = XMMatrixTranslation(x, 0, z);
 		XMStoreFloat4x4(&mWorldMatrix, scaleMatrix * rotationMatrix * translationMatrix);
 
-		if (mKeyboard->WasKeyPressedThisFrame(DIK_W) && !mIsJumping)
+		if (mKeyboard->IsKeyDown(DIK_W) && !mIsWalking && !mIsJumping)
 		{
 			mAnimationPlayer = mWalkForwardPlayer;
 			mAnimationPlayer->StartClip(*(mWalkForwardAnimation->Animations().at(0)));
 			mIsWalking = true;
 			mIdlePlaying = false;
 		}
-		if (mKeyboard->WasKeyPressedThisFrame(DIK_D) && !mIsJumping)
+		if (mKeyboard->IsKeyDown(DIK_D) && !mIsWalking && !mIsJumping)
 		{
 			mAnimationPlayer = mWalkRightPlayer;
 			mAnimationPlayer->StartClip(*(mWalkRightAnimation->Animations().at(0)));
 			mIsWalking = true;
 			mIdlePlaying = false;
 		}
-		if (mKeyboard->WasKeyPressedThisFrame(DIK_A) && !mIsJumping)
+		if (mKeyboard->IsKeyDown(DIK_A) && !mIsWalking && !mIsJumping)
 		{
 			mAnimationPlayer = mWalkLeftPlayer;
 			mAnimationPlayer->StartClip(*(mWalkLeftAnimation->Animations().at(0)));
 			mIsWalking = true;
 			mIdlePlaying = false;
 		}
-		if (mKeyboard->WasKeyPressedThisFrame(DIK_S) && !mIsJumping)
+		if (mKeyboard->IsKeyDown(DIK_S) && !mIsWalking && !mIsJumping)
 		{
 			mAnimationPlayer = mWalkBackPlayer;
 			mAnimationPlayer->StartClip(*(mWalkBackAnimation->Animations().at(0)));
@@ -186,6 +186,7 @@ namespace Rendering
 			mAnimationPlayer = mJumpPlayer;
 			mAnimationPlayer->StartClip(*(mJumpAnimation->Animations().at(0)));
 			mIsJumping = true;
+			mIsWalking = false;
 			mIdlePlaying = false;
 		}
 		if (mIsJumping && mAnimationPlayer->CurrentKeyframe() >= mJumpAnimation->Animations().at(0)->KeyframeCount() - 2)
