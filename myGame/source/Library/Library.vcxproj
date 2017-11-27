@@ -23,7 +23,7 @@
     <ProjectGuid>{FBD77307-5C27-481E-9759-BB6301DC39F2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Library</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -171,6 +171,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColorHelper.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DrawableGameComponent.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="FirstPersonCamera.h" />
@@ -182,6 +183,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Keyframe.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MatrixHelper.h" />
     <ClInclude Include="Mesh.h" />
@@ -189,11 +191,14 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="ModelMaterial.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Pass.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderStateHelper.h" />
     <ClInclude Include="RTTI.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="ServiceContainer.h" />
     <ClInclude Include="SkinnedModelMaterial.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Technique.h" />
     <ClInclude Include="TextureMaterial.h" />
     <ClInclude Include="Utility.h" />
@@ -210,6 +215,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="BufferContainer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColorHelper.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="DrawableGameComponent.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
@@ -221,6 +227,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Keyframe.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MatrixHelpercpp.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -228,10 +235,13 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="ModelMaterial.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pass.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RenderStateHelper.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="ServiceContainer.cpp" />
     <ClCompile Include="SkinnedModelMaterial.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Technique.cpp" />
     <ClCompile Include="TextureMaterial.cpp" />
     <ClCompile Include="Utility.cpp" />
