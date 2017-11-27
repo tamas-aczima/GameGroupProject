@@ -52,12 +52,21 @@ namespace Rendering
 		std::vector<ID3D11ShaderResourceView*> mColorTextures;
 
 		Model* mSkinnedModel;
-		Model* mWalkAnimation;
+		Model* mWalkForwardAnimation;
+		Model* mWalkRightAnimation;
+		Model* mWalkLeftAnimation;
+		Model* mWalkBackAnimation;
 		Model* mJumpAnimation;
 		AnimationPlayer* mAnimationPlayer;
 		AnimationPlayer* mIdlePlayer;
-		AnimationPlayer* mWalkPlayer;
+		AnimationPlayer* mWalkForwardPlayer;
+		AnimationPlayer* mWalkRightPlayer;
+		AnimationPlayer* mWalkLeftPlayer;
+		AnimationPlayer* mWalkBackPlayer;
 		AnimationPlayer* mJumpPlayer;
+		bool mIsWalking;
+		bool mIsJumping;
+		bool mIdlePlaying;
 
 		ID3D11ShaderResourceView* mTextureShaderResourceView;
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;

@@ -64,12 +64,14 @@ namespace Rendering
 
 	void Rendering::Player::Initialize()
 	{
-
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
 		// Load the model
 		mSkinnedModel = new Model(*mGame, "Content\\Models\\Idle.dae", true);
-		mWalkAnimation = new Model(*mGame, "Content\\Models\\Walking.dae", true);
+		mWalkForwardAnimation = new Model(*mGame, "Content\\Models\\WalkForward.dae", true);
+		mWalkRightAnimation = new Model(*mGame, "Content\\Models\\WalkRight.dae", true);
+		mWalkLeftAnimation = new Model(*mGame, "Content\\Models\\WalkLeft.dae", true);
+		mWalkBackAnimation = new Model(*mGame, "Content\\Models\\WalkBack.dae", true);
 		mJumpAnimation = new Model(*mGame, "Content\\Models\\Jump.dae", true);
 
 		// Initialize the material
@@ -122,14 +124,17 @@ namespace Rendering
 		assert(mKeyboard != nullptr);
 
 		mIdlePlayer = new AnimationPlayer(*mGame, *mSkinnedModel, false);
-		mWalkPlayer = new AnimationPlayer(*mGame, *mWalkAnimation, false);
+		mWalkForwardPlayer = new AnimationPlayer(*mGame, *mWalkForwardAnimation, false);
+		mWalkRightPlayer = new AnimationPlayer(*mGame, *mWalkRightAnimation, false);
+		mWalkLeftPlayer = new AnimationPlayer(*mGame, *mWalkLeftAnimation, false);
+		mWalkBackPlayer = new AnimationPlayer(*mGame, *mWalkBackAnimation, false);
 		mJumpPlayer = new AnimationPlayer(*mGame, *mJumpAnimation, false);
 
 		mAnimationPlayer = mIdlePlayer;
 		mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
 
 		//ScreenMessage::message = "Player Initialized";
-		ScreenMessage::PushMessage("Player Initialized");
+		//ScreenMessage::PushMessage("Player Initialized");
 	}
 
 	void Rendering::Player::Update(const GameTime & gameTime)
@@ -144,23 +149,58 @@ namespace Rendering
 		XMMATRIX translationMatrix = XMMatrixTranslation(x, 0, z);
 		XMStoreFloat4x4(&mWorldMatrix, scaleMatrix * rotationMatrix * translationMatrix);
 
-		if (mKeyboard->WasKeyPressedThisFrame(DIK_W))
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_W) && !mIsJumping)
 		{
-			mAnimationPlayer = mWalkPlayer;
-			mAnimationPlayer->StartClip(*(mWalkAnimation->Animations().at(0)));
+			mAnimationPlayer = mWalkForwardPlayer;
+			mAnimationPlayer->StartClip(*(mWalkForwardAnimation->Animations().at(0)));
+			mIsWalking = true;
+			mIdlePlaying = false;
 		}
-		if (mKeyboard->WasKeyReleasedThisFrame(DIK_W))
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_D) && !mIsJumping)
 		{
-			mAnimationPlayer = mIdlePlayer;
-			mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
+			mAnimationPlayer = mWalkRightPlayer;
+			mAnimationPlayer->StartClip(*(mWalkRightAnimation->Animations().at(0)));
+			mIsWalking = true;
+			mIdlePlaying = false;
 		}
-		if (mKeyboard->WasKeyPressedThisFrame(DIK_SPACE))
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_A) && !mIsJumping)
+		{
+			mAnimationPlayer = mWalkLeftPlayer;
+			mAnimationPlayer->StartClip(*(mWalkLeftAnimation->Animations().at(0)));
+			mIsWalking = true;
+			mIdlePlaying = false;
+		}
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_S) && !mIsJumping)
+		{
+			mAnimationPlayer = mWalkBackPlayer;
+			mAnimationPlayer->StartClip(*(mWalkBackAnimation->Animations().at(0)));
+			mIsWalking = true;
+			mIdlePlaying = false;
+		}
+		if (mKeyboard->IsKeyUp(DIK_W) && mKeyboard->IsKeyUp(DIK_D) && mKeyboard->IsKeyUp(DIK_A) && mKeyboard->IsKeyUp(DIK_S))
+		{
+			mIsWalking = false;
+		}
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_SPACE) && !mIsJumping)
 		{
 			mAnimationPlayer = mJumpPlayer;
 			mAnimationPlayer->StartClip(*(mJumpAnimation->Animations().at(0)));
+			mIsJumping = true;
+			mIdlePlaying = false;
+		}
+		if (mIsJumping && mAnimationPlayer->CurrentKeyframe() >= mJumpAnimation->Animations().at(0)->KeyframeCount() - 2)
+		{
+			mIsJumping = false;
+		}
+		if (!mIsWalking && !mIsJumping && !mIdlePlaying)
+		{
+			mIdlePlaying = true;
+			mAnimationPlayer = mIdlePlayer;
+			mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
 		}
 
-			mAnimationPlayer->Update(gameTime);
+
+		mAnimationPlayer->Update(gameTime);
 
 	}
 
