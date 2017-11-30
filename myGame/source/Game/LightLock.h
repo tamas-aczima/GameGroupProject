@@ -8,6 +8,7 @@ namespace Library
 {
 	class Effect;
 	class TextureMaterial;
+	class SpotLight;
 }
 
 namespace Rendering
@@ -39,6 +40,8 @@ namespace Rendering
 
 		ID3D11ShaderResourceView* mTextureShaderResourceView;
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;
+
+		SpotLight* mSpotLight;
 	};
 }
 

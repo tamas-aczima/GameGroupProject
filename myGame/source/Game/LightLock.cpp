@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "TextureMaterial.h"
 #include <WICTextureLoader.h>
+#include "SpotLight.h"
 
 namespace Rendering
 {
@@ -56,6 +57,9 @@ namespace Rendering
 		mTextureName = L"Content\\Textures\\LightLock.png";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
+
+		mSpotLight = new SpotLight(*mGame);
+		
 	}
 
 	void LightLock::Update(const GameTime& gameTime)

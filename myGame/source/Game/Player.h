@@ -7,6 +7,7 @@ using namespace Library;
 namespace Library
 {
 	class Keyboard;
+	class Mouse;
 	class Effect;
 	class SkinnedModelMaterial;
 	class Model;
@@ -35,6 +36,9 @@ namespace Rendering
 
 		XMFLOAT3 getPosition();
 
+		XMFLOAT3 GetLocalForward();
+		XMFLOAT4X4 GetRotationMatrix();
+
 	private:
 		Player();
 		Player(const Player& rhs);
@@ -45,6 +49,8 @@ namespace Rendering
 		XMCOLOR mAmbientColor;
 
 		XMFLOAT4X4 mWorldMatrix;
+
+		XMFLOAT4X4 mRotationMatrix;
 
 		std::vector<ID3D11Buffer*> mVertexBuffers;
 		std::vector<ID3D11Buffer*> mIndexBuffers;
@@ -72,8 +78,15 @@ namespace Rendering
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;
 
 		Keyboard* mKeyboard;
+		Mouse* mMouse;
+
+		int mCurrentMouseX;
+		int mLastMouseX;
+		int mRotation;
 
 		float mAngle;
+		float mAngleInRadians;
+		XMVECTOR mLocalForward;
 
 	};
 }

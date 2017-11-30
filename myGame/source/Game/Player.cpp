@@ -12,6 +12,7 @@
 #include "AnimationPlayer.h"
 #include "AnimationClip.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 #include "ModelMaterial.h"
 #include <sstream>
 #include <iomanip>
@@ -122,6 +123,9 @@ namespace Rendering
 
 		mKeyboard = (Keyboard*)mGame->Services().GetService(Keyboard::TypeIdClass());
 		assert(mKeyboard != nullptr);
+		
+		mMouse = (Mouse*)mGame->Services().GetService(Mouse::TypeIdClass());
+		assert(mMouse != nullptr);
 
 		mIdlePlayer = new AnimationPlayer(*mGame, *mSkinnedModel, false);
 		mWalkForwardPlayer = new AnimationPlayer(*mGame, *mWalkForwardAnimation, false);
@@ -135,6 +139,7 @@ namespace Rendering
 
 		//ScreenMessage::message = "Player Initialized";
 		//ScreenMessage::PushMessage("Player Initialized");
+		//mRotationMatrix = MatrixHelper::Identity;
 	}
 
 	void Rendering::Player::Update(const GameTime & gameTime)
@@ -144,11 +149,31 @@ namespace Rendering
 		//x += XM_PI * static_cast<float>(gameTime.ElapsedGameTime());
 
 		//XMStoreFloat4x4(&mWorldMatrix, XMMatrixRotationY(mAngle));
-		XMMATRIX rotationMatrix = XMMatrixRotationY(3.14f);
+		mCurrentMouseX = mMouse->X();
+
+		if (mCurrentMouseX > mLastMouseX)
+		{
+			mRotation -= 1;
+		}
+		else if (mCurrentMouseX < mLastMouseX)
+		{
+			mRotation += 1;
+		}
+		mLastMouseX = mCurrentMouseX;
+
+		mAngle = 180 + mRotation;
+		mAngleInRadians = mAngle * XM_PI / 180;
+
+		mLocalForward = XMVector3Normalize(XMVectorSet(sin(mAngleInRadians), 0.0f, cos(mAngleInRadians), 1.0f));
+
+		XMMATRIX rotationMatrix = XMMatrixRotationY(mAngleInRadians);
 		XMMATRIX scaleMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f);
 		XMMATRIX translationMatrix = XMMatrixTranslation(x, 0, z);
 		XMStoreFloat4x4(&mWorldMatrix, scaleMatrix * rotationMatrix * translationMatrix);
+		XMStoreFloat4x4(&mRotationMatrix, rotationMatrix);
 
+
+		//Animation
 		if (mKeyboard->IsKeyDown(DIK_W) && !mIsWalking && !mIsJumping)
 		{
 			mAnimationPlayer = mWalkForwardPlayer;
@@ -258,8 +283,13 @@ namespace Rendering
 		return XMFLOAT3(x,y,z);
 	}
 
+	XMFLOAT3 Player::GetLocalForward()
+	{
+		return XMFLOAT3(XMVectorGetX(mLocalForward), XMVectorGetY(mLocalForward), XMVectorGetZ(mLocalForward));
+	}
 
-
-
-
+	XMFLOAT4X4 Player::GetRotationMatrix()
+	{
+		return mRotationMatrix;
+	}
 }

@@ -15,6 +15,7 @@
 #include "Rock.h"
 #include "Player.h"
 #include "PlayerAnimation.h"
+#include "VectorHelper.h"
 
 namespace Rendering
 {
@@ -93,7 +94,7 @@ namespace Rendering
 
 		Game::Initialize();
 
-		mCamera->SetPosition(player->getPosition().x, 20.0f, player->getPosition().z + 20.0f);
+		//mCamera->SetPosition(player->getPosition().x, 20.0f, player->getPosition().z + 20.0f);
 
 		//Test message
 		ScreenMessage::PushMessage("Rendering_game_Initialized");
@@ -114,7 +115,9 @@ namespace Rendering
 		if (!mCamera->getIsEditing())
 		{
 			//Update the camera position
-			mCamera->SetPosition(player->getPosition().x, zoomY, player->getPosition().z + zoomZ);
+			//mCamera->SetPosition(player->getPosition().x, zoomY, player->getPosition().z + zoomZ);
+			mCamera->SetPosition(player->getPosition().x + player->GetLocalForward().x, zoomY, player->getPosition().z + player->GetLocalForward().z + zoomZ);
+			//mCamera->ApplyRotation(player->GetRotationMatrix());
 			
 			// Camera Zoom In / Out --------------------------------------------------------------------	
 			if (!isFPS)
@@ -226,6 +229,12 @@ namespace Rendering
 		std::wostringstream mouseLabel;
 		mouseLabel << L"Mouse Position: " << mMouse->X() << ", " << mMouse->Y() << " Mouse Wheel: " << mMouse->Wheel();
 		mSpriteFont->DrawString(mSpriteBatch, mouseLabel.str().c_str(), mMouseTextPosition);
+
+		//player forward
+		std::wostringstream playerForward;
+		XMFLOAT2 location = XMFLOAT2(5, 150);
+		playerForward << L"Player Forward x: " << player->GetLocalForward().x << ", y: " << player->GetLocalForward().y << ", z: " << player->GetLocalForward().z;
+		mSpriteFont->DrawString(mSpriteBatch, playerForward.str().c_str(), location, Colors::White);
 
 		//Player Location
 		std::wostringstream playerLocation;
