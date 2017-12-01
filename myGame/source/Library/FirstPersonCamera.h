@@ -40,6 +40,9 @@ namespace Library
 		
 		void set_FPS_ON();
 		void set_FPS_OFF();
+		bool GetIsFPS();
+
+		void Rotate(float angle);
 
 	protected:
 		float mMouseSensitivity;
@@ -55,5 +58,6 @@ namespace Library
 
 		bool isEditing = false;
 
+		bool isFPS = false;
 	};
 }
