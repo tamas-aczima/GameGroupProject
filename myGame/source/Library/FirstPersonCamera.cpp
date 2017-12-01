@@ -252,90 +252,18 @@ namespace Library
 		return isFPS;
 	}
 
-	void FirstPersonCamera::LookBack()
-	{
-		if (!isLookBack)
-		{
-			XMFLOAT2 rotation = XMFLOAT2(-3.14, 0);
-
-			XMVECTOR rotationVector = XMLoadFloat2(&rotation);
-
-			XMVECTOR right = XMLoadFloat3(&mRight);
-			XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
-			XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
-
-			ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
-			isLookBack = true;
-		}
-		
-	}
-
-	void FirstPersonCamera::LookForward()
-	{
-		if (isLookBack)
-		{
-			XMFLOAT2 rotation = XMFLOAT2(3.14, 0);
-
-			XMVECTOR rotationVector = XMLoadFloat2(&rotation);
-
-			XMVECTOR right = XMLoadFloat3(&mRight);
-			XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
-			XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
-
-			ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
-			isLookBack = false;
-		}
-	}
-
-	void FirstPersonCamera::LookRight()
-	{
-		if (isLookRight)
-		{
-			XMFLOAT2 rotation = XMFLOAT2(-1.57, 0);
-
-			XMVECTOR rotationVector = XMLoadFloat2(&rotation);
-
-			XMVECTOR right = XMLoadFloat3(&mRight);
-			XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
-			XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
-
-			ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
-			isLookRight = false;
-		}
-		
-	}
-
-	void FirstPersonCamera::LookLeft()
-	{
-		if (isLookLeft)
-		{
-			XMFLOAT2 rotation = XMFLOAT2(1.57, 0);
-
-			XMVECTOR rotationVector = XMLoadFloat2(&rotation);
-
-			XMVECTOR right = XMLoadFloat3(&mRight);
-			XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
-			XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
-
-			ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
-			isLookLeft = false;
-		}
-
-	}
-
-
-	void FirstPersonCamera::Rotate(float Angle, GameTime gt)
+	void FirstPersonCamera::Rotate(float angle)
 	{
 		XMVECTOR right = XMLoadFloat3(&mRight);
 
-		XMFLOAT2 rotation = XMFLOAT2(Angle, 0);
+		XMFLOAT2 rotation = XMFLOAT2(angle, 0);
 		XMVECTOR rotationVector = XMLoadFloat2(&rotation);
 		right = XMLoadFloat3(&mRight);
 
 		XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
 		XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
 
-		ApplyRotation(Angle);
+		ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
 	}
 
 }

@@ -70,8 +70,6 @@ namespace Rendering
 		// Load the model
 		mSkinnedModel = new Model(*mGame, "Content\\Models\\Idle.dae", true);
 		mWalkForwardAnimation = new Model(*mGame, "Content\\Models\\WalkForward.dae", true);
-		mWalkRightAnimation = new Model(*mGame, "Content\\Models\\WalkRight.dae", true);
-		mWalkLeftAnimation = new Model(*mGame, "Content\\Models\\WalkLeft.dae", true);
 		mWalkBackAnimation = new Model(*mGame, "Content\\Models\\WalkBack.dae", true);
 		mJumpAnimation = new Model(*mGame, "Content\\Models\\Jump.dae", true);
 
@@ -129,8 +127,6 @@ namespace Rendering
 
 		mIdlePlayer = new AnimationPlayer(*mGame, *mSkinnedModel, false);
 		mWalkForwardPlayer = new AnimationPlayer(*mGame, *mWalkForwardAnimation, false);
-		mWalkRightPlayer = new AnimationPlayer(*mGame, *mWalkRightAnimation, false);
-		mWalkLeftPlayer = new AnimationPlayer(*mGame, *mWalkLeftAnimation, false);
 		mWalkBackPlayer = new AnimationPlayer(*mGame, *mWalkBackAnimation, false);
 		mJumpPlayer = new AnimationPlayer(*mGame, *mJumpAnimation, false);
 
@@ -144,11 +140,6 @@ namespace Rendering
 
 	void Rendering::Player::Update(const GameTime & gameTime)
 	{
-		
-		//mAngle += XM_PI * static_cast<float>(gameTime.ElapsedGameTime());
-		//x += XM_PI * static_cast<float>(gameTime.ElapsedGameTime());
-
-		//XMStoreFloat4x4(&mWorldMatrix, XMMatrixRotationY(mAngle));
 		mCurrentMouseX = mMouse->X();
 
 		if (mCurrentMouseX > mLastMouseX)
@@ -164,12 +155,12 @@ namespace Rendering
 		mAngle = mRotation;
 		mAngleInRadians = mAngle * XM_PI / 180;
 
-		mLocalForward = XMVector3Normalize(XMVectorSet(cos(mAngleInRadians), 0.0f, -sin(mAngleInRadians), 1.0f));
+		mLocalForward = XMVector3Normalize(XMVectorSet(sin(mAngleInRadians), 0.0f, cos(mAngleInRadians), 1.0f) * -1);
 
 		XMMATRIX rotationMatrix = XMMatrixRotationY(mAngleInRadians);
 		XMMATRIX scaleMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f);
 		XMMATRIX translationMatrix = XMMatrixTranslation(x, 0, z);
-		XMStoreFloat4x4(&mWorldMatrix, scaleMatrix  * translationMatrix);
+		XMStoreFloat4x4(&mWorldMatrix, scaleMatrix * rotationMatrix * translationMatrix);
 		XMStoreFloat4x4(&mRotationMatrix, rotationMatrix);
 
 
@@ -181,20 +172,6 @@ namespace Rendering
 			mIsWalking = true;
 			mIdlePlaying = false;
 		}
-		if (mKeyboard->IsKeyDown(DIK_D) && !mIsWalking && !mIsJumping)
-		{
-			mAnimationPlayer = mWalkRightPlayer;
-			mAnimationPlayer->StartClip(*(mWalkRightAnimation->Animations().at(0)));
-			mIsWalking = true;
-			mIdlePlaying = false;
-		}
-		if (mKeyboard->IsKeyDown(DIK_A) && !mIsWalking && !mIsJumping)
-		{
-			mAnimationPlayer = mWalkLeftPlayer;
-			mAnimationPlayer->StartClip(*(mWalkLeftAnimation->Animations().at(0)));
-			mIsWalking = true;
-			mIdlePlaying = false;
-		}
 		if (mKeyboard->IsKeyDown(DIK_S) && !mIsWalking && !mIsJumping)
 		{
 			mAnimationPlayer = mWalkBackPlayer;
@@ -202,7 +179,7 @@ namespace Rendering
 			mIsWalking = true;
 			mIdlePlaying = false;
 		}
-		if (mKeyboard->IsKeyUp(DIK_W) && mKeyboard->IsKeyUp(DIK_D) && mKeyboard->IsKeyUp(DIK_A) && mKeyboard->IsKeyUp(DIK_S))
+		if (mKeyboard->IsKeyUp(DIK_W) && mKeyboard->IsKeyUp(DIK_S))
 		{
 			mIsWalking = false;
 		}
@@ -286,10 +263,5 @@ namespace Rendering
 	XMFLOAT2 Player::GetLocalForward()
 	{
 		return XMFLOAT2(XMVectorGetX(mLocalForward), XMVectorGetZ(mLocalForward));
-	}
-
-	XMFLOAT4X4 Player::GetRotationMatrix()
-	{
-		return mRotationMatrix;
 	}
 }

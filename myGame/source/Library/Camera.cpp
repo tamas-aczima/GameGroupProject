@@ -143,8 +143,6 @@ namespace Library
 	{
 		XMVECTOR eyePosition = XMLoadFloat3(&mPosition);
 		XMVECTOR direction = XMLoadFloat3(&mDirection);
-		//XMFLOAT3 mDirection = XMFLOAT3(1, 1, 0);
-		//XMVECTOR direction = XMLoadFloat3(&mDirection);
 		XMVECTOR upDirection = XMLoadFloat3(&mUp);
 
 		XMMATRIX viewMatrix = XMMatrixLookToRH(eyePosition, direction, upDirection);
@@ -181,12 +179,4 @@ namespace Library
 		XMMATRIX transformMatrix = XMLoadFloat4x4(&transform);
 		ApplyRotation(transformMatrix);
 	}
-
-	void Camera::ApplyRotation(float Angle)
-	{
-		mDirection.x = Angle;
-		mDirection.y = Angle;
-		
-	}
-
 }

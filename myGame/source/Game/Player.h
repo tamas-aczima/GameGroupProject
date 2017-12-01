@@ -37,7 +37,6 @@ namespace Rendering
 		XMFLOAT3 getPosition();
 
 		XMFLOAT2 GetLocalForward();
-		XMFLOAT4X4 GetRotationMatrix();
 
 	private:
 		Player();
@@ -59,15 +58,11 @@ namespace Rendering
 
 		Model* mSkinnedModel;
 		Model* mWalkForwardAnimation;
-		Model* mWalkRightAnimation;
-		Model* mWalkLeftAnimation;
 		Model* mWalkBackAnimation;
 		Model* mJumpAnimation;
 		AnimationPlayer* mAnimationPlayer;
 		AnimationPlayer* mIdlePlayer;
 		AnimationPlayer* mWalkForwardPlayer;
-		AnimationPlayer* mWalkRightPlayer;
-		AnimationPlayer* mWalkLeftPlayer;
 		AnimationPlayer* mWalkBackPlayer;
 		AnimationPlayer* mJumpPlayer;
 		bool mIsWalking;

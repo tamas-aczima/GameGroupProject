@@ -41,12 +41,8 @@ namespace Library
 		void set_FPS_ON();
 		void set_FPS_OFF();
 		bool GetIsFPS();
-		void LookBack();
-		void LookForward();
 
-		void Rotate(float Angle, GameTime gt);
-		void LookRight();
-		void LookLeft();
+		void Rotate(float angle);
 
 	protected:
 		float mMouseSensitivity;
@@ -63,11 +59,5 @@ namespace Library
 		bool isEditing = false;
 
 		bool isFPS = false;
-		bool isLookBack = false;
-
-		bool isLookRight = true;
-		bool isLookLeft = true;
-
-
 	};
 }
