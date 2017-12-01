@@ -36,7 +36,7 @@ namespace Rendering
 
 		XMFLOAT3 getPosition();
 
-		XMFLOAT3 GetLocalForward();
+		XMFLOAT2 GetLocalForward();
 		XMFLOAT4X4 GetRotationMatrix();
 
 	private:

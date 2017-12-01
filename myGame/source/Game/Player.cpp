@@ -161,15 +161,15 @@ namespace Rendering
 		}
 		mLastMouseX = mCurrentMouseX;
 
-		mAngle = 180 + mRotation;
+		mAngle = mRotation;
 		mAngleInRadians = mAngle * XM_PI / 180;
 
-		mLocalForward = XMVector3Normalize(XMVectorSet(sin(mAngleInRadians), 0.0f, cos(mAngleInRadians), 1.0f));
+		mLocalForward = XMVector3Normalize(XMVectorSet(cos(mAngleInRadians), 0.0f, -sin(mAngleInRadians), 1.0f));
 
 		XMMATRIX rotationMatrix = XMMatrixRotationY(mAngleInRadians);
 		XMMATRIX scaleMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f);
 		XMMATRIX translationMatrix = XMMatrixTranslation(x, 0, z);
-		XMStoreFloat4x4(&mWorldMatrix, scaleMatrix * rotationMatrix * translationMatrix);
+		XMStoreFloat4x4(&mWorldMatrix, scaleMatrix  * translationMatrix);
 		XMStoreFloat4x4(&mRotationMatrix, rotationMatrix);
 
 
@@ -283,9 +283,9 @@ namespace Rendering
 		return XMFLOAT3(x,y,z);
 	}
 
-	XMFLOAT3 Player::GetLocalForward()
+	XMFLOAT2 Player::GetLocalForward()
 	{
-		return XMFLOAT3(XMVectorGetX(mLocalForward), XMVectorGetY(mLocalForward), XMVectorGetZ(mLocalForward));
+		return XMFLOAT2(XMVectorGetX(mLocalForward), XMVectorGetZ(mLocalForward));
 	}
 
 	XMFLOAT4X4 Player::GetRotationMatrix()

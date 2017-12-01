@@ -40,6 +40,13 @@ namespace Library
 		
 		void set_FPS_ON();
 		void set_FPS_OFF();
+		bool GetIsFPS();
+		void LookBack();
+		void LookForward();
+
+		void Rotate(float Angle, GameTime gt);
+		void LookRight();
+		void LookLeft();
 
 	protected:
 		float mMouseSensitivity;
@@ -54,6 +61,13 @@ namespace Library
 		FirstPersonCamera& operator-(const FirstPersonCamera& rhs);
 
 		bool isEditing = false;
+
+		bool isFPS = false;
+		bool isLookBack = false;
+
+		bool isLookRight = true;
+		bool isLookLeft = true;
+
 
 	};
 }

@@ -181,4 +181,12 @@ namespace Library
 		XMMATRIX transformMatrix = XMLoadFloat4x4(&transform);
 		ApplyRotation(transformMatrix);
 	}
+
+	void Camera::ApplyRotation(float Angle)
+	{
+		mDirection.x = Angle;
+		mDirection.y = Angle;
+		
+	}
+
 }

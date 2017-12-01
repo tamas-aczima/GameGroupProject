@@ -47,6 +47,7 @@ namespace Library
 		virtual void UpdateProjectionMatrix();
 		void ApplyRotation(CXMMATRIX transform);
 		void ApplyRotation(const XMFLOAT4X4& transform);
+		void ApplyRotation(float Angle);
 
 		static const float DefaultFieldOfView;
 		static const float DefaultAspectRatio;

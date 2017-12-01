@@ -78,7 +78,7 @@ namespace Rendering
 
 	    player = new Player(*this, *mCamera);
 		player->Initialize();
-		player->SetUpPosition(0, 0, 0);
+		player->SetUpPosition(13, 0, 45);
 		mComponents.push_back(player);
 	
 		//player->SetPosition(0,0,10.0f,0,0,0,1,1,1);
@@ -94,7 +94,7 @@ namespace Rendering
 
 		Game::Initialize();
 
-		//mCamera->SetPosition(player->getPosition().x, 20.0f, player->getPosition().z + 20.0f);
+		mCamera->SetPosition(player->getPosition().x, 20.0f, player->getPosition().z - 20.0f);
 
 		//Test message
 		ScreenMessage::PushMessage("Rendering_game_Initialized");
@@ -105,8 +105,6 @@ namespace Rendering
 	{
 		mFpsComponent->Update(gameTime);
 
-		
-
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_ESCAPE))
 		{
 			Exit();
@@ -115,25 +113,23 @@ namespace Rendering
 		if (!mCamera->getIsEditing())
 		{
 			//Update the camera position
-			//mCamera->SetPosition(player->getPosition().x, zoomY, player->getPosition().z + zoomZ);
-			mCamera->SetPosition(player->getPosition().x + player->GetLocalForward().x, zoomY, player->getPosition().z + player->GetLocalForward().z + zoomZ);
-			//mCamera->ApplyRotation(player->GetRotationMatrix());
+			mCamera->SetPosition(player->getPosition().x + zoomX , zoomY, player->getPosition().z - zoomZ);
 			
 			// Camera Zoom In / Out --------------------------------------------------------------------	
-			if (!isFPS)
+			if (!mCamera->GetIsFPS())
 			{
 				zoomingSpeed = (float)mMouse->Wheel() / 1000;
 				mMouse->WheelToZero();
 
 				//Zoom IN
-				if ((float)mMouse->Wheel() / 1000 > 0 && mCamera->Position().y > 13 && mCamera->Position().z > player->getPosition().z + 9)
+				if ((float)mMouse->Wheel() / 1000 > 0 && mCamera->Position().y > 13 && mCamera->Position().z < player->getPosition().z - 9)
 				{
 					zoomY -= 1 * zoomingSpeed * gameTime.ElapsedGameTime();
 					zoomZ -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
 				}
 
 				//Zoom Out
-				if ((float)mMouse->Wheel() / 1000 < 0 && mCamera->Position().y < 20 && mCamera->Position().z < player->getPosition().z + 20)
+				if ((float)mMouse->Wheel() / 1000 < 0 && mCamera->Position().y < 20 && mCamera->Position().z > player->getPosition().z - 20)
 				{
 					zoomY -= 1 * zoomingSpeed * gameTime.ElapsedGameTime();
 					zoomZ -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
@@ -145,7 +141,7 @@ namespace Rendering
 			//Switch to First person Camera
 			if (mKeyboard->WasKeyPressedThisFrame(DIK_C))
 			{
-				switch (isFPS)
+				switch (mCamera->GetIsFPS())
 				{
 				case true:
 					// 3d Person CAMERA---
@@ -154,7 +150,6 @@ namespace Rendering
 					//--------------------
 
 					mCamera->set_FPS_OFF();
-					isFPS = false;
 
 					break;
 
@@ -165,7 +160,6 @@ namespace Rendering
 					//--------------------------
 
 					mCamera->set_FPS_ON();
-					isFPS = true;
 
 					break;
 				}
@@ -174,24 +168,76 @@ namespace Rendering
 			//Player movement------
 			if (mKeyboard->IsKeyDown(DIK_D))
 			{
-				player->x += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+				//Move Right
+				player->x -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+				//Look Right
+				mCamera->SetPosition(player->getPosition().x , zoomY, player->getPosition().z - zoomZ);
+
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_A))
 			{
-				player->x -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+				player->x += mCamera->MovementRate() * gameTime.ElapsedGameTime();
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_W))
 			{
-				player->z -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+				player->z += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+				mCamera->SetPosition(player->getPosition().x, zoomY, player->getPosition().z - zoomZ);
+				mCamera->LookForward();
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_S))
 			{
-				player->z += mCamera->MovementRate() * gameTime.ElapsedGameTime();
+				player->z -= mCamera->MovementRate() * gameTime.ElapsedGameTime();
+				/*mCamera->SetPosition(player->getPosition().x, zoomY, player->getPosition().z + zoomZ);
+				mCamera->LookBack();*/
 			}
+			/*if (mKeyboard->IsKeyUp(DIK_S))
+			{
+				mCamera->SetPosition(player->getPosition().x, zoomY, player->getPosition().z - zoomZ);
+				mCamera->LookForward();
+			}*/
 			//----------------------------
+
+			mCurrentMouseX = mMouse->X();
+			if (mCurrentMouseX > mLastMouseX)
+			{
+				mRotation = 1;
+			}
+			else if (mCurrentMouseX < mLastMouseX)
+			{
+				mRotation = -1;
+			}
+			mLastMouseX = mCurrentMouseX;
+
+			if (mRotation > 0)
+			{
+				if(zoomZ > 0) 
+					zoomZ -= 1 * gameTime.ElapsedGameTime();	
+				if(zoomX < 20)
+					zoomX += 1 * gameTime.ElapsedGameTime();
+
+				mAngle -= 0.1 * gameTime.ElapsedGameTime();
+				mCamera->Rotate(mAngle, gameTime);
+				//mCamera->SetPosition(player->getPosition().x + 20, zoomY, player->getPosition().z );
+				//mCamera->LookRight();
+			}
+			//else
+			//{
+			//	if (zoomZ < 20)
+			//		zoomZ += 1 * gameTime.ElapsedGameTime();
+			//	if (zoomX > 0)
+			//		zoomX -= 1 * gameTime.ElapsedGameTime();
+
+			//	mAngle += 5 * gameTime.ElapsedGameTime();
+			//	mCamera->Rotate(mAngle, gameTime);
+			//	//mCamera->SetPosition(player->getPosition().x - 20, zoomY, player->getPosition().z);
+			//	//mCamera->LookLeft();
+			//}
+
+			
+
 		}
 	
 
@@ -230,12 +276,6 @@ namespace Rendering
 		mouseLabel << L"Mouse Position: " << mMouse->X() << ", " << mMouse->Y() << " Mouse Wheel: " << mMouse->Wheel();
 		mSpriteFont->DrawString(mSpriteBatch, mouseLabel.str().c_str(), mMouseTextPosition);
 
-		//player forward
-		std::wostringstream playerForward;
-		XMFLOAT2 location = XMFLOAT2(5, 150);
-		playerForward << L"Player Forward x: " << player->GetLocalForward().x << ", y: " << player->GetLocalForward().y << ", z: " << player->GetLocalForward().z;
-		mSpriteFont->DrawString(mSpriteBatch, playerForward.str().c_str(), location, Colors::White);
-
 		//Player Location
 		std::wostringstream playerLocation;
 		XMFLOAT2 messageLoc = XMFLOAT2(5, 30);
@@ -246,7 +286,12 @@ namespace Rendering
 		XMFLOAT2 cameraPosLabelLoc = XMFLOAT2(5, 90);
 		CameraPositon << L"Camera Position: Y: " << mCamera->Position().y << ", " << " Z: " << mCamera->Position().z;
 		mSpriteFont->DrawString(mSpriteBatch, CameraPositon.str().c_str(), cameraPosLabelLoc);
-	
+		
+
+		std::wostringstream CameraRot;
+		XMFLOAT2 RotLoc = XMFLOAT2(5, 150);
+		CameraRot << "Rotation " << mRotation;
+		mSpriteFont->DrawString(mSpriteBatch, CameraRot.str().c_str(), RotLoc);
 
 
 		mSpriteBatch->End();

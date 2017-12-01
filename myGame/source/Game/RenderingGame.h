@@ -70,9 +70,17 @@ namespace Rendering
 
 		float zoomY = 20.0f;
 		float zoomZ = 20.0f;
+		float zoomX = 0;
 
 		float zoomingSpeed = 0;
-		bool isFPS = false;
+		float camRotX = 0;
+
+		int mCurrentMouseX;
+		int mLastMouseX;
+		int mRotation;
+
+		float mAngle = 0.2;
+
 
 	};
 }
