@@ -65,7 +65,8 @@ namespace Rendering
 		AnimationPlayer* mWalkForwardPlayer;
 		AnimationPlayer* mWalkBackPlayer;
 		AnimationPlayer* mJumpPlayer;
-		bool mIsWalking;
+		bool mIsWalkingForward;
+		bool mIsWalkingBack;
 		bool mIsJumping;
 		bool mIdlePlaying;
 

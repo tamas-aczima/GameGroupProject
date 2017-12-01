@@ -165,37 +165,48 @@ namespace Rendering
 
 
 		//Animation
-		if (mKeyboard->IsKeyDown(DIK_W) && !mIsWalking && !mIsJumping)
+		if (mKeyboard->IsKeyDown(DIK_W) && !mIsWalkingForward && !mIsWalkingBack && !mIsJumping)
 		{
 			mAnimationPlayer = mWalkForwardPlayer;
 			mAnimationPlayer->StartClip(*(mWalkForwardAnimation->Animations().at(0)));
-			mIsWalking = true;
+			mIsWalkingForward = true;
 			mIdlePlaying = false;
 		}
-		if (mKeyboard->IsKeyDown(DIK_S) && !mIsWalking && !mIsJumping)
+		if (mKeyboard->IsKeyDown(DIK_S) && !mIsWalkingBack && !mIsWalkingForward && !mIsJumping)
 		{
 			mAnimationPlayer = mWalkBackPlayer;
 			mAnimationPlayer->StartClip(*(mWalkBackAnimation->Animations().at(0)));
-			mIsWalking = true;
+			mIsWalkingBack = true;
 			mIdlePlaying = false;
 		}
-		if (mKeyboard->IsKeyUp(DIK_W) && mKeyboard->IsKeyUp(DIK_S))
+		if ((mIsWalkingForward && mKeyboard->IsKeyDown(DIK_S)) || (mIsWalkingBack && mKeyboard->IsKeyDown(DIK_W)))
 		{
-			mIsWalking = false;
+			mIsWalkingForward = false;
+			mIsWalkingBack = false;
 		}
+		if (mKeyboard->IsKeyUp(DIK_W))
+		{
+			mIsWalkingForward = false;
+		}
+		if (mKeyboard->IsKeyUp(DIK_S))
+		{
+			mIsWalkingBack = false;
+		}
+
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_SPACE) && !mIsJumping)
 		{
 			mAnimationPlayer = mJumpPlayer;
 			mAnimationPlayer->StartClip(*(mJumpAnimation->Animations().at(0)));
 			mIsJumping = true;
-			mIsWalking = false;
+			mIsWalkingForward = false;
+			mIsWalkingBack = false;
 			mIdlePlaying = false;
 		}
 		if (mIsJumping && mAnimationPlayer->CurrentKeyframe() >= mJumpAnimation->Animations().at(0)->KeyframeCount() - 2)
 		{
 			mIsJumping = false;
 		}
-		if (!mIsWalking && !mIsJumping && !mIdlePlaying)
+		if (!mIsWalkingForward && !mIsWalkingBack && !mIsJumping && !mIdlePlaying)
 		{
 			mIdlePlaying = true;
 			mAnimationPlayer = mIdlePlayer;
