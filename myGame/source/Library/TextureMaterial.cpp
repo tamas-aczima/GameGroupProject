@@ -9,17 +9,20 @@ namespace Library
 
 	TextureMaterial::TextureMaterial()
 		: Material("main11"),
-		MATERIAL_VARIABLE_INITIALIZATION(WorldViewProjection)
+		MATERIAL_VARIABLE_INITIALIZATION(WorldViewProjection),
+		MATERIAL_VARIABLE_INITIALIZATION(AmbientColor)
 	{
 	}
 
 	MATERIAL_VARIABLE_DEFINITION(TextureMaterial, WorldViewProjection)
+	MATERIAL_VARIABLE_DEFINITION(TextureMaterial, AmbientColor)
 
 	void TextureMaterial::Initialize(Effect* effect)
 	{
 		Material::Initialize(effect);
 
 		MATERIAL_VARIABLE_RETRIEVE(WorldViewProjection)
+		MATERIAL_VARIABLE_RETRIEVE(AmbientColor)
 
 		D3D11_INPUT_ELEMENT_DESC inputElementDescriptions[] = 
 		{

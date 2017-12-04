@@ -166,6 +166,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
   <ItemGroup>
     <ClCompile Include="BronzeKey.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="Floor.cpp" />
     <ClCompile Include="GoldKey.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LightLock.cpp" />
@@ -184,6 +185,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
   <ItemGroup>
     <ClInclude Include="BronzeKey.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="Floor.h" />
     <ClInclude Include="GoldKey.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LightLock.h" />

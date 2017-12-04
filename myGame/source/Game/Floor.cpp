@@ -1,4 +1,4 @@
-#include "Door.h"
+#include "Floor.h"
 #include "Game.h"
 #include "GameException.h"
 #include "MatrixHelper.h"
@@ -12,9 +12,9 @@
 
 namespace Rendering
 {
-	RTTI_DEFINITIONS(Door)
+	RTTI_DEFINITIONS(Floor)
 
-		Door::Door(Game& game, Camera& camera)
+		Floor::Floor(Game& game, Camera& camera)
 		: DrawableGameComponent(game, camera),
 		mTextureMaterial(nullptr), mTextureEffect(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
@@ -24,7 +24,7 @@ namespace Rendering
 		mWorldMatrix = MatrixHelper::Identity;
 	}
 
-	Door::~Door()
+	Floor::~Floor()
 	{
 		ReleaseObject(mColorTextureVariable);
 		ReleaseObject(mTextureShaderResourceView);
@@ -34,12 +34,12 @@ namespace Rendering
 		ReleaseObject(mIndexBuffer);
 	}
 
-	void Door::Initialize()
+	void Floor::Initialize()
 	{
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
 		// Load the model
-		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\BlastDoor.fbx", true));
+		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\Cube.obj", true));
 
 		// Initialize the material
 		mTextureEffect = new Effect(*mGame);
@@ -55,19 +55,19 @@ namespace Rendering
 
 		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
 		//Load the texture
-		mTextureName = L"Content\\Textures\\BlastDoor.png";
+		mTextureName = L"Content\\Textures\\floor.jpg";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
 	}
 
-	void Door::Update(const GameTime& gameTime)
+	void Floor::Update(const GameTime& gameTime)
 	{
 
 
 
 	}
 
-	void Door::Draw(const GameTime& gameTime)
+	void Floor::Draw(const GameTime& gameTime)
 	{
 		ID3D11DeviceContext* direct3DDeviceContext = mGame->Direct3DDeviceContext();
 		direct3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -84,7 +84,7 @@ namespace Rendering
 		XMMATRIX worldMatrix = XMLoadFloat4x4(&mWorldMatrix);
 		XMMATRIX wvp = worldMatrix * mCamera->ViewMatrix() * mCamera->ProjectionMatrix();
 
-		mAmbientColor.a = 100;
+		mAmbientColor.a = 255;
 		XMVECTOR ambientColor = XMLoadColor(&mAmbientColor);
 
 		mTextureMaterial->WorldViewProjection() << wvp;
