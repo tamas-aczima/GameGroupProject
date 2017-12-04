@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DrawableGameComponent.h"
+#include "TextureMaterial.h"
 
 using namespace Library;
 
@@ -18,10 +19,12 @@ namespace Rendering
 		~Level();
 
 		std::vector<GameComponent*> UpdateComponent(std::vector<GameComponent*> mComponents);
+		std::vector<TextureMaterial*> WallsVect();
+		
 
 	private:
 		std::vector<GameComponent*> tempCompVector;
-		
+		std::vector<TextureMaterial*> wallsVect;
 
 	};
 }

@@ -13,6 +13,7 @@ namespace Library
 	class Model;
 	class AnimationPlayer;
 	class AnimationClip;
+	class TextureMaterial;
 }
 
 namespace Rendering
@@ -38,6 +39,9 @@ namespace Rendering
 
 		XMFLOAT2 GetLocalForward();
 
+		bool CheckCollisions(TextureMaterial mat);
+		bool isColliding;
+
 	private:
 		Player();
 		Player(const Player& rhs);
@@ -45,6 +49,7 @@ namespace Rendering
 
 		Effect* mEffect;
 		SkinnedModelMaterial* mMaterial;
+		
 		XMCOLOR mAmbientColor;
 
 		XMFLOAT4X4 mWorldMatrix;

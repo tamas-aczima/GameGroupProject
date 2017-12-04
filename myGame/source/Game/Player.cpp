@@ -19,6 +19,7 @@
 #include "Shlwapi.h"
 #include "ScreenMessage.h"
 #include "ColorHelper.h"
+#include "TextureMaterial.h"
 
 namespace Rendering
 {
@@ -213,8 +214,9 @@ namespace Rendering
 			mAnimationPlayer->StartClip(*(mSkinnedModel->Animations().at(0)));
 		}
 
-
 		mAnimationPlayer->Update(gameTime);
+
+		
 
 	}
 
@@ -274,5 +276,9 @@ namespace Rendering
 	XMFLOAT2 Player::GetLocalForward()
 	{
 		return XMFLOAT2(XMVectorGetX(mLocalForward), XMVectorGetZ(mLocalForward));
+	}
+	bool Player::CheckCollisions(TextureMaterial mat)
+	{
+		return isColliding = mMaterial->mBoundingBox.Intersects(mat.mBoundingBox);
 	}
 }

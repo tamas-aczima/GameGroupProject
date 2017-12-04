@@ -24,13 +24,15 @@ namespace Rendering
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
+		TextureMaterial* mTextureMaterial;
+
 	private:
 		Wall();
 		Wall(const Wall& rhs);
 		Wall& operator=(const Wall& rhs);
 
 		Effect* mTextureEffect;
-		TextureMaterial* mTextureMaterial;
+
 		XMCOLOR mAmbientColor;
 
 		ID3D11Buffer* mVertexBuffer;

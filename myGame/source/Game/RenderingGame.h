@@ -81,6 +81,9 @@ namespace Rendering
 
 		float mAngle = 0.2;
 
+		int iCompMin = 0;
+		int iCompMax;
+		int iComp = iCompMin;
 
 	};
 }

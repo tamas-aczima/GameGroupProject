@@ -16,6 +16,8 @@
 #include "Player.h"
 #include "PlayerAnimation.h"
 #include "VectorHelper.h"
+#include "LightRay.h"
+
 
 namespace Rendering
 {
@@ -80,6 +82,10 @@ namespace Rendering
 		player->Initialize();
 		player->SetUpPosition(13, 0, 45);
 		mComponents.push_back(player);
+
+		LightRay* lightRay = new LightRay(*this, *mCamera);
+		mComponents.push_back(lightRay);
+		lightRay->SetPosition(10, 5, 10, 0, -1.57f, 0, 100, 0.5f, 0.5f);
 	
 		//player->SetPosition(0,0,10.0f,0,0,0,1,1,1);
 
@@ -214,6 +220,16 @@ namespace Rendering
 				break;
 			}
 		}
+		
+		if(player->CheckCollisions(mLevel->WallsVect().at(0)) 
+			Exit();
+		//if (iComp < iCompMax)
+		//{
+			
+			 //player->mMaterial->mBoundingBox Intersects(mLevel->wallsVect.at(iComp))
+		//}
+		//collision
+		//mMaterial->mBoundingBox->Intersects()
 
 		Game::Update(gameTime);
 	}

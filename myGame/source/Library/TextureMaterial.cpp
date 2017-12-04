@@ -35,6 +35,17 @@ namespace Library
 
 	void TextureMaterial::CreateVertexBuffer(ID3D11Device* device, const Mesh& mesh, ID3D11Buffer** vertexBuffer) const
 	{
+		//generate the bounding box
+		float min = -1e38f;
+		float max = 1e38f;
+
+		XMFLOAT3 vMinf3(max, max, max);
+		XMFLOAT3 vMaxf3(min, min, min);
+
+
+		XMVECTOR vMin = XMLoadFloat3(&vMinf3);
+		XMVECTOR vMax = XMLoadFloat3(&vMaxf3);
+
 		const std::vector<XMFLOAT3>& sourceVertices = mesh.Vertices();
 
 		std::vector<TextureMappingVertex> vertices;
@@ -48,7 +59,17 @@ namespace Library
 			XMFLOAT3 position = sourceVertices.at(i);
 			XMFLOAT3 uv = textureCoordinates->at(i);
 			vertices.push_back(TextureMappingVertex(XMFLOAT4(position.x, position.y, position.z, 1.0f), XMFLOAT2(uv.x, uv.y)));
+
+			//create the bounding box from the list of vertices
+			XMVECTOR P = XMLoadFloat3(&position);
+			vMin = XMVectorMin(vMin, P);
+			vMax = XMVectorMax(vMax, P);
 		}
+
+		//final step to generate the bounding box
+
+		XMStoreFloat3(const_cast<XMFLOAT3*>(&mBoundingBox.Center), 0.5f*(vMin + vMax));
+		XMStoreFloat3(const_cast<XMFLOAT3*>(&mBoundingBox.Extents), 0.5f*(vMax - vMin));
 
 		CreateVertexBuffer(device, &vertices[0], vertices.size(), vertexBuffer);
 	}

@@ -6,11 +6,12 @@
 #include "BronzeKey.h"
 #include "Door.h"
 #include "LightLock.h"
+#include "TextureMaterial.h"
 
 namespace Rendering
 {
 	RTTI_DEFINITIONS(Level)
-	
+
 	Level::Level(Game& game, Camera& camera)
 		: DrawableGameComponent(game, camera)
 	{
@@ -24,7 +25,9 @@ namespace Rendering
 
 		wall = new Wall(game, camera);//backwall 2
 		tempCompVector.push_back(wall);
+		wall->Initialize();
 		wall->SetPosition(17, 0, -5, 0, 0, 0, 1, 1.5, 0.1);
+		wallsVect.push_back(wall->mTextureMaterial);
 
 		wall = new Wall(game, camera);//backwall 3
 		tempCompVector.push_back(wall);
@@ -270,6 +273,7 @@ namespace Rendering
 
 		wall = new Wall(game, camera); //Left  backwall 
 		tempCompVector.push_back(wall);
+
 		wall->SetPosition(-565, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
 
 		wall = new Wall(game, camera); //Left  backwall 
@@ -476,6 +480,7 @@ namespace Rendering
 	Level::~Level()
 	{
 	}
+	
 
 	std::vector<GameComponent*> Level::UpdateComponent(std::vector<GameComponent*> mComponents)
 	{
@@ -485,5 +490,9 @@ namespace Rendering
 		}
 
 		return mComponents;
+	}
+	std::vector<TextureMaterial*> Level::WallsVect()
+	{
+		return wallsVect;
 	}
 }
