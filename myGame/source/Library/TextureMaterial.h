@@ -22,6 +22,7 @@ namespace Library
 		RTTI_DECLARATIONS(TextureMaterial, Material)
 
 		MATERIAL_VARIABLE_DECLARATION(WorldViewProjection)
+		MATERIAL_VARIABLE_DECLARATION(AmbientColor)
 
 	public:
 		TextureMaterial();

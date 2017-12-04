@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "TextureMaterial.h"
 #include <WICTextureLoader.h>
+#include "ColorHelper.h"
 
 namespace Rendering
 {
@@ -17,7 +18,8 @@ namespace Rendering
 		: DrawableGameComponent(game, camera),
 		mTextureMaterial(nullptr), mTextureEffect(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
-		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
+		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr),
+		mAmbientColor(reinterpret_cast<const float*>(&ColorHelper::White))
 	{
 		mWorldMatrix = MatrixHelper::Identity;
 	}
@@ -81,7 +83,12 @@ namespace Rendering
 
 		XMMATRIX worldMatrix = XMLoadFloat4x4(&mWorldMatrix);
 		XMMATRIX wvp = worldMatrix * mCamera->ViewMatrix() * mCamera->ProjectionMatrix();
+
+		mAmbientColor.a = 100;
+		XMVECTOR ambientColor = XMLoadColor(&mAmbientColor);
+
 		mTextureMaterial->WorldViewProjection() << wvp;
+		mTextureMaterial->AmbientColor() << ambientColor;
 
 		mColorTextureVariable->SetResource(mTextureShaderResourceView);
 

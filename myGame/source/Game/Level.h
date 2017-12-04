@@ -7,6 +7,7 @@ using namespace Library;
 namespace Rendering
 {
 	class Wall;
+	class Floor;
 
 	class Level : public DrawableGameComponent
 	{

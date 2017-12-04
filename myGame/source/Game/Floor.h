@@ -12,22 +12,22 @@ namespace Library
 
 namespace Rendering
 {
-	class Door : public DrawableGameComponent
+	class Floor : public DrawableGameComponent
 	{
-		RTTI_DECLARATIONS(Door, DrawableGameComponent)
+		RTTI_DECLARATIONS(Floor, DrawableGameComponent)
 
 	public:
-		Door(Game& game, Camera& camera);
-		~Door();
+		Floor(Game& game, Camera& camera);
+		~Floor();
 
 		virtual void Initialize() override;
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
 	private:
-		Door();
-		Door(const Door& rhs);
-		Door& operator=(const Door& rhs);
+		Floor();
+		Floor(const Floor& rhs);
+		Floor& operator=(const Floor& rhs);
 
 		Effect* mTextureEffect;
 		TextureMaterial* mTextureMaterial;
@@ -43,4 +43,3 @@ namespace Rendering
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;
 	};
 }
-

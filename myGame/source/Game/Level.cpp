@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "Wall.h"
+#include "Floor.h"
 #include "Player.h"
 #include "GoldKey.h"
 #include "BronzeKey.h"
@@ -316,115 +317,115 @@ namespace Rendering
 
 		//floor
 
-		wall = new Wall(game, camera);//floor1
-		tempCompVector.push_back(wall);
-		wall->SetPosition(5, 0, 25, 0, 0, 0, 5, 0.01, 5);
+		Floor* floor = new Floor(game, camera);//floor1
+		tempCompVector.push_back(floor);
+		floor->SetPosition(5, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor2
-		tempCompVector.push_back(wall);
-		wall->SetPosition(5, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor2
+		tempCompVector.push_back(floor);
+		floor->SetPosition(5, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
 		//section 2 floor
 
-		wall = new Wall(game, camera);//floor3
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-75, 0, 25, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor3
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-75, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor4
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-155, 0, 25, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor4
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-155, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor5
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-75, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor5
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-75, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor6
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-75, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor6
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-75, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor7
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-155, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor7
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-155, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor8
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-155, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor8
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-155, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor8
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-240, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor8
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-240, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor7
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-240, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor7
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-240, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor6
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-240, 0, 25, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor6
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-240, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor8
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-325, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor8
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-325, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor7
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-325, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor7
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-325, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor6
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-325, 0, 25, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor6
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-325, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
 		//section 3 
 
-		wall = new Wall(game, camera);//floor2
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-410, 0, 25, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor2
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-410, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor8
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-410, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor8
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-410, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor1
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-410, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor1
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-410, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor2
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-490, 0, 25, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor2
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-490, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor8
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-490, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor8
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-490, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor1
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-490, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor1
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-490, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor2
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-570, 0, 25, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor2
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-570, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor8
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-570, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor8
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-570, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor1
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-570, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor1
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-570, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
 
 		//section 4
 
-		wall = new Wall(game, camera);//floor2
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-655, 0, 25, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor2
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-655, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor8
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-655, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor8
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-655, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		wall = new Wall(game, camera);//floor1
-		tempCompVector.push_back(wall);
-		wall->SetPosition(-655, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
+		floor = new Floor(game, camera);//floor1
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-655, 0, 195.5, 0, 0, 0, 5, 0.01, 5);
 
 		//GoldKey* goldKey = new GoldKey(game, camera);
 		//goldKey->SetPosition(0, 0, 10, 0, 0, 0, 0.01, 0.01, 0.01);
