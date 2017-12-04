@@ -38,6 +38,9 @@ namespace Rendering
 
 		XMFLOAT2 GetLocalForward();
 
+		void setFPS_ON();
+		void setFPS_OFF();
+
 	private:
 		Player();
 		Player(const Player& rhs);
@@ -83,6 +86,8 @@ namespace Rendering
 		float mAngle;
 		float mAngleInRadians;
 		XMVECTOR mLocalForward;
+
+		bool isFPS = false;
 
 	};
 }

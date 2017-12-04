@@ -68,18 +68,23 @@ namespace Rendering
 
 		void showMessages();
 
-		float zoomY = 20.0f;
-		float zoomZ = 20.0f;
+		float zoomY = 17.0f;
+		float zoom = 17.0f;//20
 		float zoomX = 0;
+		float camPosZ = 17.0f;//20
 
 		float zoomingSpeed = 0;
 		float camRotX = 0;
 
 		int mCurrentMouseX;
+		int mCurrentMouseY;
 		int mLastMouseX;
+		int mLastMouseY;
 		int mRotation;
 
 		float mAngle = 0.2;
+		bool isUp = true;
+		bool isDown = false;
 
 
 	};

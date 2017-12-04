@@ -128,7 +128,7 @@ namespace Library
 		//{
 			LPDIMOUSESTATE mouseState = mMouse->CurrentState();
 			rotationAmount.x = -mouseState->lX * mMouseSensitivity;
-			//rotationAmount.y = -mouseState->lY * mMouseSensitivity;
+			rotationAmount.y = -mouseState->lY * mMouseSensitivity;
 		//}
 
 
@@ -262,6 +262,21 @@ namespace Library
 
 		XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
 		XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
+		
+
+		ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
+	}
+
+	void FirstPersonCamera::RotateY(float angle)
+	{
+		XMVECTOR right = XMLoadFloat3(&mRight);
+
+		XMFLOAT2 rotation = XMFLOAT2(0, angle);
+		XMVECTOR rotationVector = XMLoadFloat2(&rotation);
+		right = XMLoadFloat3(&mRight);
+
+		XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
+		XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));	
 
 		ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
 	}

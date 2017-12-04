@@ -220,41 +220,45 @@ namespace Rendering
 
 	void Rendering::Player::Draw(const GameTime & gameTime)
 	{
-		ID3D11DeviceContext* direct3DDeviceContext = mGame->Direct3DDeviceContext();
-		direct3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		Pass* pass = mMaterial->CurrentTechnique()->Passes().at(0);
-		ID3D11InputLayout* inputLayout = mMaterial->InputLayouts().at(pass);
-		direct3DDeviceContext->IASetInputLayout(inputLayout);
-
-		XMMATRIX worldMatrix = XMLoadFloat4x4(&mWorldMatrix);
-		XMMATRIX wvp = worldMatrix * mCamera->ViewMatrix() * mCamera->ProjectionMatrix();
-		XMVECTOR ambientColor = XMLoadColor(&mAmbientColor);
-
-		UINT stride = mMaterial->VertexSize();
-		UINT offset = 0;
-
-		for (UINT i = 0; i < mVertexBuffers.size(); i++)
+		if (!isFPS)
 		{
-			ID3D11Buffer* vertexBuffer = mVertexBuffers[i];
-			ID3D11Buffer* indexBuffer = mIndexBuffers[i];
-			UINT indexCount = mIndexCounts[i];
-			ID3D11ShaderResourceView* colorTexture = mColorTextures[i];
+			ID3D11DeviceContext* direct3DDeviceContext = mGame->Direct3DDeviceContext();
+			direct3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			direct3DDeviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-			direct3DDeviceContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+			Pass* pass = mMaterial->CurrentTechnique()->Passes().at(0);
+			ID3D11InputLayout* inputLayout = mMaterial->InputLayouts().at(pass);
+			direct3DDeviceContext->IASetInputLayout(inputLayout);
 
-			mMaterial->WorldViewProjection() << wvp;
-			mMaterial->World() << worldMatrix;
-			mMaterial->AmbientColor() << ambientColor;
-			mMaterial->ColorTexture() << colorTexture;
-			mMaterial->CameraPosition() << mCamera->PositionVector();
-			mMaterial->BoneTransforms() << mAnimationPlayer->BoneTransforms();
+			XMMATRIX worldMatrix = XMLoadFloat4x4(&mWorldMatrix);
+			XMMATRIX wvp = worldMatrix * mCamera->ViewMatrix() * mCamera->ProjectionMatrix();
+			XMVECTOR ambientColor = XMLoadColor(&mAmbientColor);
 
-			pass->Apply(0, direct3DDeviceContext);
+			UINT stride = mMaterial->VertexSize();
+			UINT offset = 0;
 
-			direct3DDeviceContext->DrawIndexed(indexCount, 0, 0);
+			for (UINT i = 0; i < mVertexBuffers.size(); i++)
+			{
+				ID3D11Buffer* vertexBuffer = mVertexBuffers[i];
+				ID3D11Buffer* indexBuffer = mIndexBuffers[i];
+				UINT indexCount = mIndexCounts[i];
+				ID3D11ShaderResourceView* colorTexture = mColorTextures[i];
+
+				direct3DDeviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+				direct3DDeviceContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+				mMaterial->WorldViewProjection() << wvp;
+				mMaterial->World() << worldMatrix;
+				mMaterial->AmbientColor() << ambientColor;
+				mMaterial->ColorTexture() << colorTexture;
+				mMaterial->CameraPosition() << mCamera->PositionVector();
+				mMaterial->BoneTransforms() << mAnimationPlayer->BoneTransforms();
+
+				pass->Apply(0, direct3DDeviceContext);
+
+				direct3DDeviceContext->DrawIndexed(indexCount, 0, 0);
+			}
 		}
+		
 	}
 
 	void Player::SetUpPosition(float X, float Y, float Z)
@@ -274,5 +278,13 @@ namespace Rendering
 	XMFLOAT2 Player::GetLocalForward()
 	{
 		return XMFLOAT2(XMVectorGetX(mLocalForward), XMVectorGetZ(mLocalForward));
+	}
+	void Player::setFPS_ON()
+	{
+		isFPS = true;
+	}
+	void Player::setFPS_OFF()
+	{
+		isFPS = false;
 	}
 }

@@ -94,7 +94,7 @@ namespace Rendering
 
 		Game::Initialize();
 
-		mCamera->SetPosition(player->getPosition().x, 20.0f, player->getPosition().z - 20.0f);
+		mCamera->SetPosition(player->getPosition().x, zoomY, player->getPosition().z - camPosZ);
 
 		//Test message
 		ScreenMessage::PushMessage("Rendering_game_Initialized");
@@ -113,23 +113,72 @@ namespace Rendering
 		if (!mCamera->getIsEditing())
 		{
 			//Camera movement------
-			mCurrentMouseX = mMouse->X();
-			if (mCurrentMouseX > mLastMouseX)
+			if (!mCamera->GetIsFPS())
 			{
-				mCamera->Rotate(-0.0175f);
-			}
-			else if (mCurrentMouseX < mLastMouseX)
-			{
-				mCamera->Rotate(0.0175f);
-			}
-			mLastMouseX = mCurrentMouseX;
+				mCurrentMouseX = mMouse->X();
+				if (mCurrentMouseX > mLastMouseX)
+				{
+					mCamera->Rotate(-0.0175f);
+				}
+				else if (mCurrentMouseX < mLastMouseX)
+				{
+					mCamera->Rotate(0.0175f);
+				}
+				mLastMouseX = mCurrentMouseX;
 
-			zoomX = 20 * player->GetLocalForward().x;
-			zoomZ = -20 * player->GetLocalForward().y;
+				//--------Y Rotation ----
+				mCurrentMouseY = mMouse->Y();
+
+				if (mCurrentMouseY > mLastMouseY)
+				{
+					//if (isDown)
+					//{
+						mCamera->RotateY(-0.0015f);
+						//isDown = false;
+						//isUp = true;
+					//}
+					
+				}
+				else if (mCurrentMouseY < mLastMouseY)
+				{
+					//if (isUp)
+					//{
+						mCamera->RotateY(0.0015f);
+						//isDown = true;
+						//isUp = false;
+					//}
+					
+				}
+				mLastMouseY = mCurrentMouseY;
+				
+				
+
+				//---------------------
+
+				zoomX = zoom * player->GetLocalForward().x;
+				camPosZ = -zoom * player->GetLocalForward().y;
+			}
+			else
+			{
+				mCurrentMouseX = mMouse->X();
+				if (mCurrentMouseX > mLastMouseX)
+				{
+					mCamera->Rotate(-0.0175f);
+				}
+				else if (mCurrentMouseX < mLastMouseX)
+				{
+					mCamera->Rotate(0.0175f);
+				}
+				mLastMouseX = mCurrentMouseX;
+
+				zoomX = 2 * player->GetLocalForward().x;
+				camPosZ = 2 * player->GetLocalForward().y;
+			}
+			
 			//----------------------------
 
 			//Update the camera position
-			mCamera->SetPosition(player->getPosition().x + zoomX , zoomY, player->getPosition().z - zoomZ);
+			mCamera->SetPosition(player->getPosition().x + zoomX , zoomY, player->getPosition().z - camPosZ);
 			
 			// Camera Zoom In / Out --------------------------------------------------------------------	
 			if (!mCamera->GetIsFPS())
@@ -141,14 +190,16 @@ namespace Rendering
 				if ((float)mMouse->Wheel() / 1000 > 0 && mCamera->Position().y > 13 && mCamera->Position().z < player->getPosition().z - 9)
 				{
 					zoomY -= 1 * zoomingSpeed * gameTime.ElapsedGameTime();
-					zoomZ -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
+					zoom -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
+					camPosZ -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
 				}
 
 				//Zoom Out
-				if ((float)mMouse->Wheel() / 1000 < 0 && mCamera->Position().y < 20 && mCamera->Position().z > player->getPosition().z - 20)
+				if ((float)mMouse->Wheel() / 1000 < 0 && mCamera->Position().y < 17 && mCamera->Position().z > player->getPosition().z - 17)
 				{
 					zoomY -= 1 * zoomingSpeed * gameTime.ElapsedGameTime();
-					zoomZ -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
+					zoom -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
+					camPosZ -= 1.5f * zoomingSpeed * gameTime.ElapsedGameTime();
 				}
 
 
@@ -163,21 +214,23 @@ namespace Rendering
 				{
 				case true:
 					// 3d Person CAMERA---
-					zoomY = 20.0f;
-					zoomZ = 20;
+					zoomY = 17.0f;
+					camPosZ = 17.0f;
 					//--------------------
 
 					mCamera->set_FPS_OFF();
+					player->setFPS_OFF();
 
 					break;
 
 				case false:
 					//FIRST PERSON CAMERA-----
-					zoomY = 5;
-					zoomZ = -2;
+					zoomY = 7;
+					camPosZ = 2;
 					//--------------------------
 
 					mCamera->set_FPS_ON();
+					player->setFPS_ON();
 
 					break;
 				}
@@ -232,7 +285,7 @@ namespace Rendering
 		mFpsComponent->Draw(mGameTime);
 
 		std::wostringstream mouseLabel;
-		mouseLabel << L"Mouse Position: " << mMouse->X() << ", " << mMouse->Y() << " Mouse Wheel: " << mMouse->Wheel();
+		mouseLabel << L"Mouse Position: " << mMouse->X() << ", " << mCurrentMouseY << " Mouse Wheel: " << mMouse->Wheel();
 		mSpriteFont->DrawString(mSpriteBatch, mouseLabel.str().c_str(), mMouseTextPosition);
 
 		//Player Location

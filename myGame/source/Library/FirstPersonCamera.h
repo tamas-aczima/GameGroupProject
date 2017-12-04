@@ -43,6 +43,7 @@ namespace Library
 		bool GetIsFPS();
 
 		void Rotate(float angle);
+		void RotateY(float angle);
 
 	protected:
 		float mMouseSensitivity;
