@@ -98,8 +98,6 @@ namespace Rendering
 
 		mRenderStateHelper = new RenderStateHelper(*mGame);
 
-	
-
 		mSpriteBatch = new SpriteBatch(mGame->Direct3DDeviceContext());
 		mSpriteFont = new SpriteFont(mGame->Direct3DDevice(), L"Content\\Fonts\\Arial_14_Regular.spritefont");
 
@@ -137,7 +135,7 @@ namespace Rendering
 		mMaterial->range() << mSpotLight->Radius();
 		mMaterial->dir() << mSpotLight->DirectionVector();
 		mMaterial->cone() << mSpotLight->OuterAngle();
-		mMaterial->att() << XMFLOAT3(0.4f, 0.02f, 0.000f);
+		mMaterial->att() << XMFLOAT3(0.1f, 0.01f, 0.000f);
 		mMaterial->ambient() << XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 		mMaterial->diffuse() << XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 

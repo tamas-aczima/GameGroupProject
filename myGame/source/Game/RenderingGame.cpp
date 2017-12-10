@@ -18,6 +18,7 @@
 #include "VectorHelper.h"
 #include "SpotLight.h"
 #include "ProxyModel.h"
+#include "Mirror.h"
 
 namespace Rendering
 {
@@ -27,7 +28,7 @@ namespace Rendering
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
 		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr),
-		 mRenderStateHelper(nullptr), mTreasureChest(nullptr), mProxyModel(nullptr)
+		 mRenderStateHelper(nullptr), mTreasureChest(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -64,21 +65,48 @@ namespace Rendering
 
 		mRenderStateHelper = new RenderStateHelper(*this);
 
-		//spotlight
-		mSpotLight = new SpotLight(*this);
-		mSpotLight->SetRadius(100.0f);
-		mSpotLight->SetPosition(30.0f, 10.0f, 70.0f);
-		mSpotLight->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
-		mSpotLight->SetInnerAngle(0.005f);
-		mSpotLight->SetOuterAngle(5.0f);
+		//spotlight1 coming from lightsource 
+		mSpotLight1 = new SpotLight(*this);
+		mSpotLight1->SetRadius(100.0f);
+		mSpotLight1->SetPosition(0.0f, 10.0f, 36.0f);
+		mSpotLight1->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight1->SetInnerAngle(0.005f);
+		mSpotLight1->SetOuterAngle(60.0f);
 
-		mProxyModel = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
-		mProxyModel->Initialize();
-		mProxyModel->SetPosition(30.0f, 10.0f, 70.0f);
-		mProxyModel->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
-		mComponents.push_back(mProxyModel);
+		//arrow for lightsource
+		mProxyModel1 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
+		mProxyModel1->Initialize();
+		mProxyModel1->SetPosition(0.0f, 10.0f, 36.0f);
+		mProxyModel1->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
+		mComponents.push_back(mProxyModel1);
 
-		mLevel = new Level(*this, *mCamera, *mSpotLight);
+		//set rotation for spotlight
+		XMMATRIX lightRotationMatrix = XMMatrixIdentity();
+		lightRotationMatrix = XMMatrixRotationY(-2.36f);
+
+		mSpotLight1->ApplyRotation(lightRotationMatrix);
+		mProxyModel1->ApplyRotation(lightRotationMatrix);
+
+		//spotlight2 for mirror
+		mSpotLight2 = new SpotLight(*this);
+		mSpotLight2->SetRadius(100.0f);
+		mSpotLight2->SetPosition(33.0f, 10.0f, 70.0f);
+		mSpotLight2->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight2->SetInnerAngle(0.005f);
+		mSpotLight2->SetOuterAngle(60.0f);
+
+		//arrow for mirror
+		mProxyModel2 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
+		mProxyModel2->Initialize();
+		mProxyModel2->SetPosition(33.0f, 10.0f, 70.0f);
+		mProxyModel2->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
+		mComponents.push_back(mProxyModel2);
+
+		mMirror1 = new Mirror(*this, *mCamera, *mSpotLight1);
+		mComponents.push_back(mMirror1);
+		mMirror1->SetPosition(33.0f, 10.0f, 70.0f);
+
+		mLevel = new Level(*this, *mCamera, *mSpotLight1, *mSpotLight2);
 		mComponents = mLevel->UpdateComponent(mComponents);
 
 		mTreasureChest = new TreasureChest(*this, *mCamera);
@@ -306,8 +334,10 @@ namespace Rendering
 		DeleteObject(mFpsComponent);
 		DeleteObject(mSpriteFont);
 		DeleteObject(mSpriteBatch);
-		DeleteObject(mProxyModel);
-
+		DeleteObject(mSpotLight1);
+		DeleteObject(mSpotLight2);
+		DeleteObject(mProxyModel1);
+		DeleteObject(mProxyModel2);
 		ReleaseObject(mDirectInput);
 
 		Game::Shutdown();
@@ -348,7 +378,7 @@ namespace Rendering
 
 	void RenderingGame::UpdateSpotLight(const GameTime& gameTime)
 	{
-		static float directionalIntensity = mSpotLight->Color().a;
+		static float directionalIntensity = mSpotLight2->Color().a;
 		float elapsedTime = (float)gameTime.ElapsedGameTime();
 
 		// Update directional light intensity		
@@ -356,17 +386,17 @@ namespace Rendering
 		{
 			directionalIntensity += LightModulationRate * elapsedTime;
 
-			XMCOLOR directionalLightColor = mSpotLight->Color();
+			XMCOLOR directionalLightColor = mSpotLight2->Color();
 			directionalLightColor.a = (UCHAR)XMMin<float>(directionalIntensity, UCHAR_MAX);
-			mSpotLight->SetColor(directionalLightColor);
+			mSpotLight2->SetColor(directionalLightColor);
 		}
 		if (mKeyboard->IsKeyDown(DIK_NUMPAD9) && directionalIntensity > 0)
 		{
 			directionalIntensity -= LightModulationRate * elapsedTime;
 
-			XMCOLOR directionalLightColor = mSpotLight->Color();
+			XMCOLOR directionalLightColor = mSpotLight2->Color();
 			directionalLightColor.a = (UCHAR)XMMax<float>(directionalIntensity, 0.0f);
-			mSpotLight->SetColor(directionalLightColor);
+			mSpotLight2->SetColor(directionalLightColor);
 		}
 
 		// Rotate directional light
@@ -396,14 +426,16 @@ namespace Rendering
 
 		if (rotationAmount.y != 0)
 		{
-			XMMATRIX lightRotationAxisMatrix = XMMatrixRotationAxis(mSpotLight->RightVector(), rotationAmount.y);
+			XMMATRIX lightRotationAxisMatrix = XMMatrixRotationAxis(mSpotLight2->RightVector(), rotationAmount.y);
 			lightRotationMatrix *= lightRotationAxisMatrix;
 		}
 
 		if (rotationAmount.x != 0.0f || rotationAmount.y != 0.0f)
 		{
-			mSpotLight->ApplyRotation(lightRotationMatrix);
-			mProxyModel->ApplyRotation(lightRotationMatrix);
+			mSpotLight2->ApplyRotation(lightRotationMatrix);
+			mProxyModel2->ApplyRotation(lightRotationMatrix);
+
+			mMirror1->ApplyRotation(lightRotationMatrix);
 		}
 	}
 

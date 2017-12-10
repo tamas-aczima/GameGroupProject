@@ -18,7 +18,7 @@ namespace Rendering
 		RTTI_DECLARATIONS(Level, DrawableGameComponent)
 
 	public:
-		Level(Game& game, Camera& camera, SpotLight& spotLight);
+		Level(Game& game, Camera& camera, SpotLight& spotLight1, SpotLight& spotLight2);
 		~Level();
 
 		std::vector<GameComponent*> UpdateComponent(std::vector<GameComponent*> mComponents);
