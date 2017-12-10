@@ -16,14 +16,18 @@
 #include "Player.h"
 #include "PlayerAnimation.h"
 #include "VectorHelper.h"
+#include "SpotLight.h"
+#include "ProxyModel.h"
 
 namespace Rendering
 {
 	const XMVECTORF32 RenderingGame::BackGroundColor = ColorHelper::CornflowerBlue;
+	const float RenderingGame::LightModulationRate = UCHAR_MAX;
+	const XMFLOAT2 RenderingGame::LightRotationRate = XMFLOAT2(XM_PI, XM_PI);
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
 		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr),
-		 mRenderStateHelper(nullptr), mTreasureChest(nullptr)
+		 mRenderStateHelper(nullptr), mTreasureChest(nullptr), mProxyModel(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -60,7 +64,21 @@ namespace Rendering
 
 		mRenderStateHelper = new RenderStateHelper(*this);
 
-		mLevel = new Level(*this, *mCamera);
+		//spotlight
+		mSpotLight = new SpotLight(*this);
+		mSpotLight->SetRadius(100.0f);
+		mSpotLight->SetPosition(30.0f, 10.0f, 70.0f);
+		mSpotLight->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight->SetInnerAngle(0.005f);
+		mSpotLight->SetOuterAngle(5.0f);
+
+		mProxyModel = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
+		mProxyModel->Initialize();
+		mProxyModel->SetPosition(30.0f, 10.0f, 70.0f);
+		mProxyModel->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
+		mComponents.push_back(mProxyModel);
+
+		mLevel = new Level(*this, *mCamera, *mSpotLight);
 		mComponents = mLevel->UpdateComponent(mComponents);
 
 		mTreasureChest = new TreasureChest(*this, *mCamera);
@@ -103,6 +121,9 @@ namespace Rendering
 
 	void RenderingGame::Update(const GameTime &gameTime)
 	{
+		//spotlight
+		UpdateSpotLight(gameTime);
+
 		mFpsComponent->Update(gameTime);
 
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_ESCAPE))
@@ -285,6 +306,7 @@ namespace Rendering
 		DeleteObject(mFpsComponent);
 		DeleteObject(mSpriteFont);
 		DeleteObject(mSpriteBatch);
+		DeleteObject(mProxyModel);
 
 		ReleaseObject(mDirectInput);
 
@@ -322,6 +344,67 @@ namespace Rendering
 		}
 		
 
+	}
+
+	void RenderingGame::UpdateSpotLight(const GameTime& gameTime)
+	{
+		static float directionalIntensity = mSpotLight->Color().a;
+		float elapsedTime = (float)gameTime.ElapsedGameTime();
+
+		// Update directional light intensity		
+		if (mKeyboard->IsKeyDown(DIK_NUMPAD7) && directionalIntensity < UCHAR_MAX)
+		{
+			directionalIntensity += LightModulationRate * elapsedTime;
+
+			XMCOLOR directionalLightColor = mSpotLight->Color();
+			directionalLightColor.a = (UCHAR)XMMin<float>(directionalIntensity, UCHAR_MAX);
+			mSpotLight->SetColor(directionalLightColor);
+		}
+		if (mKeyboard->IsKeyDown(DIK_NUMPAD9) && directionalIntensity > 0)
+		{
+			directionalIntensity -= LightModulationRate * elapsedTime;
+
+			XMCOLOR directionalLightColor = mSpotLight->Color();
+			directionalLightColor.a = (UCHAR)XMMax<float>(directionalIntensity, 0.0f);
+			mSpotLight->SetColor(directionalLightColor);
+		}
+
+		// Rotate directional light
+		XMFLOAT2 rotationAmount = Vector2Helper::Zero;
+		if (mKeyboard->IsKeyDown(DIK_NUMPAD4))
+		{
+			rotationAmount.x += LightRotationRate.x * elapsedTime;
+		}
+		if (mKeyboard->IsKeyDown(DIK_NUMPAD6))
+		{
+			rotationAmount.x -= LightRotationRate.x * elapsedTime;
+		}
+		if (mKeyboard->IsKeyDown(DIK_NUMPAD8))
+		{
+			rotationAmount.y += LightRotationRate.y * elapsedTime;
+		}
+		if (mKeyboard->IsKeyDown(DIK_NUMPAD2))
+		{
+			rotationAmount.y -= LightRotationRate.y * elapsedTime;
+		}
+
+		XMMATRIX lightRotationMatrix = XMMatrixIdentity();
+		if (rotationAmount.x != 0)
+		{
+			lightRotationMatrix = XMMatrixRotationY(rotationAmount.x);
+		}
+
+		if (rotationAmount.y != 0)
+		{
+			XMMATRIX lightRotationAxisMatrix = XMMatrixRotationAxis(mSpotLight->RightVector(), rotationAmount.y);
+			lightRotationMatrix *= lightRotationAxisMatrix;
+		}
+
+		if (rotationAmount.x != 0.0f || rotationAmount.y != 0.0f)
+		{
+			mSpotLight->ApplyRotation(lightRotationMatrix);
+			mProxyModel->ApplyRotation(lightRotationMatrix);
+		}
 	}
 
 }

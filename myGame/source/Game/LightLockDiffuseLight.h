@@ -7,12 +7,9 @@ using namespace Library;
 namespace Library
 {
 	class Effect;
-	class DirectionalLight;
 	class Keyboard;
-	class ProxyModel;
 	class RenderStateHelper;
 	class SpotLight;
-	class PointLight;
 }
 
 namespace DirectX
@@ -30,7 +27,7 @@ namespace Rendering
 		RTTI_DECLARATIONS(LightLockDiffuseLight, DrawableGameComponent)
 
 	public:
-		LightLockDiffuseLight(Game& game, Camera& camera);
+		LightLockDiffuseLight(Game& game, Camera& camera, SpotLight& spotLight);
 		~LightLockDiffuseLight();
 
 		virtual void Initialize() override;
@@ -45,12 +42,7 @@ namespace Rendering
 		LightLockDiffuseLight(const LightLockDiffuseLight& rhs);
 		LightLockDiffuseLight& operator=(const LightLockDiffuseLight& rhs);
 
-		void UpdateAmbientLight(const GameTime& gameTime);
-		void UpdateDirectionalLight(const GameTime& gameTime);
-		void UpdateSpotLight(const GameTime& gameTime);
-
-		static const float LightModulationRate;
-		static const XMFLOAT2 LightRotationRate;
+		//void UpdateAmbientLight(const GameTime& gameTime);
 
 		Effect* mEffect;
 		DiffuseLightingMaterial* mMaterial;
@@ -63,14 +55,9 @@ namespace Rendering
 		UINT mIndexCount2;
 
 		XMCOLOR mAmbientColor;
-		//DirectionalLight* mDirectionalLight;
-		PointLight* mDirectionalLight;
 		SpotLight* mSpotLight;
 		Keyboard* mKeyboard;
 		XMFLOAT4X4 mWorldMatrix;
-
-		ProxyModel* mProxyModel;
-		ProxyModel* mProxyModel2;
 
 		RenderStateHelper* mRenderStateHelper;
 		SpriteBatch* mSpriteBatch;

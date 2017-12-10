@@ -23,16 +23,14 @@ namespace Rendering
 {
 	RTTI_DEFINITIONS(LightLockDiffuseLight)
 
-		const float LightLockDiffuseLight::LightModulationRate = UCHAR_MAX;
-	const XMFLOAT2 LightLockDiffuseLight::LightRotationRate = XMFLOAT2(XM_PI, XM_PI);
-
-	LightLockDiffuseLight::LightLockDiffuseLight(Game& game, Camera& camera)
+	LightLockDiffuseLight::LightLockDiffuseLight(Game& game, Camera& camera, SpotLight& spotLight)
 		: DrawableGameComponent(game, camera), mEffect(nullptr), mMaterial(nullptr), mMaterial2(nullptr), mTextureShaderResourceView(nullptr), mTextureShaderResourceView2(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0), mIndexCount2(0),
-		mKeyboard(nullptr), mAmbientColor(1, 1, 1, 0), mDirectionalLight(nullptr),
-		mWorldMatrix(MatrixHelper::Identity), mProxyModel(nullptr), mProxyModel2(nullptr),
+		mKeyboard(nullptr), mAmbientColor(1, 1, 1, 0),
+		mWorldMatrix(MatrixHelper::Identity),
 		mRenderStateHelper(nullptr), mSpriteBatch(nullptr), mSpriteFont(nullptr), mTextPosition(0.0f, 120.0f), mSpriteUI(nullptr), mSpotLight(nullptr)
 	{
+		mSpotLight = &spotLight;
 	}
 
 	LightLockDiffuseLight::~LightLockDiffuseLight()
@@ -41,9 +39,6 @@ namespace Rendering
 		DeleteObject(mSpriteBatch);
 		DeleteObject(mSpriteUI);
 		DeleteObject(mRenderStateHelper);
-		DeleteObject(mProxyModel);
-		DeleteObject(mProxyModel2);
-		DeleteObject(mDirectionalLight);
 		DeleteObject(mSpotLight);
 		ReleaseObject(mTextureShaderResourceView);
 		ReleaseObject(mTextureShaderResourceView2);
@@ -98,36 +93,8 @@ namespace Rendering
 			throw GameException("CreateWICTextureFromFile() failed.", hr);
 		}
 
-
-
-		mDirectionalLight = new PointLight(*mGame);//new DirectionalLight(*mGame);
-
-
-
-
-		mSpotLight = new SpotLight(*mGame);
-		mSpotLight->SetRadius(100.0f);
-		mSpotLight->SetPosition(30.0f, 10.0f, 70.0f);
-		mSpotLight->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
-		mSpotLight->SetInnerAngle(0.005f);
-		mSpotLight->SetOuterAngle(5.0f);
-
-
-		
-
 		mKeyboard = (Keyboard*)mGame->Services().GetService(Keyboard::TypeIdClass());
 		assert(mKeyboard != nullptr);
-
-
-		mProxyModel = new ProxyModel(*mGame, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
-		mProxyModel->Initialize();
-		mProxyModel->SetPosition(-5.0f, 10.0f, 5.0f);
-		mProxyModel->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
-
-		mProxyModel2 = new ProxyModel(*mGame, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
-		mProxyModel2->Initialize();
-		mProxyModel2->SetPosition(30.0f, 10.0f, 70.0f);
-		mProxyModel2->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
 
 		mRenderStateHelper = new RenderStateHelper(*mGame);
 
@@ -140,14 +107,9 @@ namespace Rendering
 
 	void LightLockDiffuseLight::Update(const GameTime& gameTime)
 	{
-		UpdateAmbientLight(gameTime);
-		UpdateDirectionalLight(gameTime);
-
-		mProxyModel->Update(gameTime);
-
-		mProxyModel2->Update(gameTime);
-		UpdateSpotLight(gameTime);
+		//UpdateAmbientLight(gameTime);
 	}
+		
 
 	void LightLockDiffuseLight::Draw(const GameTime& gameTime)
 	{
@@ -183,15 +145,12 @@ namespace Rendering
 
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
 
-		mProxyModel->Draw(gameTime);
-		mProxyModel2->Draw(gameTime);
-
 		mRenderStateHelper->SaveAll();
 		mSpriteBatch->Begin();
 
 		std::wostringstream helpLabel;
 		helpLabel << L"Ambient Intensity (+PgUp/-PgDn): " << mAmbientColor.a << "\n";
-		helpLabel << L"Directional Light Intensity (+Home/-End): " << mDirectionalLight->Color().a << "\n";
+		helpLabel << L"Directional Light Intensity (+Home/-End): " << mSpotLight->Color().a << "\n";
 		helpLabel << L"Rotate Directional Light (Arrow Keys)\n";
 
 		mSpriteFont->DrawString(mSpriteBatch, helpLabel.str().c_str(), mTextPosition);
@@ -200,134 +159,10 @@ namespace Rendering
 		mRenderStateHelper->RestoreAll();
 	}
 
-	void LightLockDiffuseLight::UpdateDirectionalLight(const GameTime& gameTime)
-	{
-		static float directionalIntensity = mDirectionalLight->Color().a;
-		float elapsedTime = (float)gameTime.ElapsedGameTime();
-
-		// Update directional light intensity		
-		if (mKeyboard->IsKeyDown(DIK_HOME) && directionalIntensity < UCHAR_MAX)
-		{
-			directionalIntensity += LightModulationRate * elapsedTime;
-
-			XMCOLOR directionalLightColor = mDirectionalLight->Color();
-			directionalLightColor.a = (UCHAR)XMMin<float>(directionalIntensity, UCHAR_MAX);
-			mDirectionalLight->SetColor(directionalLightColor);
-		}
-		if (mKeyboard->IsKeyDown(DIK_END) && directionalIntensity > 0)
-		{
-			directionalIntensity -= LightModulationRate * elapsedTime;
-
-			XMCOLOR directionalLightColor = mDirectionalLight->Color();
-			directionalLightColor.a = (UCHAR)XMMax<float>(directionalIntensity, 0.0f);
-			mDirectionalLight->SetColor(directionalLightColor);
-		}
-
-		// Rotate directional light
-		/*XMFLOAT2 rotationAmount = Vector2Helper::Zero;
-		if (mKeyboard->IsKeyDown(DIK_LEFTARROW))
-		{
-			rotationAmount.x += LightRotationRate.x * elapsedTime;
-		}
-		if (mKeyboard->IsKeyDown(DIK_RIGHTARROW))
-		{
-			rotationAmount.x -= LightRotationRate.x * elapsedTime;
-		}
-		if (mKeyboard->IsKeyDown(DIK_UPARROW))
-		{
-			rotationAmount.y += LightRotationRate.y * elapsedTime;
-		}
-		if (mKeyboard->IsKeyDown(DIK_DOWNARROW))
-		{
-			rotationAmount.y -= LightRotationRate.y * elapsedTime;
-		}
-
-		XMMATRIX lightRotationMatrix = XMMatrixIdentity();
-		if (rotationAmount.x != 0)
-		{
-			lightRotationMatrix = XMMatrixRotationY(rotationAmount.x);
-		}
-
-		if (rotationAmount.y != 0)
-		{
-			XMMATRIX lightRotationAxisMatrix = XMMatrixRotationAxis(mDirectionalLight->RightVector(), rotationAmount.y);
-			lightRotationMatrix *= lightRotationAxisMatrix;
-		}
-
-		if (rotationAmount.x != 0.0f || rotationAmount.y != 0.0f)
-		{
-			mDirectionalLight->ApplyRotation(lightRotationMatrix);
-			mProxyModel->ApplyRotation(lightRotationMatrix);
-		}*/
-
-
-	}
-
-
-	void LightLockDiffuseLight::UpdateSpotLight(const GameTime& gameTime)
-	{
-		static float directionalIntensity = mSpotLight->Color().a;
-		float elapsedTime = (float)gameTime.ElapsedGameTime();
-
-		// Update directional light intensity		
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD7) && directionalIntensity < UCHAR_MAX)
-		{
-			directionalIntensity += LightModulationRate * elapsedTime;
-
-			XMCOLOR directionalLightColor = mSpotLight->Color();
-			directionalLightColor.a = (UCHAR)XMMin<float>(directionalIntensity, UCHAR_MAX);
-			mSpotLight->SetColor(directionalLightColor);
-		}
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD9) && directionalIntensity > 0)
-		{
-			directionalIntensity -= LightModulationRate * elapsedTime;
-
-			XMCOLOR directionalLightColor = mSpotLight->Color();
-			directionalLightColor.a = (UCHAR)XMMax<float>(directionalIntensity, 0.0f);
-			mSpotLight->SetColor(directionalLightColor);
-		}
-
-		// Rotate directional light
-		XMFLOAT2 rotationAmount = Vector2Helper::Zero;
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD4))
-		{
-			rotationAmount.x += LightRotationRate.x * elapsedTime;
-		}
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD6))
-		{
-			rotationAmount.x -= LightRotationRate.x * elapsedTime;
-		}
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD8))
-		{
-			rotationAmount.y += LightRotationRate.y * elapsedTime;
-		}
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD2))
-		{
-			rotationAmount.y -= LightRotationRate.y * elapsedTime;
-		}
-
-		XMMATRIX lightRotationMatrix = XMMatrixIdentity();
-		if (rotationAmount.x != 0)
-		{
-			lightRotationMatrix = XMMatrixRotationY(rotationAmount.x);
-		}
-
-		if (rotationAmount.y != 0)
-		{
-			XMMATRIX lightRotationAxisMatrix = XMMatrixRotationAxis(mSpotLight->RightVector(), rotationAmount.y);
-			lightRotationMatrix *= lightRotationAxisMatrix;
-		}
-
-		if (rotationAmount.x != 0.0f || rotationAmount.y != 0.0f)
-		{
-			mSpotLight->ApplyRotation(lightRotationMatrix);
-			mProxyModel2->ApplyRotation(lightRotationMatrix);
-		}
-	}
 
 
 
-	void LightLockDiffuseLight::UpdateAmbientLight(const GameTime& gameTime)
+	/*void LightLockDiffuseLight::UpdateAmbientLight(const GameTime& gameTime)
 	{
 		static float ambientIntensity = mAmbientColor.a;
 
@@ -345,5 +180,5 @@ namespace Rendering
 				mAmbientColor.a = (UCHAR)XMMax<float>(ambientIntensity, 0);
 			}
 		}
-	}
+	}*/
 }

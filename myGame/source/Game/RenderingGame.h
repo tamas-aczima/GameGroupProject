@@ -21,6 +21,7 @@ namespace Library
 	class FpsComponent;
 	class RenderStateHelper;
 	class SpotLight;
+	class ProxyModel;
 }
 
 namespace Rendering
@@ -54,6 +55,12 @@ namespace Rendering
 		FpsComponent* mFpsComponent;
 		RenderStateHelper* mRenderStateHelper;
 
+		//spotlight stuff
+		SpotLight* mSpotLight;
+		void UpdateSpotLight(const GameTime& gameTime);
+		static const float LightModulationRate;
+		static const XMFLOAT2 LightRotationRate;
+		ProxyModel* mProxyModel;
 
 		Level* mLevel;
 		TreasureChest* mTreasureChest;

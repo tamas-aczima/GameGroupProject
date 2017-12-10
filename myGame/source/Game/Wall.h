@@ -18,7 +18,7 @@ namespace Rendering
 		RTTI_DECLARATIONS(Wall, DrawableGameComponent)
 
 	public:
-		Wall(Game& game, Camera& camera);
+		Wall(Game& game, Camera& camera, SpotLight& spotLight);
 		~Wall();
 
 		virtual void Initialize() override;

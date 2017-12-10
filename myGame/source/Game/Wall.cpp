@@ -14,13 +14,14 @@ namespace Rendering
 {
 	RTTI_DEFINITIONS(Wall)
 
-	Wall::Wall(Game& game, Camera& camera)
+	Wall::Wall(Game& game, Camera& camera, SpotLight& spotLight)
 		: DrawableGameComponent(game, camera),
 		mMaterial(nullptr), mEffect(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
 		mWorldMatrix = MatrixHelper::Identity;
+		mSpotLight = &spotLight;
 	}
 
 	Wall::~Wall()
@@ -45,14 +46,6 @@ namespace Rendering
 		mEffect->CompileFromFile(L"Content\\Effects\\DiffuseLighting.fx");
 		mMaterial = new DiffuseLightingMaterial();
 		mMaterial->Initialize(mEffect);
-
-		//spotlight
-		mSpotLight = new SpotLight(*mGame);
-		mSpotLight->SetRadius(100.0f);
-		mSpotLight->SetPosition(30.0f, 10.0f, 70.0f);
-		mSpotLight->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
-		mSpotLight->SetInnerAngle(0.005f);
-		mSpotLight->SetOuterAngle(5.0f);
 
 		// Create the vertex and index buffers
 		Mesh* mesh = model->Meshes().at(0);
