@@ -20,6 +20,7 @@ namespace Library
 	class FirstPersonCamera;
 	class FpsComponent;
 	class RenderStateHelper;
+	class SpotLight;
 }
 
 namespace Rendering

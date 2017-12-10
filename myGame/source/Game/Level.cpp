@@ -5,6 +5,7 @@
 #include "BronzeKey.h"
 #include "Door.h"
 #include "LightLock.h"
+#include "LightLockDiffuseLight.h"
 
 namespace Rendering
 {
@@ -461,6 +462,12 @@ namespace Rendering
 		door = new Door(game, camera);
 		tempCompVector.push_back(door);
 		door->SetPosition(-499, 22, 197, 0, 1.57, 3.14, 0.1, 0.1, 0.1);
+
+
+
+		LightLockDiffuseLight* lightLock = new LightLockDiffuseLight(game, camera);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(-1.57, -1.70, 69.0, 0.5, -11.5, 12.0, 69.0);
 
 
 		LightLock* lightlock = new LightLock(game, camera);

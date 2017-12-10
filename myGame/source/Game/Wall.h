@@ -7,11 +7,12 @@ using namespace Library;
 namespace Library
 {
 	class Effect;
-	class TextureMaterial;
+	class SpotLight;
 }
 
 namespace Rendering
 {
+	class DiffuseLightingMaterial;
 	class Wall : public DrawableGameComponent
 	{
 		RTTI_DECLARATIONS(Wall, DrawableGameComponent)
@@ -29,11 +30,13 @@ namespace Rendering
 		Wall(const Wall& rhs);
 		Wall& operator=(const Wall& rhs);
 
-		Effect* mTextureEffect;
-		TextureMaterial* mTextureMaterial;
+		Effect* mEffect;
+		DiffuseLightingMaterial* mMaterial;
 		ID3D11Buffer* mVertexBuffer;
 		ID3D11Buffer* mIndexBuffer;
 		UINT mIndexCount;
+
+		SpotLight* mSpotLight;
 
 		std::wstring mTextureName;
 

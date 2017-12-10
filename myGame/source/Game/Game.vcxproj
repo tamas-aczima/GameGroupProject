@@ -23,7 +23,7 @@
     <ProjectGuid>{72519A05-189B-416E-8F03-CE73E9472545}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Game</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -169,6 +169,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClCompile Include="GoldKey.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LightLock.cpp" />
+    <ClCompile Include="LightLockDiffuseLight.cpp" />
     <ClCompile Include="Mirror.cpp" />
     <ClCompile Include="ModelDemo.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -187,6 +188,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClInclude Include="GoldKey.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LightLock.h" />
+    <ClInclude Include="LightLockDiffuseLight.h" />
     <ClInclude Include="Mirror.h" />
     <ClInclude Include="ModelDemo.h" />
     <ClInclude Include="Player.h" />
@@ -199,6 +201,8 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\content\Effects\DiffuseLighting.fx" />
+    <FxCompile Include="..\..\content\Effects\SpotLight.fx" />
     <FxCompile Include="Content\Effects\BasicEffect.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>

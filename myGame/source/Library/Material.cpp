@@ -70,6 +70,7 @@ namespace Library
 
 		Technique* defaultTechnique = nullptr;
 		assert(mEffect->Techniques().size() > 0);
+
 		if (mDefaultTechniqueName.empty() == false)
 		{
 			defaultTechnique = mEffect->TechniquesByName().at(mDefaultTechniqueName);
