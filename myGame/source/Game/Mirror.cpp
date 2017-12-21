@@ -21,7 +21,7 @@ namespace Rendering
 		mMaterial(nullptr), mEffect(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
 		mWorldMatrix(MatrixHelper::Identity), mScaleMatrix(MatrixHelper::Identity),
-		mPosition(Vector3Helper::Zero), mDirection(Vector3Helper::Forward), mUp(Vector3Helper::Right), mRight(Vector3Helper::Up),
+		mPosition(Vector3Helper::Zero), mDirection(Vector3Helper::Right), mUp(Vector3Helper::Forward), mRight(Vector3Helper::Up),
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
 		mWorldMatrix = MatrixHelper::Identity;
