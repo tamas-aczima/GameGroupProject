@@ -61,6 +61,16 @@ namespace Rendering
         const std::vector<XMFLOAT3>& normals = mesh.Normals();
         assert(textureCoordinates->size() == sourceVertices.size());
 
+		//generate the bounding box
+		float min = -1e38f;
+		float max = 1e38f;
+
+		XMFLOAT3 vMinf3(max, max, max);
+		XMFLOAT3 vMaxf3(min, min, min);
+
+		XMVECTOR vMin = XMLoadFloat3(&vMinf3);
+		XMVECTOR vMax = XMLoadFloat3(&vMaxf3);
+
         std::vector<DiffuseLightingMaterialVertex> vertices;
         vertices.reserve(sourceVertices.size());
         for (UINT i = 0; i < sourceVertices.size(); i++)
@@ -69,7 +79,17 @@ namespace Rendering
             XMFLOAT3 uv = textureCoordinates->at(i);
             XMFLOAT3 normal = normals.at(i);
             vertices.push_back(DiffuseLightingMaterialVertex(XMFLOAT4(position.x, position.y, position.z, 1.0f), XMFLOAT2(uv.x, uv.y), normal, XMFLOAT4(position.x, position.y, position.z, 1.0f)));
+
+			//create the bounding box from the list of vertices
+			XMVECTOR P = XMLoadFloat3(&position);
+			vMin = XMVectorMin(vMin, P);
+			vMax = XMVectorMax(vMax, P);
         }
+
+		//final step to generate the bounding box
+
+		XMStoreFloat3(const_cast<XMFLOAT3*>(&mBoundingBox.Center), 0.5f*(vMin + vMax));
+		XMStoreFloat3(const_cast<XMFLOAT3*>(&mBoundingBox.Extents), 0.5f*(vMax - vMin));
 
         CreateVertexBuffer(device, &vertices[0], vertices.size(), vertexBuffer);
     }

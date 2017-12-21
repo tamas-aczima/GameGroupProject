@@ -11,12 +11,15 @@
 #include "DiffuseLightingMaterial.h"
 #include "SpotLight.h"
 #include "VectorHelper.h"
+#include "Mouse.h"
 
 namespace Rendering
 {
 	RTTI_DEFINITIONS(Mirror)
 
-		Mirror::Mirror(Game& game, Camera& camera, SpotLight& spotLight)
+		const XMFLOAT2 Mirror::LightRotationRate = XMFLOAT2(XM_PIDIV4, XM_PIDIV4);
+
+		Mirror::Mirror(Game& game, Camera& camera, Mouse& mouse, SpotLight& spotLight1, SpotLight& spotLight2)
 		: DrawableGameComponent(game, camera),
 		mMaterial(nullptr), mEffect(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
@@ -25,7 +28,9 @@ namespace Rendering
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
 		mWorldMatrix = MatrixHelper::Identity;
-		mSpotLight = &spotLight;
+		mSpotLight1 = &spotLight1;
+		mSpotLight2 = &spotLight2;
+		mMouse = &mouse;
 	}
 
 	Mirror::~Mirror()
@@ -34,7 +39,8 @@ namespace Rendering
 		ReleaseObject(mTextureShaderResourceView);
 		DeleteObject(mMaterial);
 		DeleteObject(mEffect);
-		DeleteObject(mSpotLight);
+		DeleteObject(mSpotLight1);
+		DeleteObject(mSpotLight2);
 		ReleaseObject(mVertexBuffer);
 		ReleaseObject(mIndexBuffer);
 	}
@@ -155,6 +161,71 @@ namespace Rendering
 		MatrixHelper::SetTranslation(worldMatrix, mPosition);
 
 		XMStoreFloat4x4(&mWorldMatrix, XMLoadFloat4x4(&mScaleMatrix) * worldMatrix);
+
+		Rotate(gameTime);
+	}
+
+	void Mirror::Rotate(const GameTime& gameTime)
+	{
+		XMFLOAT4X4 P;
+		XMStoreFloat4x4(&P, mCamera->ProjectionMatrix());
+
+
+		//Compute picking ray in view space.
+		float vx = (+2.0f*Game::screenX / Game::DefaultScreenWidth - 1.0f) / P(0, 0);
+		float vy = (-2.0f*Game::screenY / Game::DefaultScreenHeight + 1.0f) / P(1, 1);
+
+		// Ray definition in view space.
+		XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+		XMVECTOR rayDir = XMVectorSet(vx, vy, -1.0f, 0.0f);
+
+		// Tranform ray to local space of Mesh via the inverse of both of view and world transform
+
+		XMMATRIX V = mCamera->ViewMatrix();
+		XMMATRIX invView = XMMatrixInverse(&XMMatrixDeterminant(V), V);
+
+
+		XMMATRIX W = XMLoadFloat4x4(&mWorldMatrix);
+		XMMATRIX invWorld = XMMatrixInverse(&XMMatrixDeterminant(W), W);
+
+		XMMATRIX toLocal = XMMatrixMultiply(invView, invWorld);
+
+		rayOrigin = XMVector3TransformCoord(rayOrigin, toLocal);
+		rayDir = XMVector3TransformNormal(rayDir, toLocal);
+
+		// Make the ray direction unit length for the intersection tests.
+		rayDir = XMVector3Normalize(rayDir);
+
+
+
+		float tmin = 0.0;
+		if (mMaterial->mBoundingBox.Intersects(rayOrigin, rayDir, tmin))
+		{
+			float elapsedTime = (float)gameTime.ElapsedGameTime();
+
+			// Rotate directional light
+			XMFLOAT2 rotationAmount = Vector2Helper::Zero;
+			if (mMouse->IsButtonDown(MouseButtonLeft))
+			{
+				rotationAmount.x += LightRotationRate.x * elapsedTime;
+			}
+			if (mMouse->IsButtonDown(MouseButtonRight))
+			{
+				rotationAmount.x -= LightRotationRate.x * elapsedTime;
+			}
+
+			XMMATRIX lightRotationMatrix = XMMatrixIdentity();
+			if (rotationAmount.x != 0)
+			{
+				lightRotationMatrix = XMMatrixRotationY(rotationAmount.x);
+			}
+
+			if (rotationAmount.x != 0.0f)
+			{
+				mSpotLight2->ApplyRotation(lightRotationMatrix);
+				this->ApplyRotation(lightRotationMatrix);				
+			}
+		}
 	}
 
 	void Mirror::Draw(const GameTime& gameTime)
@@ -176,10 +247,10 @@ namespace Rendering
 		mMaterial->WorldViewProjection() << wvp;
 		mMaterial->World() << worldMatrix;
 		mMaterial->ColorTexture() << mTextureShaderResourceView;
-		mMaterial->pos() << mSpotLight->PositionVector();
-		mMaterial->range() << mSpotLight->Radius();
-		mMaterial->dir() << mSpotLight->DirectionVector();
-		mMaterial->cone() << mSpotLight->OuterAngle();
+		mMaterial->pos() << mSpotLight1->PositionVector();
+		mMaterial->range() << mSpotLight1->Radius();
+		mMaterial->dir() << mSpotLight1->DirectionVector();
+		mMaterial->cone() << mSpotLight1->OuterAngle();
 		mMaterial->att() << XMFLOAT3(0.1f, 0.01f, 0.000f);
 		mMaterial->ambient() << XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 		mMaterial->diffuse() << XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);

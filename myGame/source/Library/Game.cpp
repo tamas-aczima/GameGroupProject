@@ -8,6 +8,8 @@ namespace Library
     const UINT Game::DefaultScreenHeight = 600;
 	const UINT Game::DefaultFrameRate = 60;
 	const UINT Game::DefaultMultiSamplingCount = 4;
+	int Game::screenX = 0;
+	int Game::screenY = 0;
 
     Game::Game(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
         : mInstance(instance), mWindowClass(windowClass), mWindowTitle(windowTitle), mShowCommand(showCommand),
@@ -407,6 +409,12 @@ namespace Library
             case WM_DESTROY:
                 PostQuitMessage(0);
                 return 0;
+			case WM_LBUTTONDOWN:
+				Game::screenX = ((int)(short)LOWORD(lParam));
+				Game::screenY = ((int)(short)HIWORD(lParam));
+			case WM_RBUTTONDOWN:
+				Game::screenX = ((int)(short)LOWORD(lParam));
+				Game::screenY = ((int)(short)HIWORD(lParam));
         }
 
         return DefWindowProc(windowHandle, message, wParam, lParam);

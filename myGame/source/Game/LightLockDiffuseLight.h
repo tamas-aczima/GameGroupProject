@@ -21,6 +21,8 @@ namespace DirectX
 namespace Rendering
 {
 	class DiffuseLightingMaterial;
+	class Mirror;
+	class Door;
 
 	class LightLockDiffuseLight : public DrawableGameComponent
 	{
@@ -28,6 +30,7 @@ namespace Rendering
 
 	public:
 		LightLockDiffuseLight(Game& game, Camera& camera, SpotLight& spotLight);
+		LightLockDiffuseLight(Game& game, Camera& camera, SpotLight& spotLight, Mirror& mirror, Door& door1, Door& door2);
 		~LightLockDiffuseLight();
 
 		virtual void Initialize() override;
@@ -56,8 +59,12 @@ namespace Rendering
 
 		XMCOLOR mAmbientColor;
 		SpotLight* mSpotLight;
+		Mirror* mMirror;
+		Door* mDoor1;
+		Door* mDoor2;
 		Keyboard* mKeyboard;
 		XMFLOAT4X4 mWorldMatrix;
+		bool mOpenDoor;
 
 		RenderStateHelper* mRenderStateHelper;
 		SpriteBatch* mSpriteBatch;

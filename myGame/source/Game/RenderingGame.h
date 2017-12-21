@@ -60,7 +60,6 @@ namespace Rendering
 		SpotLight* mSpotLight1; // lightsource
 		SpotLight* mSpotLight2; //mirror
 		Mirror* mMirror1;
-		void UpdateSpotLight(const GameTime& gameTime);
 		static const float LightModulationRate;
 		static const XMFLOAT2 LightRotationRate;
 		ProxyModel* mProxyModel1;

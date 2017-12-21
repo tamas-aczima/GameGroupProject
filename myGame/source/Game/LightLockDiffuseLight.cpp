@@ -18,6 +18,8 @@
 #include <sstream>
 #include "SpotLight.h"
 #include "PointLight.h"
+#include "Mirror.h"
+#include "Door.h"
 
 namespace Rendering
 {
@@ -31,6 +33,19 @@ namespace Rendering
 		mRenderStateHelper(nullptr), mSpriteBatch(nullptr), mSpriteFont(nullptr), mTextPosition(0.0f, 120.0f), mSpriteUI(nullptr), mSpotLight(nullptr)
 	{
 		mSpotLight = &spotLight;
+	}
+
+	LightLockDiffuseLight::LightLockDiffuseLight(Game& game, Camera& camera, SpotLight& spotLight, Mirror& mirror, Door& door1, Door& door2)
+		: DrawableGameComponent(game, camera), mEffect(nullptr), mMaterial(nullptr), mMaterial2(nullptr), mTextureShaderResourceView(nullptr), mTextureShaderResourceView2(nullptr),
+		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0), mIndexCount2(0),
+		mKeyboard(nullptr), mAmbientColor(1, 1, 1, 0),
+		mWorldMatrix(MatrixHelper::Identity), mOpenDoor(false),
+		mRenderStateHelper(nullptr), mSpriteBatch(nullptr), mSpriteFont(nullptr), mTextPosition(0.0f, 120.0f), mSpriteUI(nullptr), mSpotLight(nullptr)
+	{
+		mSpotLight = &spotLight;
+		mMirror = &mirror;
+		mDoor1 = &door1;
+		mDoor2 = &door2;
 	}
 
 	LightLockDiffuseLight::~LightLockDiffuseLight()
@@ -105,7 +120,23 @@ namespace Rendering
 
 	void LightLockDiffuseLight::Update(const GameTime& gameTime)
 	{
-		//UpdateAmbientLight(gameTime);
+		if (mMirror != NULL && mMirror->Direction().x < 0.1f && mMirror->Direction().x > -0.1f)
+		{
+			mOpenDoor = true;
+		}
+		else {
+			mOpenDoor = false;
+		}
+
+		if (mOpenDoor)
+		{
+			if (mDoor1 != NULL) mDoor1->SetVisible(false);
+			if (mDoor2 != NULL) mDoor2->SetVisible(false);
+		}
+		else {
+			if (mDoor1 != NULL) mDoor1->SetVisible(true);
+			if (mDoor2 != NULL) mDoor2->SetVisible(true);
+		}
 	}
 		
 
@@ -150,33 +181,16 @@ namespace Rendering
 		helpLabel << L"Ambient Intensity (+PgUp/-PgDn): " << mAmbientColor.a << "\n";
 		helpLabel << L"Directional Light Intensity (+Home/-End): " << mSpotLight->Color().a << "\n";
 		helpLabel << L"Rotate Directional Light (Arrow Keys)\n";
+		if (mMirror != NULL)
+		{
+			helpLabel << L"Directionx: " << mMirror->Direction().x << "y: " << mMirror->Direction().y << "z: " << mMirror->Direction().z;
+			//helpLabel << L"Open: " << mOpenDoor;
+		}
+
 
 		mSpriteFont->DrawString(mSpriteBatch, helpLabel.str().c_str(), mTextPosition);
 
 		mSpriteBatch->End();
 		mRenderStateHelper->RestoreAll();
 	}
-
-
-
-
-	/*void LightLockDiffuseLight::UpdateAmbientLight(const GameTime& gameTime)
-	{
-		static float ambientIntensity = mAmbientColor.a;
-
-		if (mKeyboard != nullptr)
-		{
-			if (mKeyboard->IsKeyDown(DIK_PGUP) && ambientIntensity < UCHAR_MAX)
-			{
-				ambientIntensity += LightModulationRate * (float)gameTime.ElapsedGameTime();
-				mAmbientColor.a = (UCHAR)XMMin<float>(ambientIntensity, UCHAR_MAX);
-			}
-
-			if (mKeyboard->IsKeyDown(DIK_PGDN) && ambientIntensity > 0)
-			{
-				ambientIntensity -= LightModulationRate * (float)gameTime.ElapsedGameTime();
-				mAmbientColor.a = (UCHAR)XMMax<float>(ambientIntensity, 0);
-			}
-		}
-	}*/
 }

@@ -15,7 +15,7 @@ namespace Rendering
 {
 	RTTI_DEFINITIONS(Level)
 	
-	Level::Level(Game& game, Camera& camera, SpotLight& spotLight1, SpotLight& spotLight2)
+	Level::Level(Game& game, Camera& camera, SpotLight& spotLight1, SpotLight& spotLight2, Mirror& mirror1)
 		: DrawableGameComponent(game, camera)
 	{
 
@@ -209,7 +209,7 @@ namespace Rendering
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-240, 0, 20, 0, -1.6, 0, 3, 1.5, 0.5);
 
-		wall = new Wall(game, camera); //right room entrance wall
+		wall = new Wall(game, camera, spotLight2); //right room entrance wall
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-256, 0, 40, 0, 0, 0, 1.5, 1.5, 0.5);
 
@@ -233,19 +233,19 @@ namespace Rendering
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-256, 0, 80, 0, 0, 0, 1.5, 1.5, 0.5);
 
-		wall = new Wall(game, camera); //left room entrance wall
+		wall = new Wall(game, camera, spotLight2); //left room entrance wall
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-294, 0, 80, 0, 0, 0, 1.5, 1.5, 0.5);
 
-		wall = new Wall(game, camera); //left room
+		wall = new Wall(game, camera, spotLight2); //left room
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-275, 0, 190, 0, 0, 0, 4.5, 1.5, 0.5);
 
-		wall = new Wall(game, camera); //left Roomm 
+		wall = new Wall(game, camera, spotLight2); //left Roomm 
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-310, 0, 120, 0, -1.6, 0, 5, 1.5, 0.5);
 
-		wall = new Wall(game, camera); //Left Roomm backwall 3
+		wall = new Wall(game, camera, spotLight2); //Left Roomm backwall 3
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-210, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
 
@@ -363,7 +363,7 @@ namespace Rendering
 
 		#pragma region LavaLevel
 
-		wall = new Wall(game, camera); 
+		wall = new Wall(game, camera, spotLight2);
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-50, -90, 10, 0, 0, 0, 14, 5, 0.5);
 
@@ -529,32 +529,32 @@ namespace Rendering
 		basicdoor->SetPosition(-275, 0, 80, 0, 1.57, 0, 4, 3.2, 4);
 
 		// first door
-		Door* door = new Door(game, camera);
-		tempCompVector.push_back(door);
-		door->SetPosition(-14, 0, 94, 0, 1.57, 0, 0.1, 0.1, 0.1);
+		Door* door1 = new Door(game, camera);
+		tempCompVector.push_back(door1);
+		door1->SetPosition(-14, 0, 94, 0, 1.57, 0, 0.1, 0.1, 0.1);
 
-		door = new Door(game, camera);
-		tempCompVector.push_back(door);
-		door->SetPosition(-14, 20, 76, 0, 1.57, 3.14, 0.1, 0.1, 0.1);
+		Door* door2 = new Door(game, camera);
+		tempCompVector.push_back(door2);
+		door2->SetPosition(-14, 20, 76, 0, 1.57, 3.14, 0.1, 0.1, 0.1);
 
 		// second door 
 
-		door = new Door(game, camera);
-		tempCompVector.push_back(door);
-		door->SetPosition(-240, 2, 215, 0, 1.57, 0, 0.1, 0.1, 0.1);
+		Door* door3 = new Door(game, camera);
+		tempCompVector.push_back(door3);
+		door3->SetPosition(-240, 2, 215, 0, 1.57, 0, 0.1, 0.1, 0.1);
 
-		door = new Door(game, camera);
-		tempCompVector.push_back(door);
-		door->SetPosition(-240, 22, 197, 0, 1.57, 3.14, 0.1, 0.1, 0.1);
+		Door* door4 = new Door(game, camera);
+		tempCompVector.push_back(door4);
+		door4->SetPosition(-240, 22, 197, 0, 1.57, 3.14, 0.1, 0.1, 0.1);
 
 		// third door
-		door = new Door(game, camera);
-		tempCompVector.push_back(door);
-		door->SetPosition(-499, 2, 215, 0, 1.57, 0, 0.1, 0.1, 0.1);
+		Door* door5 = new Door(game, camera);
+		tempCompVector.push_back(door5);
+		door5->SetPosition(-499, 2, 215, 0, 1.57, 0, 0.1, 0.1, 0.1);
 
-		door = new Door(game, camera);
-		tempCompVector.push_back(door);
-		door->SetPosition(-499, 22, 197, 0, 1.57, 3.14, 0.1, 0.1, 0.1);
+		Door* door6 = new Door(game, camera);
+		tempCompVector.push_back(door6);
+		door6->SetPosition(-499, 22, 197, 0, 1.57, 3.14, 0.1, 0.1, 0.1);
 
 
 #pragma endregion
@@ -566,64 +566,58 @@ namespace Rendering
 		//light source1
 		LightLockDiffuseLight* lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
 		tempCompVector.push_back(lightLock);
-		lightlock->SetPosition(0, 12, 5, 0, 1.57, 1.57, 0.5, 0.5, 0.5);
-
-		//mirror1
-
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(30, 12, 90, 0, 1.57, 1.57, 0.5, 0.5, 0.5);
+		lightLock->SetPosition(0, 2.34, 1.57, 0.5, 0, 10, 36);
 
 		//lock1
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-12, 12, 69, 0, 0, 0.2, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2, mirror1, *door1, *door2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 0, 1.57, 0.5, -12.5, 12, 73);
 
 
 		//light source2
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-230, 12, 15, 0, 2, 1.57, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 2, 1.57, 0.5, -230, 12, 15);
 
 		//mirror 2
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-180, 12, 195, 0, 1.57, 1.57, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 1.57, 1.57, 0.5, -180, 12, 195);
 
 		//lock2
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-235.5, 12, 180, 0, 0, 1.57, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 0, 1.57, 0.5, -235.5, 12, 180);
 
 		//Source 3
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-544, 12, 150, 0, 1, 1.57, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 1, 1.57, 0.5, -544, 12, 150);
 
 		//mirror 3
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-505, 12, 15, 0, 1.57, 1.57, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 1.57, 1.57, 0.5, -505, 12, 15);
 
 		//Lock 3
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-430, 12, 118.5, 0, 1.57, 1.57, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 1.57, 1.57, 0.5, -430, 12, 118.5);
 
 		// lock 4
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-561, 12, 150, 0, -1, 1.57, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, -1, 1.57, 0.5, -561, 12, 150);
 
 		// Mirror 4
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-650, 12, 55, 0, 1.57, 1.57, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 1.57, 1.57, 0.5, -650, 12, 55);
 
 		// Source 4
-		lightlock = new LightLock(game, camera);
-		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-650, 12, 214, 0, 1.57, 1.57, 0.5, 0.5, 0.5);
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 1.57, 1.57, 0.5, -650, 12, 214);
 #pragma endregion
 
 

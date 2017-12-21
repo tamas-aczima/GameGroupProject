@@ -43,13 +43,16 @@ namespace Library
 		const std::vector<GameComponent*>& Components() const;
 		const ServiceContainer& Services() const;
 
+		static int screenX;
+		static int screenY;
+		static const UINT DefaultScreenWidth;
+		static const UINT DefaultScreenHeight;
+
     protected:
         virtual void InitializeWindow();
 		virtual void Shutdown();
 		virtual void InitializeDirectX();
 
-        static const UINT DefaultScreenWidth;
-        static const UINT DefaultScreenHeight;
 		static const UINT DefaultFrameRate;
 		static const UINT DefaultMultiSamplingCount;
 

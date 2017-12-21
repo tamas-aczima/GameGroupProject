@@ -55,7 +55,7 @@ namespace Rendering
 
 		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
 		//Load the texture
-		mTextureName = L"Content\\Textures\\BasicDoor.jpg";
+		mTextureName = L"Content\\Textures\\door.jpg";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
 	}

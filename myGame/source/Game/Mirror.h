@@ -6,6 +6,7 @@ using namespace Library;
 
 namespace Library
 {
+	class Mouse;
 	class Effect;
 	class SpotLight;
 }
@@ -18,7 +19,7 @@ namespace Rendering
 		RTTI_DECLARATIONS(Mirror, DrawableGameComponent)
 
 	public:
-		Mirror(Game& game, Camera& camera, SpotLight& spotLight);
+		Mirror(Game& game, Camera& camera, Mouse& mouse, SpotLight& spotLight1, SpotLight& spotLight2);
 		~Mirror();
 
 		const XMFLOAT3& Position() const;
@@ -47,13 +48,18 @@ namespace Rendering
 		Mirror(const Mirror& rhs);
 		Mirror& operator=(const Mirror& rhs);
 
+		static const XMFLOAT2 LightRotationRate;
+		void Rotate(const GameTime& gameTime);
+
 		Effect* mEffect;
 		DiffuseLightingMaterial* mMaterial;
 		ID3D11Buffer* mVertexBuffer;
 		ID3D11Buffer* mIndexBuffer;
 		UINT mIndexCount;
 
-		SpotLight* mSpotLight;
+		SpotLight* mSpotLight1;
+		SpotLight* mSpotLight2;
+		Mouse* mMouse;
 
 		std::wstring mTextureName;
 

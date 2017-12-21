@@ -164,10 +164,12 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasicDoor.cpp" />
     <ClCompile Include="BronzeKey.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="GoldKey.cpp" />
+    <ClCompile Include="Lava.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LightLock.cpp" />
     <ClCompile Include="LightLockDiffuseLight.cpp" />
@@ -184,10 +186,12 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicDoor.h" />
     <ClInclude Include="BronzeKey.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="GoldKey.h" />
+    <ClInclude Include="Lava.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LightLock.h" />
     <ClInclude Include="LightLockDiffuseLight.h" />

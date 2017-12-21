@@ -90,48 +90,31 @@ namespace Rendering
 		//spotlight2 for mirror
 		mSpotLight2 = new SpotLight(*this);
 		mSpotLight2->SetRadius(100.0f);
-		mSpotLight2->SetPosition(33.0f, 10.0f, 70.0f);
+		mSpotLight2->SetPosition(33.0f, 10.0f, 73.0f);
 		mSpotLight2->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
 		mSpotLight2->SetInnerAngle(0.005f);
 		mSpotLight2->SetOuterAngle(60.0f);
+		mSpotLight2->ApplyRotation(XMMatrixRotationY(1.57f));
 
 		//arrow for mirror
 		mProxyModel2 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
 		mProxyModel2->Initialize();
-		mProxyModel2->SetPosition(33.0f, 10.0f, 70.0f);
+		mProxyModel2->SetPosition(33.0f, 10.0f, 73.0f);
 		mProxyModel2->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
 		mComponents.push_back(mProxyModel2);
 
-		mMirror1 = new Mirror(*this, *mCamera, *mSpotLight1);
+		mMirror1 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight1, *mSpotLight2);
 		mComponents.push_back(mMirror1);
-		mMirror1->SetPosition(33.0f, 10.0f, 70.0f);
+		mMirror1->SetPosition(33.0f, 10.0f, 73.0f);
+		mMirror1->ApplyRotation(XMMatrixRotationY(1.57f));
 
-		mLevel = new Level(*this, *mCamera, *mSpotLight1, *mSpotLight2);
+		mLevel = new Level(*this, *mCamera, *mSpotLight1, *mSpotLight2, *mMirror1);
 		mComponents = mLevel->UpdateComponent(mComponents);
-
-		mTreasureChest = new TreasureChest(*this, *mCamera);
-		mComponents.push_back(mTreasureChest);
-
-		mTreasureChest->SetPosition(0, 0, -50.0f, -1.57f, 0, 0, 1,1,1);
-
-		mRock = new Rock(*this, *mCamera);
-		mComponents.push_back(mRock);
-		mRock->SetPosition(300, 0, -50, 0, 0, 0, 20,1,1);
-
-		Rock* mRock2 = new Rock(*this, *mCamera);
-		mComponents.push_back(mRock2);
-		mRock2->SetPosition(300, 0, -300, 0, 0, 0, 20,1,1);
 
 	    player = new Player(*this, *mCamera);
 		player->Initialize();
 		player->SetUpPosition(13, 0, 45);
 		mComponents.push_back(player);
-	
-		//player->SetPosition(0,0,10.0f,0,0,0,1,1,1);
-
-		/*mAnimation = new PlayerAnimation(*this, *mCamera);
-		mComponents.push_back(mAnimation);
-		mAnimation->SetPosition(0, 0, -10, 0, 0, 0, 1, 1, 1);*/
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
@@ -149,8 +132,6 @@ namespace Rendering
 
 	void RenderingGame::Update(const GameTime &gameTime)
 	{
-		//spotlight
-		UpdateSpotLight(gameTime);
 
 		mFpsComponent->Update(gameTime);
 
@@ -288,14 +269,14 @@ namespace Rendering
 			//Player movement------
 			if (mKeyboard->IsKeyDown(DIK_W))
 			{
-				player->x -= player->GetLocalForward().x * gameTime.ElapsedGameTime() * 5;
-				player->z -= player->GetLocalForward().y * gameTime.ElapsedGameTime() * 5;
+				player->x -= player->GetLocalForward().x * gameTime.ElapsedGameTime() * 10;
+				player->z -= player->GetLocalForward().y * gameTime.ElapsedGameTime() * 10;
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_S))
 			{
-				player->x += player->GetLocalForward().x * gameTime.ElapsedGameTime() * 5;
-				player->z += player->GetLocalForward().y * gameTime.ElapsedGameTime() * 5;
+				player->x += player->GetLocalForward().x * gameTime.ElapsedGameTime() * 10;
+				player->z += player->GetLocalForward().y * gameTime.ElapsedGameTime() * 10;
 			}
 			//----------------------------
 			
@@ -427,69 +408,6 @@ namespace Rendering
 		}
 		
 
-	}
-
-	void RenderingGame::UpdateSpotLight(const GameTime& gameTime)
-	{
-		static float directionalIntensity = mSpotLight2->Color().a;
-		float elapsedTime = (float)gameTime.ElapsedGameTime();
-
-		// Update directional light intensity		
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD7) && directionalIntensity < UCHAR_MAX)
-		{
-			directionalIntensity += LightModulationRate * elapsedTime;
-
-			XMCOLOR directionalLightColor = mSpotLight2->Color();
-			directionalLightColor.a = (UCHAR)XMMin<float>(directionalIntensity, UCHAR_MAX);
-			mSpotLight2->SetColor(directionalLightColor);
-		}
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD9) && directionalIntensity > 0)
-		{
-			directionalIntensity -= LightModulationRate * elapsedTime;
-
-			XMCOLOR directionalLightColor = mSpotLight2->Color();
-			directionalLightColor.a = (UCHAR)XMMax<float>(directionalIntensity, 0.0f);
-			mSpotLight2->SetColor(directionalLightColor);
-		}
-
-		// Rotate directional light
-		XMFLOAT2 rotationAmount = Vector2Helper::Zero;
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD4))
-		{
-			rotationAmount.x += LightRotationRate.x * elapsedTime;
-		}
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD6))
-		{
-			rotationAmount.x -= LightRotationRate.x * elapsedTime;
-		}
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD8))
-		{
-			rotationAmount.y += LightRotationRate.y * elapsedTime;
-		}
-		if (mKeyboard->IsKeyDown(DIK_NUMPAD2))
-		{
-			rotationAmount.y -= LightRotationRate.y * elapsedTime;
-		}
-
-		XMMATRIX lightRotationMatrix = XMMatrixIdentity();
-		if (rotationAmount.x != 0)
-		{
-			lightRotationMatrix = XMMatrixRotationY(rotationAmount.x);
-		}
-
-		if (rotationAmount.y != 0)
-		{
-			XMMATRIX lightRotationAxisMatrix = XMMatrixRotationAxis(mSpotLight2->RightVector(), rotationAmount.y);
-			lightRotationMatrix *= lightRotationAxisMatrix;
-		}
-
-		if (rotationAmount.x != 0.0f || rotationAmount.y != 0.0f)
-		{
-			mSpotLight2->ApplyRotation(lightRotationMatrix);
-			mProxyModel2->ApplyRotation(lightRotationMatrix);
-
-			mMirror1->ApplyRotation(lightRotationMatrix);
-		}
 	}
 
 }

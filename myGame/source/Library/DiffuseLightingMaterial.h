@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Material.h"
+#include <DirectXCollision.h>
 
 using namespace Library;
 
@@ -42,6 +43,8 @@ namespace Rendering
         virtual void CreateVertexBuffer(ID3D11Device* device, const Mesh& mesh, ID3D11Buffer** vertexBuffer) const override;
         void CreateVertexBuffer(ID3D11Device* device, DiffuseLightingMaterialVertex* vertices, UINT vertexCount, ID3D11Buffer** vertexBuffer) const;
         virtual UINT VertexSize() const override;
+
+		DirectX::BoundingBox mBoundingBox;
     };
 }
 
