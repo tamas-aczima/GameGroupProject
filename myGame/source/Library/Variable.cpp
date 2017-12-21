@@ -55,6 +55,32 @@ namespace Library
 		return *this;
 	}
 
+	Variable& Variable::operator<<(XMFLOAT3 value)
+	{
+		ID3DX11EffectVectorVariable* variable = mVariable->AsVector();
+		if (variable->IsValid() == false)
+		{
+			throw GameException("Invalid effect variable cast.");
+		}
+
+		variable->SetFloatVector(reinterpret_cast<const float*>(&value));
+
+		return *this;
+	}
+
+	Variable& Variable::operator<<(XMFLOAT4 value)
+	{
+		ID3DX11EffectVectorVariable* variable = mVariable->AsVector();
+		if (variable->IsValid() == false)
+		{
+			throw GameException("Invalid effect variable cast.");
+		}
+
+		variable->SetFloatVector(reinterpret_cast<const float*>(&value));
+
+		return *this;
+	}
+
 	Variable& Variable::operator<<(ID3D11ShaderResourceView* value)
 	{
 		ID3DX11EffectShaderResourceVariable* variable = mVariable->AsShaderResource();

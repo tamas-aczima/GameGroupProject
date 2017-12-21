@@ -20,6 +20,8 @@ namespace Library
 	class FirstPersonCamera;
 	class FpsComponent;
 	class RenderStateHelper;
+	class SpotLight;
+	class ProxyModel;
 }
 
 namespace Rendering
@@ -29,6 +31,7 @@ namespace Rendering
 	class Rock;
 	class Player;
 	class PlayerAnimation;
+	class Mirror;
 
 	class RenderingGame : public Game
 	{
@@ -53,6 +56,15 @@ namespace Rendering
 		FpsComponent* mFpsComponent;
 		RenderStateHelper* mRenderStateHelper;
 
+		//spotlight stuff
+		SpotLight* mSpotLight1; // lightsource
+		SpotLight* mSpotLight2; //mirror
+		Mirror* mMirror1;
+		void UpdateSpotLight(const GameTime& gameTime);
+		static const float LightModulationRate;
+		static const XMFLOAT2 LightRotationRate;
+		ProxyModel* mProxyModel1;
+		ProxyModel* mProxyModel2;
 
 		Level* mLevel;
 		TreasureChest* mTreasureChest;

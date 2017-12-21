@@ -69,6 +69,9 @@
     <ClCompile Include="Floor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LightLockDiffuseLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h">
@@ -119,6 +122,9 @@
     <ClInclude Include="Floor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LightLockDiffuseLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Content\Effects\BasicEffect.fx">
@@ -128,6 +134,9 @@
       <Filter>Resource Files\Effects</Filter>
     </FxCompile>
     <FxCompile Include="Content\Effects\SkinnedModel.fx">
+      <Filter>Resource Files\Effects</Filter>
+    </FxCompile>
+    <FxCompile Include="Content\Effects\DiffuseLighting.fx">
       <Filter>Resource Files\Effects</Filter>
     </FxCompile>
   </ItemGroup>

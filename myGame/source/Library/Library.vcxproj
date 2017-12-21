@@ -171,6 +171,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColorHelper.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="DiffuseLightingMaterial.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DrawableGameComponent.h" />
     <ClInclude Include="Effect.h" />
@@ -192,6 +193,8 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Pass.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="ProxyModel.h" />
+    <ClInclude Include="RasterizerStates.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderStateHelper.h" />
     <ClInclude Include="RTTI.h" />
@@ -215,6 +218,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="BufferContainer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColorHelper.cpp" />
+    <ClCompile Include="DiffuseLightingMaterial.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="DrawableGameComponent.cpp" />
     <ClCompile Include="Effect.cpp" />
@@ -236,6 +240,8 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pass.cpp" />
     <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="ProxyModel.cpp" />
+    <ClCompile Include="RasterizerStates.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RenderStateHelper.cpp" />
     <ClCompile Include="SceneNode.cpp" />

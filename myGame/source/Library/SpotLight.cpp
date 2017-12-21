@@ -5,8 +5,8 @@ namespace Library
 {
 	RTTI_DEFINITIONS(SpotLight)
 
-	const float SpotLight::DefaultInnerAngle = 0.75f;
-	const float SpotLight::DefaultOuterAngle = 0.25f;
+		const float SpotLight::DefaultInnerAngle = 0.75f;
+		const float SpotLight::DefaultOuterAngle = 0.25f;
 
 	SpotLight::SpotLight(Game& game)
 		: PointLight(game), mInnerAngle(DefaultInnerAngle), mOuterAngle(DefaultOuterAngle),

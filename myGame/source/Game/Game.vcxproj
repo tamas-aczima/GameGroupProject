@@ -170,6 +170,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClCompile Include="GoldKey.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LightLock.cpp" />
+    <ClCompile Include="LightLockDiffuseLight.cpp" />
     <ClCompile Include="Mirror.cpp" />
     <ClCompile Include="ModelDemo.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -189,6 +190,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
     <ClInclude Include="GoldKey.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LightLock.h" />
+    <ClInclude Include="LightLockDiffuseLight.h" />
     <ClInclude Include="Mirror.h" />
     <ClInclude Include="ModelDemo.h" />
     <ClInclude Include="Player.h" />
@@ -205,6 +207,7 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Content\Effects\DiffuseLighting.fx" />
     <FxCompile Include="Content\Effects\SkinnedModel.fx" />
     <FxCompile Include="Content\Effects\TextureEffect.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
