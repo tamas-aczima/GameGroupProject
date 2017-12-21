@@ -2,6 +2,11 @@
 
 #define FLIP_TEXTURE_Y 0
 
+cbuffer CBufferPerFrame
+{
+	float4 AmbientColor = { 1.0f, 1.0f, 1.0f, 0.0f };
+}
+
 cbuffer CBufferPerObject
 {
 	float4x4 WorldViewProjection : WORLVIEWPROJECTION;
@@ -50,6 +55,12 @@ float2 get_corrected_texture_coordinate(float2 textureCoordinate)
 #endif
 }
 
+float3 get_vector_color_contribution(float4 light, float3 color)
+{
+	// Color (.rgb) * Intensity (.a)
+	return light.rgb * light.a * color;
+}
+
 /************* Vertex Shader *************/
 
 VS_OUTPUT vertex_shader(VS_INPUT IN)
@@ -66,7 +77,16 @@ VS_OUTPUT vertex_shader(VS_INPUT IN)
 
 float4 pixel_shader(VS_OUTPUT IN) : SV_Target
 {
-	return ColorTexture.Sample(ColorSampler, IN.TextureCoordinate);
+	float4 OUT = (float4)0;
+
+	float4 color = ColorTexture.Sample(ColorSampler, IN.TextureCoordinate);
+	float3 ambient = get_vector_color_contribution(AmbientColor, color.rgb);
+
+
+	OUT.rgb = ambient;
+	OUT.a = AmbientColor.a;
+
+	return OUT;
 }
 
 /************* Techniques *************/
