@@ -7,6 +7,7 @@
 #include "GameTime.h"
 #include "GameComponent.h"
 #include "ServiceContainer.h"
+#include <fstream>
 
 using namespace Library;
 
@@ -20,6 +21,7 @@ namespace Library
 
         HINSTANCE Instance() const;
         HWND WindowHandle() const;
+		HWND WindowGameMenu() const;
         const WNDCLASSEX& Window() const; 
         const std::wstring& WindowClass() const;
         const std::wstring& WindowTitle() const;
@@ -34,7 +36,7 @@ namespace Library
 		const D3D11_TEXTURE2D_DESC& BackBufferDesc() const;
 		const D3D11_VIEWPORT& Viewport() const;
 
-        virtual void Run();
+        virtual int Run();
         virtual void Exit();
         virtual void Initialize();
         virtual void Update(const GameTime& gameTime);
@@ -43,15 +45,25 @@ namespace Library
 		const std::vector<GameComponent*>& Components() const;
 		const ServiceContainer& Services() const;
 
+		HWND mWindowHandle;
+		HWND mWindowGameMenu;
+
+		static bool gameStart;
+		void initialGame(bool gameStarted);
+		static POINT menuPosition;
+
 		static int screenX;
 		static int screenY;
 		static const UINT DefaultScreenWidth;
 		static const UINT DefaultScreenHeight;
 
     protected:
-        virtual void InitializeWindow();
+		virtual void InitializeWindow();
 		virtual void Shutdown();
 		virtual void InitializeDirectX();
+		virtual void InitializeGameMenu();
+
+	
 
 		static const UINT DefaultFrameRate;
 		static const UINT DefaultMultiSamplingCount;
@@ -61,7 +73,7 @@ namespace Library
         std::wstring mWindowTitle;
         int mShowCommand;
         
-        HWND mWindowHandle;
+        
         WNDCLASSEX mWindow;		
 
         UINT mScreenWidth;
@@ -96,6 +108,13 @@ namespace Library
         Game& operator=(const Game& rhs);
 
         POINT CenterWindow(int windowWidth, int windowHeight);
-        static LRESULT WINAPI WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);		
+/*        static LRESULT WINAPI WndProcGameMenu(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);	*/	
+
+		static LRESULT WINAPI WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);
+
+		static void GameMenu(HWND hwnd, int option);
+		static void LoadImages();
+		static void DeleteMenu();
+		static void PauseMenu(HWND windowHandle);
     };
 }
