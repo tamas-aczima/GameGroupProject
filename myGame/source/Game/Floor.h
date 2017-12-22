@@ -7,17 +7,18 @@ using namespace Library;
 namespace Library
 {
 	class Effect;
-	class TextureMaterial;
+	class SpotLight;
 }
 
 namespace Rendering
 {
+	class DiffuseLightingMaterial;
 	class Floor : public DrawableGameComponent
 	{
 		RTTI_DECLARATIONS(Floor, DrawableGameComponent)
 
 	public:
-		Floor(Game& game, Camera& camera);
+		Floor(Game& game, Camera& camera, SpotLight& spotLight);
 		~Floor();
 
 		virtual void Initialize() override;
@@ -29,13 +30,15 @@ namespace Rendering
 		Floor(const Floor& rhs);
 		Floor& operator=(const Floor& rhs);
 
-		Effect* mTextureEffect;
-		TextureMaterial* mTextureMaterial;
+		Effect* mEffect;
+		DiffuseLightingMaterial* mMaterial;
 		XMCOLOR mAmbientColor;
 
 		ID3D11Buffer* mVertexBuffer;
 		ID3D11Buffer* mIndexBuffer;
 		UINT mIndexCount;
+
+		SpotLight* mSpotLight;
 
 		std::wstring mTextureName;
 
