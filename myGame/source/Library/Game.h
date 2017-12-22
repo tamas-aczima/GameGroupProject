@@ -61,9 +61,6 @@ namespace Library
 		virtual void InitializeWindow();
 		virtual void Shutdown();
 		virtual void InitializeDirectX();
-		virtual void InitializeGameMenu();
-
-	
 
 		static const UINT DefaultFrameRate;
 		static const UINT DefaultMultiSamplingCount;
@@ -108,7 +105,6 @@ namespace Library
         Game& operator=(const Game& rhs);
 
         POINT CenterWindow(int windowWidth, int windowHeight);
-/*        static LRESULT WINAPI WndProcGameMenu(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);	*/	
 
 		static LRESULT WINAPI WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);
 
