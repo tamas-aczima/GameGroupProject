@@ -57,9 +57,17 @@ namespace Rendering
 		RenderStateHelper* mRenderStateHelper;
 
 		//spotlight stuff
-		SpotLight* mSpotLight1; // lightsource
-		SpotLight* mSpotLight2; //mirror
-		Mirror* mMirror1;
+		SpotLight* mSpotLight1; // lightsource1
+		SpotLight* mSpotLight2; // mirror1
+		Mirror* mMirror1;       // mirror1
+		SpotLight* mSpotLight3; // lightsource2
+		SpotLight* mSpotLight4; // mirror2
+		Mirror* mMirror2;       // mirror2
+		SpotLight* mSpotLight5; // mirror3
+		Mirror* mMirror3;		// mirror3
+		SpotLight* mSpotLight6; // mirror4
+		Mirror* mMirror4;		// mirror4
+
 		static const float LightModulationRate;
 		static const XMFLOAT2 LightRotationRate;
 		ProxyModel* mProxyModel1;

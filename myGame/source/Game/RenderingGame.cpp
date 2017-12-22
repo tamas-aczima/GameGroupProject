@@ -65,7 +65,7 @@ namespace Rendering
 
 		mRenderStateHelper = new RenderStateHelper(*this);
 
-		//spotlight1 coming from lightsource 
+		//spotlight1 coming from lightsource1 
 		mSpotLight1 = new SpotLight(*this);
 		mSpotLight1->SetRadius(100.0f);
 		mSpotLight1->SetPosition(0.0f, 10.0f, 36.0f);
@@ -73,21 +73,17 @@ namespace Rendering
 		mSpotLight1->SetInnerAngle(0.005f);
 		mSpotLight1->SetOuterAngle(60.0f);
 
-		//arrow for lightsource
+		//arrow for lightsource1
 		mProxyModel1 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
 		mProxyModel1->Initialize();
 		mProxyModel1->SetPosition(0.0f, 10.0f, 36.0f);
 		mProxyModel1->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
 		mComponents.push_back(mProxyModel1);
 
-		//set rotation for spotlight
-		XMMATRIX lightRotationMatrix = XMMatrixIdentity();
-		lightRotationMatrix = XMMatrixRotationY(-2.36f);
+		mSpotLight1->ApplyRotation(XMMatrixRotationY(-2.36f));
+		mProxyModel1->ApplyRotation(XMMatrixRotationY(-2.36f));
 
-		mSpotLight1->ApplyRotation(lightRotationMatrix);
-		mProxyModel1->ApplyRotation(lightRotationMatrix);
-
-		//spotlight2 for mirror
+		//spotlight2 for mirror1
 		mSpotLight2 = new SpotLight(*this);
 		mSpotLight2->SetRadius(100.0f);
 		mSpotLight2->SetPosition(33.0f, 10.0f, 73.0f);
@@ -96,7 +92,7 @@ namespace Rendering
 		mSpotLight2->SetOuterAngle(60.0f);
 		mSpotLight2->ApplyRotation(XMMatrixRotationY(1.57f));
 
-		//arrow for mirror
+		//arrow for mirror1
 		mProxyModel2 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
 		mProxyModel2->Initialize();
 		mProxyModel2->SetPosition(33.0f, 10.0f, 73.0f);
@@ -108,7 +104,58 @@ namespace Rendering
 		mMirror1->SetPosition(33.0f, 10.0f, 73.0f);
 		mMirror1->ApplyRotation(XMMatrixRotationY(1.57f));
 
-		mLevel = new Level(*this, *mCamera, *mSpotLight1, *mSpotLight2, *mMirror1);
+		//spotlight3 coming from lightsource2
+		mSpotLight3 = new SpotLight(*this);
+		mSpotLight3->SetRadius(100.0f);
+		mSpotLight3->SetPosition(-225.0f, 12.0f, 10.0f);
+		mSpotLight3->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight3->SetInnerAngle(0.005f);
+		mSpotLight3->SetOuterAngle(60.0f);
+		mSpotLight3->ApplyRotation(XMMatrixRotationY(-2.36f));
+
+		//spotlight4 for mirror2
+		mSpotLight4 = new SpotLight(*this);
+		mSpotLight4->SetRadius(100.0f);
+		mSpotLight4->SetPosition(-190.0f, 12.0f, 40.0f);
+		mSpotLight4->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight4->SetInnerAngle(0.005f);
+		mSpotLight4->SetOuterAngle(60.0f);
+		mSpotLight4->ApplyRotation(XMMatrixRotationY(1.57f));
+
+		mMirror2 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight3, *mSpotLight4);
+		mComponents.push_back(mMirror2);
+		mMirror2->SetPosition(-190.0f, 12.0f, 40.0f);
+		mMirror2->ApplyRotation(XMMatrixRotationY(1.57f));
+
+		//spotlight5 for mirror3
+		mSpotLight5 = new SpotLight(*this);
+		mSpotLight5->SetRadius(100.0f);
+		mSpotLight5->SetPosition(-234.0f, 12.0f, 80.0f);
+		mSpotLight5->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight5->SetInnerAngle(0.005f);
+		mSpotLight5->SetOuterAngle(60.0f);
+		mSpotLight5->ApplyRotation(XMMatrixRotationY(-1.57f));
+
+		mMirror3 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight4, *mSpotLight5);
+		mComponents.push_back(mMirror3);
+		mMirror3->SetPosition(-234.0f, 12.0f, 80.0f);
+		mMirror3->ApplyRotation(XMMatrixRotationY(-1.57f));
+
+		//spotlight6 for mirror4
+		mSpotLight6 = new SpotLight(*this);
+		mSpotLight6->SetRadius(100.0f);
+		mSpotLight6->SetPosition(-183.0f, 12.0f, 115.0f);
+		mSpotLight6->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight6->SetInnerAngle(0.005f);
+		mSpotLight6->SetOuterAngle(60.0f);
+		mSpotLight6->ApplyRotation(XMMatrixRotationY(1.57f));
+
+		mMirror4 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight5, *mSpotLight6);
+		mComponents.push_back(mMirror4);
+		mMirror4->SetPosition(-183.0f, 12.0f, 115.0f);
+		mMirror4->ApplyRotation(XMMatrixRotationY(1.57f));
+
+		mLevel = new Level(*this, *mCamera, *mSpotLight1, *mSpotLight2, *mSpotLight3, *mSpotLight4, *mSpotLight5, *mSpotLight6, *mMirror1, *mMirror2, *mMirror3, *mMirror4);
 		mComponents = mLevel->UpdateComponent(mComponents);
 
 	    player = new Player(*this, *mCamera);
