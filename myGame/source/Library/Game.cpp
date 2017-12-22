@@ -2,16 +2,34 @@
 #include "GameException.h"
 #include "DrawableGameComponent.h"
 
+#include <windows.h>
+#include <fstream>
+#include <cwchar>
+#include <string>
+#include <iostream>
+#include <algorithm>
+
 namespace Library
 {
-    const UINT Game::DefaultScreenWidth = 800;
-    const UINT Game::DefaultScreenHeight = 600;
+	const UINT Game::DefaultScreenWidth = 800;//1920; 
+	const UINT Game::DefaultScreenHeight = 600;//1080; 
 	const UINT Game::DefaultFrameRate = 60;
 	const UINT Game::DefaultMultiSamplingCount = 4;
 
+	bool Game::gameStart = false;
+	POINT Game::menuPosition;
+	//HWND mGameLogo;
+	HBITMAP mGameLogoImage;
+	HWND mGameLogo, mGameStart, mStartButton, mHighScore, mHelp, mCredits, mExit;
+	wchar_t buff[4096];
+	LPCWSTR highScoreText;
+
+	void readRecordsFromFile();
+	//static void Game:: initialGame(bool gameStarted);
+
     Game::Game(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
         : mInstance(instance), mWindowClass(windowClass), mWindowTitle(windowTitle), mShowCommand(showCommand),
-          mWindowHandle(), mWindow(),
+          mWindowHandle(), mWindow(), mWindowGameMenu(),
           mScreenWidth(DefaultScreenWidth), mScreenHeight(DefaultScreenHeight),
           mGameClock(), mGameTime(),
 		  mFeatureLevel(D3D_FEATURE_LEVEL_9_1),
@@ -28,6 +46,241 @@ namespace Library
     {
     }
 
+
+	void readRecordsFromFile() {
+
+		HANDLE hFile, hAppend;
+		DWORD dwBytesRead, dwBytesWritten, dwPos;
+
+		LPCWSTR fname = L"Content\\HighScore.txt";
+		LPCWSTR fname2 = L"Content\\HighScore2.txt";
+		//char buff[4096];
+
+
+		//Open the existing file
+		hFile = CreateFile(fname, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		if (hFile == INVALID_HANDLE_VALUE)
+		{
+			printf("Could Not Open!");
+		}
+		else
+		{
+			printf("Opened successfully.");
+		}
+
+		hAppend = CreateFile(fname2, GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+
+		do
+		{
+			if (ReadFile(hFile, buff, 4096, &dwBytesRead, NULL))
+			{
+				dwPos = SetFilePointer(hAppend, 0, NULL, FILE_END);
+
+				if (LockFile(hAppend, dwPos, 0, dwBytesRead, 0) != 0)
+					WriteFile(hAppend, buff, dwBytesRead, &dwBytesWritten, NULL);
+			}
+		} while (dwBytesRead == 4096);
+
+			//Close file
+			if (CloseHandle(hFile) != 0)
+				printf("File closed!");
+			if (CloseHandle(hAppend) != 0)
+				printf("File 2 closed!");
+
+
+
+			highScoreText = (LPCWSTR)buff;
+
+			system("pause");
+
+		//LPCWSTR 
+
+		//ReadFile()
+
+		//ifstream file("zombie.txt");
+
+
+		//if (!file.is_open())
+		//{
+		//	cout << "Error opening file." << endl;
+
+		//	return;
+		//}
+		//if (!file.good())
+		//{
+		//	cout << "not a good file." << endl;
+		//	return;
+		//}
+
+		//while (!file.eof())
+		//{
+		//	map<string, int> answerTable;
+		//	string roomName; //for room name
+		//	vector<string> roomDescription;
+		//	AdventureRoom *room = new AdventureRoom();
+		//	MotionTableEntry *motionTable = new MotionTableEntry();
+		//	string strRoomNo;
+		//	int roomNo;
+		//	getline(file, strRoomNo);
+
+		//	roomNo = atoi(strRoomNo.c_str());
+		//	room->setRoomNumber(roomNo);
+		//	motionTable->setDestinationRoom(roomNo);
+
+		//	while (true)
+		//	{
+		//		string line;
+		//		getline(file, line);
+		//		if (line != "*****")
+		//		{
+		//			roomName = line;
+		//		}
+		//		else
+		//		{
+		//			break;
+		//		}
+		//	}
+
+		//	room->setRoomName(roomName);
+
+		//	string line, line2;
+		//	getline(file, line);
+
+		//	while (line != "=====")
+		//	{
+		//		line2 = line2 + line + "\n";
+		//		motionTable->setDirection(line2);
+
+		//		getline(file, line);
+		//	}
+
+		//	while (true)
+		//	{
+		//		string line;
+		//		getline(file, line);
+		//		if (line != "-----")
+		//		{
+		//			roomDescription.push_back(line);
+		//		}
+		//		else
+		//		{
+		//			break;
+		//		}
+
+		//	}
+
+		//	room->setDescription(roomDescription);
+
+		//	while (true)
+		//	{
+		//		string line;
+		//		getline(file, line);
+		//		if (line == "+++++")
+		//		{
+		//			break;
+		//		}
+		//		else
+		//		{
+		//			size_t sep = line.find(" ");
+		//			size_t sep2 = line.find(" ", sep + 1);
+		//			size_t sep3 = line.find(" ", sep2 + 1);
+		//			size_t sep4 = line.find(" ", sep3 + 1);
+		//			string name = line.substr(0, sep);
+		//			int space = atoi((line.substr(sep + 1)).c_str());
+		//			int type = atoi((line.substr(sep2 + 1)).c_str());
+		//			int usable = atoi((line.substr(sep3 + 1)).c_str());
+		//			string objectDesc = line.substr(sep4 + 1);
+		//			if (type == 1)
+		//			{
+		//				Key* newObject = new Key(name, space, usable, objectDesc);
+
+		//				room->setObjectsInRoom(newObject);
+		//			}
+		//			if (type == 2)
+		//			{
+		//				Lock* newObject = new Lock(name, space, usable, objectDesc);
+
+		//				room->setObjectsInRoom(newObject);
+		//			}
+		//			if (type == 3)
+		//			{
+		//				Container* newObject = new Container(name, space, usable, objectDesc);
+
+		//				room->setObjectsInRoom(newObject);
+		//			}
+		//			if (type == 4)
+		//			{
+		//				BackPack* newObject = new BackPack(name, space, usable, objectDesc);
+
+		//				room->setObjectsInRoom(newObject);
+		//			}
+		//			if (type == 5)
+		//			{
+		//				Food* newObject = new Food(name, space, usable, objectDesc);
+
+		//				room->setObjectsInRoom(newObject);
+		//			}
+		//			if (type == 6)
+		//			{
+		//				Drink* newObject = new Drink(name, space, usable, objectDesc);
+
+		//				room->setObjectsInRoom(newObject);
+		//			}
+		//			if (type == 7)
+		//			{
+		//				Clothes* newObject = new Clothes(name, space, usable, objectDesc);
+
+		//				room->setObjectsInRoom(newObject);
+		//			}
+		//			if (type == 8)
+		//			{
+		//				Weapon* newObject = new Weapon(name, space, usable, objectDesc);
+
+		//				room->setObjectsInRoom(newObject);
+		//			}
+		//			if (type == 9)
+		//			{
+		//				Shoes* newObject = new Shoes(name, space, usable, objectDesc);
+
+		//				room->setObjectsInRoom(newObject);
+		//			}
+		//		}
+		//	}
+
+		//	while (true)
+		//	{
+		//		string lineQ;
+		//		getline(file, lineQ);
+		//		if (lineQ.length() == 0)
+		//		{
+		//			break;
+		//		}
+		//		else
+		//		{
+		//			size_t sep = lineQ.find(" ");
+		//			string key = lineQ.substr(0, sep);
+		//			if (lineQ.find("/") != string::npos)
+		//			{
+		//				size_t sep2 = lineQ.find("/");
+		//				string keyName = lineQ.substr(sep2 + 1);
+		//				motionTable->setDirectioninfo(key);
+		//				motionTable->setKeyName(keyName);
+		//			}
+		//			int value = atoi((lineQ.substr(sep + 1)).c_str());
+		//			answerTable[key] = value;
+		//			room->setAnswerTable(answerTable);
+		//		}
+		//	}
+		//	mapQuiz[roomNo] = room;
+
+		//	motionTableVec.push_back(motionTable);
+		//}
+	}
+
+
+
     Game::~Game()
     {
     }
@@ -41,6 +294,11 @@ namespace Library
     {
         return mWindowHandle;
     }
+
+	HWND Game::WindowGameMenu() const
+	{
+		return mWindowGameMenu;
+	}
 
     const WNDCLASSEX& Game::Window() const
     {
@@ -107,34 +365,64 @@ namespace Library
 		return mServices;
 	}
         
-    void Game::Run()
+    int Game::Run()
     {
-        InitializeWindow();
-		InitializeDirectX();
-        Initialize();
+		//InitializeGameMenu();
+		//InitializeWindow();
+		//InitializeDirectX();
+        //Initialize();
 
-        MSG message;
+
+
+	
+		InitializeWindow();
+		InitializeDirectX();
+		Initialize();
+
+
+
+		//initialGame(gameStart);
+
+		MSG message = {0}; //New code
         ZeroMemory(&message, sizeof(message));
         
         mGameClock.Reset();		
 
         while(message.message != WM_QUIT)
         {
-            if (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE))
+            if (PeekMessage(&message, 0, 0, 0, PM_REMOVE))//nullptr, 0, 0, PM_REMOVE))
             {
                 TranslateMessage(&message);
                 DispatchMessage(&message);
             }
             else
             {
-                mGameClock.UpdateGameTime(mGameTime);
-                Update(mGameTime);
-                Draw(mGameTime);
+				if (gameStart)
+				{
+					mGameClock.UpdateGameTime(mGameTime);
+					Update(mGameTime);
+					Draw(mGameTime);
+				}
+				
             }
         }
+		return (int)message.wParam;
 
 		Shutdown();
     }
+
+	void Game::initialGame(bool gameStarted)
+	{
+		if (gameStarted)
+		{
+			InitializeDirectX();
+			Initialize();
+		}
+		else
+		{
+			return;
+		}
+	}
 
     void Game::Exit()
     {
@@ -172,6 +460,32 @@ namespace Library
 		}
     }
 
+	void Game::InitializeGameMenu()
+	{
+		ZeroMemory(&mWindow, sizeof(mWindow));
+		mWindow.cbSize = sizeof(WNDCLASSEX);
+		mWindow.style = CS_CLASSDC;
+		//mWindow.lpfnWndProc = WndProcGameMenu;
+		mWindow.hInstance = mInstance;
+		mWindow.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
+		mWindow.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
+		mWindow.hCursor = LoadCursor(nullptr, IDC_ARROW);
+		mWindow.hbrBackground = GetSysColorBrush(COLOR_BTNFACE);
+		mWindow.lpszClassName = mWindowClass.c_str();
+
+		RECT windowRectangle = { 0, 0, mScreenWidth, mScreenHeight };
+		AdjustWindowRect(&windowRectangle, WS_OVERLAPPEDWINDOW, FALSE);
+
+		RegisterClassEx(&mWindow);
+		POINT center = CenterWindow(mScreenWidth, mScreenHeight);
+		mWindowGameMenu = CreateWindow(mWindowClass.c_str(), mWindowTitle.c_str(), WS_OVERLAPPEDWINDOW, center.x, center.y, windowRectangle.right - windowRectangle.left, windowRectangle.bottom - windowRectangle.top, nullptr, nullptr, mInstance, nullptr);
+
+
+		ShowWindow(mWindowGameMenu, mShowCommand);
+		UpdateWindow(mWindowGameMenu);
+
+	}
+
     void Game::InitializeWindow()
     {
         ZeroMemory(&mWindow, sizeof(mWindow));
@@ -190,6 +504,7 @@ namespace Library
 
         RegisterClassEx(&mWindow);
         POINT center = CenterWindow(mScreenWidth, mScreenHeight);
+		menuPosition = center;
         mWindowHandle = CreateWindow(mWindowClass.c_str(), mWindowTitle.c_str(), WS_OVERLAPPEDWINDOW, center.x, center.y, windowRectangle.right - windowRectangle.left, windowRectangle.bottom - windowRectangle.top, nullptr, nullptr, mInstance, nullptr);
 
         ShowWindow(mWindowHandle, mShowCommand);
@@ -251,6 +566,7 @@ namespace Library
 		swapChainDesc.Width = mScreenWidth;
 		swapChainDesc.Height = mScreenHeight;
 		swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // allowed alt+Enter to enter full screen.
 
 		if (mMultiSamplingEnabled)
 		{
@@ -400,17 +716,246 @@ namespace Library
 		UnregisterClass(mWindowClass.c_str(), mWindow.hInstance);
 	}
 
-    LRESULT WINAPI Game::WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
+	void Game::GameMenu(HWND hwnd, int option)
+	{
+		DeleteMenu();
+
+		mGameLogo = CreateWindowW(L"Static", NULL, WS_VISIBLE | WS_CHILD | SS_BITMAP , 0, 0, 1920, 1080, hwnd, NULL, NULL, NULL);
+		SendMessageW(mGameLogo, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM) mGameLogoImage);
+		if (option == 1)
+		{
+			mGameStart = CreateWindowW(TEXT("Button"), TEXT("Start"), WS_VISIBLE | WS_CHILD | WS_BORDER, 100, menuPosition.y, 200, 50, hwnd, (HMENU("ID_BUTTON")), NULL, NULL);
+		}
+		else
+		{
+			mGameStart = CreateWindowW(TEXT("Button"), TEXT("Resume"), WS_VISIBLE | WS_CHILD | WS_BORDER, 100, menuPosition.y, 200, 50, hwnd, (HMENU("ID_BUTTON")), NULL, NULL);
+		}
+		//HWND mGameStart = CreateWindowW(TEXT("Button"), NULL,  WS_VISIBLE | WS_CHILD | WS_BORDER | BS_BITMAP , menuPosition.x, 150, 700, 250, hwnd, (HMENU("ID_BUTTON")), NULL, NULL);
+		//SendMessageW(mGameStart, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)mGameLogoImage);
+		mHighScore = CreateWindow(TEXT("Button"), TEXT("High Scores"), WS_CHILD | WS_VISIBLE | WS_BORDER , 100, menuPosition.y + 100, 200, 50, hwnd, (HMENU("HS_BUTTON")), NULL, NULL);
+		
+		mHelp = CreateWindow(TEXT("Button"), TEXT("Help"), WS_CHILD | WS_VISIBLE | WS_BORDER, 100, menuPosition.y + 200, 200, 50, hwnd, (HMENU("HP_BUTTON")), NULL, NULL);
+		mCredits = CreateWindow(TEXT("Button"), TEXT("Credits"), WS_CHILD | WS_VISIBLE | WS_BORDER, 100, menuPosition.y + 300, 200, 50, hwnd, (HMENU("CB_BUTTON")), NULL, NULL);
+		mExit = CreateWindow(TEXT("Button"), TEXT("Exit"), WS_CHILD | WS_VISIBLE | WS_BORDER , 100, menuPosition.y + 400, 200, 50, hwnd, (HMENU("EX_BUTTON")), NULL, NULL);
+	}
+
+	void Game::DeleteMenu()
+	{
+		DestroyWindow(mGameLogo);
+		DestroyWindow(mGameStart);
+		DestroyWindow(mHighScore);
+		DestroyWindow(mHelp);
+		DestroyWindow(mCredits);
+		DestroyWindow(mExit);
+	}
+	void Game::PauseMenu(HWND windowHandle)
+	{
+
+		if (gameStart)
+		{
+			GameMenu(windowHandle, 0);
+
+			Game::gameStart = false;
+		}
+		else if (!gameStart)
+		{
+
+			Game::gameStart = true;
+
+			DeleteMenu();
+		}
+
+	
+	}
+
+	void Game::LoadImages()
+	{
+		mGameLogoImage = (HBITMAP)LoadImageW(NULL, L"Content\\ROL.bmp", IMAGE_BITMAP, 1920, 1080, LR_LOADFROMFILE);
+	}
+
+
+	LRESULT CALLBACK Game::WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
     {
         switch(message)
         {
-            case WM_DESTROY:
+		case WM_CREATE:  //WM_RBUTTONDOWN://WM_CREATE: 
+
+						 /*HMENU hMenubar = CreateMenu();
+						 HMENU hCredits = CreateMenu();
+						 HMENU hExit = CreateMenu();
+
+						 AppendMenu(hMenubar, MF_POPUP, NULL, L"Start");
+						 AppendMenu(hMenubar, MF_POPUP, (UINT_PTR)hCredits, L"Credits");
+						 AppendMenu(hMenubar, MF_POPUP, NULL, L"Exit");
+
+						 AppendMenu(hCredits, MF_POPUP, (UINT_PTR)hCredits, L"Yong");
+						 AppendMenu(hCredits, MF_POPUP, (UINT_PTR)hCredits, L"Khai");
+
+						 SetMenu(windowHandle, hMenubar);*/
+			LoadImages();
+
+			readRecordsFromFile();
+
+			GameMenu(windowHandle, 1);
+			return 0;
+
+		case WM_COMMAND:
+
+
+			if (LOWORD(wParam) == (LOWORD("ID_BUTTON")))
+			{
+				Game::gameStart = true;
+
+				DeleteMenu();
+			}
+
+			if (LOWORD(wParam) == (LOWORD("HP_BUTTON")))
+			{
+				MessageBox(windowHandle, L"Guide to play Ray of Light: \n Step 1:  ", L"Help", MB_OK);
+
+			}
+
+
+			if (LOWORD(wParam) == (LOWORD("CB_BUTTON")))
+			{
+				MessageBox(windowHandle, L"Team No. 3 \nTeam Leader / Game Programmer - Khai \nLead Programmer / Asset Manager - Tamas \nAI & Animator / Game Programmer - Martin \nGame Designer / Game Programmer - Ivan ", L"Credits", MB_OK);
+			}
+
+
+			if (LOWORD(wParam) == (LOWORD("EX_BUTTON")))
+			{
+					int confirmation = MessageBox(0, L"Do you want to quit?", L"Quit", MB_ICONASTERISK | MB_YESNO);
+
+					if (confirmation == IDYES)
+					{
+						PostQuitMessage(0);
+					}
+			}
+
+			return 0;
+
+
+		case WM_LBUTTONDOWN:
+
+			return 0;
+
+		case WM_CLOSE:
+		{	
+			int confirmation = MessageBox(0, L"Do you want to quit?", L"Quit", MB_ICONASTERISK | MB_YESNO);
+
+			if (confirmation == IDYES)
+			{
+				PostQuitMessage(0);
+			}
+		}
+			return 0;
+
+		case WM_KEYDOWN:
+			if (wParam == VK_ESCAPE)
+			{	
+				if (gameStart)
+				{
+					GameMenu(windowHandle, 0);
+
+					Game::gameStart = false;
+				}
+				else
+				{
+					Game::gameStart = true;
+
+					DeleteMenu();
+
+					SendMessage(windowHandle, WM_ACTIVATE,0,0);
+				}
+			}
+			return 0;
+
+		case WM_DESTROY:				
                 PostQuitMessage(0);
                 return 0;
         }
 
         return DefWindowProc(windowHandle, message, wParam, lParam);
     }
+
+	//LRESULT WINAPI Game:: WndProcGameMenu(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
+	//{
+	//	switch (message)
+	//	{
+	//	case WM_CREATE:  //WM_RBUTTONDOWN://WM_CREATE: 
+
+	//					 /*HMENU hMenubar = CreateMenu();
+	//					 HMENU hCredits = CreateMenu();
+	//					 HMENU hExit = CreateMenu();
+
+	//					 AppendMenu(hMenubar, MF_POPUP, NULL, L"Start");
+	//					 AppendMenu(hMenubar, MF_POPUP, (UINT_PTR)hCredits, L"Credits");
+	//					 AppendMenu(hMenubar, MF_POPUP, NULL, L"Exit");
+
+	//					 AppendMenu(hCredits, MF_POPUP, (UINT_PTR)hCredits, L"Yong");
+	//					 AppendMenu(hCredits, MF_POPUP, (UINT_PTR)hCredits, L"Khai");
+
+	//					 SetMenu(windowHandle, hMenubar);*/
+	//		
+	//		GameMenu(windowHandle, 1);
+
+	//		//CreateWindow(TEXT("Button"), TEXT("Button"), WS_CHILD | WS_VISIBLE , 300, 300, 100, 30, windowHandle, (HMENU("ID_BUTTON")), NULL, NULL);
+
+	//		return 0;
+	//		//break;
+
+
+	//	case WM_COMMAND:
+
+
+	//		if (LOWORD(wParam) == (LOWORD("ID_BUTTON")))
+	//		{
+	//			//MessageBox(windowHandle, L"Button Pressed", L"OMG!", MB_ICONINFORMATION);
+
+	//			//ShowWindow(mWindowHandle, mShowCommand);
+
+	//			Game::gameStart = true;
+
+	//			//InitializeWindow();
+	//			//InitializeDirectX();
+	//			//Initialize();
+
+	//		}
+
+	//		return 0;
+
+
+	//	case WM_CLOSE:
+	//	{
+	//		int confirmation = MessageBox(0, L"Do you want to quit?", L"Quit", MB_ICONASTERISK | MB_YESNO);
+
+	//		if (confirmation == IDYES)
+	//		{
+	//			PostQuitMessage(0);
+	//		}
+	//	}
+	//	return 0;
+
+	//	case WM_KEYDOWN:
+	//		if (wParam == VK_ESCAPE)
+	//		{
+	//			int confirmation = MessageBox(0, L"Do you want to quit?", L"Quit", MB_ICONASTERISK | MB_YESNO);
+
+	//			if (confirmation == IDYES)
+	//			{
+	//				PostQuitMessage(0);
+	//			}
+	//		}
+	//		return 0;
+
+	//	case WM_DESTROY:
+	//		PostQuitMessage(0);
+	//		return 0;
+	//	}
+
+	//	return DefWindowProc(windowHandle, message, wParam, lParam);
+	//}
+
 
     POINT Game::CenterWindow(int windowWidth, int windowHeight)
     {
@@ -423,4 +968,7 @@ namespace Library
 
         return center;
     }	
+
+	
+
 }
