@@ -1,8 +1,10 @@
 #pragma once
 
 #include "DrawableGameComponent.h"
+#include "DirectXCollision.h"
 
 using namespace Library;
+using namespace DirectX;
 
 namespace Library
 {
@@ -35,11 +37,14 @@ namespace Rendering
 		float y;
 		float z;
 
+		XMVECTOR positionVector;
+
 		XMFLOAT3 getPosition();
 
 		XMFLOAT2 GetLocalForward();
 
-		bool CheckCollisions(TextureMaterial mat);
+		DirectX::BoundingBox boundingBox;
+		bool CheckCollisions(BoundingBox box);
 		bool isColliding;
 
 	private:
@@ -89,5 +94,6 @@ namespace Rendering
 		float mAngleInRadians;
 		XMVECTOR mLocalForward;
 
+		
 	};
 }

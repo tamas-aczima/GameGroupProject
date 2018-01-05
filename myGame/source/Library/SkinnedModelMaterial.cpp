@@ -136,4 +136,9 @@ namespace Library
 	{
 		return sizeof(VertexSkinnedPositionTextureNormal);
 	}
+
+	BoundingBox SkinnedModelMaterial::GetBoundingBox()
+	{
+		return mBoundingBox;
+	}
 }

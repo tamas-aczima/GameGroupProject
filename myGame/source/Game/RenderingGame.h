@@ -20,6 +20,7 @@ namespace Library
 	class FirstPersonCamera;
 	class FpsComponent;
 	class RenderStateHelper;
+	class TextureMaterial;
 }
 
 namespace Rendering
@@ -29,6 +30,8 @@ namespace Rendering
 	class Rock;
 	class Player;
 	class PlayerAnimation;
+	class PlayerBoundingBox;
+	class Wall;
 
 	class RenderingGame : public Game
 	{
@@ -56,7 +59,9 @@ namespace Rendering
 
 		Level* mLevel;
 		TreasureChest* mTreasureChest;
-		Rock* mRock;
+		PlayerBoundingBox* playerBoundingBox;
+		Wall* wall;
+		Wall* wall2;
 
 		SpriteBatch* mSpriteBatch;
 		SpriteFont* mSpriteFont;
@@ -67,6 +72,16 @@ namespace Rendering
 		XMFLOAT2 mMouseTextPosition;
 
 		void showMessages();
+		void Pick(float sx, float sy, float sz, Wall* model);
+		bool isColliding = false;
+		float distance;
+		float distance2;
+		float Distance(const XMVECTOR& point1, const XMVECTOR& point2);
+
+		void CollisionDetection(float playerX, float playerZ);
+		vector<Wall*> gameObjects;
+		int objectView = 0;
+		int LookingAtObject = 0;
 
 		float zoomY = 20.0f;
 		float zoomZ = 20.0f;

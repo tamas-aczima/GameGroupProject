@@ -5,6 +5,8 @@
 #include "VertexDeclarations.h"
 #include <DirectXCollision.h>
 
+using namespace DirectX;
+
 namespace Library
 {
 	class SkinnedModelMaterial : public Material
@@ -31,6 +33,9 @@ namespace Library
 		void CreateVertexBuffer(ID3D11Device* device, VertexSkinnedPositionTextureNormal* vertices, UINT vertexCount, ID3D11Buffer** vertexBuffer) const;
 		virtual UINT VertexSize() const override;
 
-		DirectX::BoundingBox mBoundingBox;
+		BoundingBox GetBoundingBox();
+
+	private:
+		BoundingBox mBoundingBox;
 	};
 }

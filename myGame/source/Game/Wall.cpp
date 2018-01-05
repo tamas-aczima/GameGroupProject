@@ -9,6 +9,7 @@
 #include "TextureMaterial.h"
 #include <WICTextureLoader.h>
 #include "ColorHelper.h"
+#include "D3DCompiler.h"
 
 namespace Rendering
 {
@@ -52,19 +53,26 @@ namespace Rendering
 		mTextureMaterial->CreateVertexBuffer(mGame->Direct3DDevice(), *mesh, &mVertexBuffer);
 		mesh->CreateIndexBuffer(&mIndexBuffer);
 		mIndexCount = mesh->Indices().size();
+		//mBoundingBox = mTextureMaterial->GetBoundinBox();
 
 		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
 		//Load the texture
 		mTextureName = L"Content\\Textures\\rock.jpg";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
+
 	}
 
 	void Wall::Update(const GameTime& gameTime)
 	{
 
+		//Collision Detection
+		distance = Distance(PlayerLocation, positionVector);
+		if (distance <= 6.5)
+			isColliding = true;
+		else
+			isColliding = false;
 		
-
 	}
 
 	void Wall::Draw(const GameTime& gameTime)
@@ -95,5 +103,44 @@ namespace Rendering
 		pass->Apply(0, direct3DDeviceContext);
 
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
+	}
+	/*BoundingBox Wall::GetBoundingBox()
+	{
+		return &mBoundingBox;
+	}*/
+
+	void Wall::SetTransform(float X, float Y, float Z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ)
+	{
+
+		this->SetPosition(X, Y, Z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
+
+		x = X;
+		y = Y;
+		z = Z;
+
+		positionVector = XMVectorSet(x, y, z,1.0f);
+
+		/*XMMATRIX scaleMatrix = XMMatrixScaling(scaleX, scaleY, scaleZ);
+		XMMATRIX translationMatrix = XMMatrixTranslation(x, y, z);
+
+		this->mTextureMaterial->mBoundingBox.Transform(this->mTextureMaterial->mBoundingBox, translationMatrix);
+		*/
+		//mBoundingBox.Transform(mBoundingBox, translationMatrix);
+
+	}
+
+	void Wall::SetPlayerLocation(XMVECTOR & player)
+	{
+		PlayerLocation = player;
+
+	}
+	
+
+	float Wall::Distance(const XMVECTOR & point1, const XMVECTOR & point2)
+	{
+		float distance = sqrt((XMVectorGetX(point1) - XMVectorGetX(point2)) * (XMVectorGetX(point1) - XMVectorGetX(point2)) +
+			(XMVectorGetY(point1) - XMVectorGetY(point2)) * (XMVectorGetY(point1) - XMVectorGetY(point2)) +
+			(XMVectorGetZ(point1) - XMVectorGetZ(point2)) * (XMVectorGetZ(point1) - XMVectorGetZ(point2)));
+		return distance;
 	}
 }

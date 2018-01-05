@@ -43,6 +43,11 @@ namespace Library
 		const std::vector<GameComponent*>& Components() const;
 		const ServiceContainer& Services() const;
 
+		//Test
+		static bool toPick;
+		static int screenX;
+		static int screenY;
+
     protected:
         virtual void InitializeWindow();
 		virtual void Shutdown();
@@ -94,5 +99,6 @@ namespace Library
 
         POINT CenterWindow(int windowWidth, int windowHeight);
         static LRESULT WINAPI WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);		
+
     };
 }

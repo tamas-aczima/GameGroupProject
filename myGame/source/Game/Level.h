@@ -4,6 +4,7 @@
 #include "TextureMaterial.h"
 
 using namespace Library;
+using namespace std;
 
 namespace Rendering
 {
@@ -18,13 +19,29 @@ namespace Rendering
 		Level(Game& game, Camera& camera);
 		~Level();
 
+		virtual void Update(const GameTime& gameTime) override;
+
 		std::vector<GameComponent*> UpdateComponent(std::vector<GameComponent*> mComponents);
-		std::vector<TextureMaterial*> WallsVect();
 		
+		void UpdatePlayerLocation(XMVECTOR& playerLocation, const GameTime & gameTime);
+		
+		bool collision = false;
+		
+		//Delete!
+		std::vector<GameComponent*> WallsVect();
+		
+		std::vector<Wall*> wallsList;
+
+		Wall* wall2;
+		Wall* wall3;
+		//--------------
 
 	private:
-		std::vector<GameComponent*> tempCompVector;
-		std::vector<TextureMaterial*> wallsVect;
+
+		vector<GameComponent*> tempCompVector;
+		
+		int i = 0;
+		
 
 	};
 }

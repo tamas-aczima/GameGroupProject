@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "TextureMaterial.h"
 #include <WICTextureLoader.h>
+#include "DirectXCollision.h"
 
 namespace Rendering
 {
@@ -52,6 +53,8 @@ namespace Rendering
 		mesh->CreateIndexBuffer(&mIndexBuffer);
 		mIndexCount = mesh->Indices().size();
 
+		mBoundingBox = mTextureMaterial->GetBoundinBox();
+
 		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
 		//Load the texture
 		mTextureName = L"Content\\Textures\\mountain_01_diffuse.png";
@@ -88,6 +91,11 @@ namespace Rendering
 		pass->Apply(0, direct3DDeviceContext);
 
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
+	}
+
+	BoundingBox Rock::GetBoundingBox()
+	{
+		return mBoundingBox;
 	}
 
 

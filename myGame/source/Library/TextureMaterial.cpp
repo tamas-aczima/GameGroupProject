@@ -46,6 +46,8 @@ namespace Library
 		XMVECTOR vMin = XMLoadFloat3(&vMinf3);
 		XMVECTOR vMax = XMLoadFloat3(&vMaxf3);
 
+		// end
+
 		const std::vector<XMFLOAT3>& sourceVertices = mesh.Vertices();
 
 		std::vector<TextureMappingVertex> vertices;
@@ -64,12 +66,13 @@ namespace Library
 			XMVECTOR P = XMLoadFloat3(&position);
 			vMin = XMVectorMin(vMin, P);
 			vMax = XMVectorMax(vMax, P);
+			//end
 		}
 
 		//final step to generate the bounding box
 
 		XMStoreFloat3(const_cast<XMFLOAT3*>(&mBoundingBox.Center), 0.5f*(vMin + vMax));
-		XMStoreFloat3(const_cast<XMFLOAT3*>(&mBoundingBox.Extents), 0.5f*(vMax - vMin));
+		XMStoreFloat3(const_cast<XMFLOAT3*>(&mBoundingBox.Extents), 0.5f*(vMax - vMin));		
 
 		CreateVertexBuffer(device, &vertices[0], vertices.size(), vertexBuffer);
 	}
@@ -94,5 +97,10 @@ namespace Library
 	UINT TextureMaterial::VertexSize() const
 	{
 		return sizeof(TextureMappingVertex);
+	}
+
+	BoundingBox TextureMaterial::GetBoundinBox()
+	{
+		return mBoundingBox;
 	}
 }

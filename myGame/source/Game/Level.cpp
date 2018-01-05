@@ -12,8 +12,9 @@ namespace Rendering
 {
 	RTTI_DEFINITIONS(Level)
 
+
 	Level::Level(Game& game, Camera& camera)
-		: DrawableGameComponent(game, camera)
+	: DrawableGameComponent(game, camera)
 	{
 
 		//Please use this way of creation objects
@@ -22,34 +23,55 @@ namespace Rendering
 		Wall* wall = new Wall(game, camera); //backwall 
 		tempCompVector.push_back(wall);
 		wall->SetPosition(0, 0, -5, 0, 0, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
-		wall = new Wall(game, camera);//backwall 2
-		tempCompVector.push_back(wall);
-		wall->Initialize();
-		wall->SetPosition(17, 0, -5, 0, 0, 0, 1, 1.5, 0.1);
-		wallsVect.push_back(wall->mTextureMaterial);
+		//Test
+		wall2 = new Wall(game, camera);
+		wall2->Initialize();
+		//wall2->SetPosition(13, 0, 75, 0, 0, 0, 1, 1.5, 0.1);
+		wall2->SetTransform(13, 0, 75, 0, 0, 0, 1, 1.5, 0.1);
+		tempCompVector.push_back(wall2);
+		wallsList.push_back(wall2);
 
-		wall = new Wall(game, camera);//backwall 3
+		wall3 = new Wall(game, camera);
+		wall3->Initialize();
+		//wall3->SetPosition(13, 0, -75, 0, 1.57, 0, 1, 1.5, 0.1);
+		wall3->SetTransform(13, 0, -75, 0, 1.57, 0, 1, 1.5, 0.1);
+		tempCompVector.push_back(wall3);
+		wallsList.push_back(wall3);
+		//----------
+
+		Wall* wall4 = new Wall(game, camera);//backwall 2
+		tempCompVector.push_back(wall4);
+		wall4->SetPosition(17, 0, -5, 0, 0, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall4);
+
+		/*wall = new Wall(game, camera);//backwall 3
 		tempCompVector.push_back(wall);
 		wall->SetPosition(34, 0, -5, 0, 0, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		//frontwall
 
 		wall = new Wall(game, camera);//backwall 1
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-12, 0, 109, 0, 90, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera);//backwall 1
 		tempCompVector.push_back(wall);
 		wall->SetPosition(0, 0, 114, 0, 0, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera);//backwall 2
 		tempCompVector.push_back(wall);
 		wall->SetPosition(17, 0, 114, 0, 0, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera);//backwall 3
 		tempCompVector.push_back(wall);
 		wall->SetPosition(34, 0, 114, 0, 0, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 
 		//leftwalls
@@ -57,86 +79,105 @@ namespace Rendering
 		wall = new Wall(game, camera); //leftsidewall 
 		tempCompVector.push_back(wall);
 		wall->SetPosition(38, 0, 3, 0, 90, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //leftsidewall 2
 		tempCompVector.push_back(wall);
 		wall->SetPosition(38, 0, 12, 0, 1.57, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //leftsidewall 3
 		tempCompVector.push_back(wall);
 		wall->SetPosition(37, 0, 21, 0, 1.2, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //leftsidewall 4
 		tempCompVector.push_back(wall);
 		wall->SetPosition(34.5, 0, 37, 0, 1.6, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //leftsidewall 5
 		tempCompVector.push_back(wall);
 		wall->SetPosition(34.5, 0, 44, 0, 1.6, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //leftsidewall 4
 		tempCompVector.push_back(wall);
 		wall->SetPosition(34.5, 0, 57, 0, 1.6, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //leftsidewall 5
 		tempCompVector.push_back(wall);
 		wall->SetPosition(34.5, 0, 74, 0, 1.6, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //leftsidewall 
 		tempCompVector.push_back(wall);
 		wall->SetPosition(38, 0, 88, 0, 90, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //leftsidewall 2
 		tempCompVector.push_back(wall);
 		wall->SetPosition(40, 0, 99, 0, 1.57, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //leftsidewall 3
 		tempCompVector.push_back(wall);
 		wall->SetPosition(38, 0, 109, 0, 1.2, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		//rightwalls
 
 		wall = new Wall(game, camera); //rightsidewall 
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-5, 0, 3, 0, -90, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //rightsidewall  2
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-5, 0, 12, 0, -1.57, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //rightsidewall  3
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-8, 0, 28.5, 0, 1.2, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //rightsidewall  4
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-9, 0, 37, 0, -1.6, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //rightsidewall  5
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-9.6, 0, 52, 0, -1.6, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //rightsidewall  6
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-13, 0, 69, 0, 1.2, 0, 1, 1.5, 0.1);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //rightsidewall  THICK 1
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-20, 0, 30, 0, -1.6, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //rightsidewall  THICK 2
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-40, 0, 140, 0, -1.6, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall);
 
 		wall = new Wall(game, camera); //rightsidewall  THICK 3
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-42, 0, 220, 0, -1.6, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall);
 
 		//section 2
 
 		//rightroom
 
-		wall = new Wall(game, camera); //Entrance wall
+		/*wall = new Wall(game, camera); //Entrance wall
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-35, 0, 69, 0, -1.6, 0, 1, 1.5, 2.5);
 
@@ -470,7 +511,7 @@ namespace Rendering
 
 		LightLock* lightlock = new LightLock(game, camera);
 		tempCompVector.push_back(lightlock);
-		lightlock->SetPosition(-12, 12, 69, 0, 0, 0.2, 0.5, 0.5, 0.5);
+		lightlock->SetPosition(-12, 12, 69, 0, 0, 0.2, 0.5, 0.5, 0.5);*/
 
 		//-------------------------
 		//instead of this way 
@@ -479,6 +520,11 @@ namespace Rendering
 
 	Level::~Level()
 	{
+	}
+
+	void Level::Update(const GameTime & gameTime)
+	{
+		
 	}
 	
 
@@ -491,8 +537,36 @@ namespace Rendering
 
 		return mComponents;
 	}
-	std::vector<TextureMaterial*> Level::WallsVect()
+
+	void Level::UpdatePlayerLocation(XMVECTOR & playerLocation, const GameTime & gameTime)
 	{
-		return wallsVect;
+		
+		/*wallsList.at(i)->SetPlayerLocation(playerLocation);
+		wallsList.at(i)->Update(gameTime);
+		if (wallsList.at(i)->isColliding)
+			collision = true;
+
+		i++;
+		if (i > wallsList.size() - 1)
+			i = 0;*/
+		for (int i = 0; i < wallsList.size(); i++)
+		{
+			wallsList.at(i)->SetPlayerLocation(playerLocation);
+			wallsList.at(i)->Update(gameTime);
+			if (wallsList.at(i)->isColliding)
+				collision = true;
+		}
+
 	}
+
+	std::vector<GameComponent*> Level::WallsVect()
+	{
+		return tempCompVector;
+	}
+
+	/*std::vector<Wall*> Level::WallsVect()
+	{
+		return wallsList;
+	}*/
+
 }

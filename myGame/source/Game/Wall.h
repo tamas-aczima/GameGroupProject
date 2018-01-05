@@ -1,8 +1,10 @@
 #pragma once
 
 #include "DrawableGameComponent.h"
+#include "DirectXCollision.h"
 
 using namespace Library;
+using namespace DirectX;
 
 namespace Library
 {
@@ -26,6 +28,20 @@ namespace Rendering
 
 		TextureMaterial* mTextureMaterial;
 
+		BoundingBox GetBoundingBox();
+
+		XMFLOAT4X4* WorldMatrix() { return &mWorldMatrix; }
+		
+		void SetTransform(float X, float Y, float Z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ);
+		XMVECTOR positionVector;
+		void SetPlayerLocation(XMVECTOR& player);
+
+		float x;
+		float y;
+		float z;
+
+		bool isColliding = false;
+
 	private:
 		Wall();
 		Wall(const Wall& rhs);
@@ -43,5 +59,11 @@ namespace Rendering
 
 		ID3D11ShaderResourceView* mTextureShaderResourceView;
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;
+
+		float Distance(const XMVECTOR& point1, const XMVECTOR& point2);
+		float distance;
+		XMVECTOR PlayerLocation;
+
+		//BoundingBox mBoundingBox;
 	};
 }

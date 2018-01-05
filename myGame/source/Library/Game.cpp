@@ -9,6 +9,11 @@ namespace Library
 	const UINT Game::DefaultFrameRate = 60;
 	const UINT Game::DefaultMultiSamplingCount = 4;
 
+	//Test
+	bool Game::toPick = false;
+	int Game::screenX = 0;
+	int Game::screenY = 0;
+
     Game::Game(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
         : mInstance(instance), mWindowClass(windowClass), mWindowTitle(windowTitle), mShowCommand(showCommand),
           mWindowHandle(), mWindow(),
@@ -407,6 +412,12 @@ namespace Library
             case WM_DESTROY:
                 PostQuitMessage(0);
                 return 0;
+			case WM_RBUTTONDOWN:
+				Game::toPick = true;
+				Game::screenX = ((int)(short)LOWORD(lParam));
+				Game::screenY = ((int)(short)HIWORD(lParam));
+
+				return 0;
         }
 
         return DefWindowProc(windowHandle, message, wParam, lParam);

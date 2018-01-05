@@ -20,6 +20,8 @@
 #include "ScreenMessage.h"
 #include "ColorHelper.h"
 #include "TextureMaterial.h"
+#include "DirectXCollision.h"
+
 
 namespace Rendering
 {
@@ -79,6 +81,7 @@ namespace Rendering
 		mEffect->CompileFromFile(L"Content\\Effects\\SkinnedModel.fx");
 		mMaterial = new SkinnedModelMaterial();
 		mMaterial->Initialize(mEffect);
+		
 
 		// Create the vertex and index buffers
 		mVertexBuffers.resize(mSkinnedModel->Meshes().size());
@@ -119,6 +122,9 @@ namespace Rendering
 		}
 
 		XMStoreFloat4x4(&mWorldMatrix, XMMatrixScaling(0.05f, 0.05f, 0.05f));
+		
+		//Bounding box
+		boundingBox = mMaterial->GetBoundingBox();
 
 		mKeyboard = (Keyboard*)mGame->Services().GetService(Keyboard::TypeIdClass());
 		assert(mKeyboard != nullptr);
@@ -142,7 +148,7 @@ namespace Rendering
 	void Rendering::Player::Update(const GameTime & gameTime)
 	{
 		mCurrentMouseX = mMouse->X();
-
+		
 		if (mCurrentMouseX > mLastMouseX)
 		{
 			mRotation -= 1;
@@ -164,6 +170,7 @@ namespace Rendering
 		XMStoreFloat4x4(&mWorldMatrix, scaleMatrix * rotationMatrix * translationMatrix);
 		XMStoreFloat4x4(&mRotationMatrix, rotationMatrix);
 
+		//boundingBox.Transform(boundingBox,translationMatrix);		
 
 		//Animation
 		if (mKeyboard->IsKeyDown(DIK_W) && !mIsWalkingForward && !mIsWalkingBack && !mIsJumping)
@@ -216,7 +223,7 @@ namespace Rendering
 
 		mAnimationPlayer->Update(gameTime);
 
-		
+		positionVector = XMVectorSet(x, y, z, 1.0f);
 
 	}
 
@@ -265,6 +272,8 @@ namespace Rendering
 		x = X;
 		y = Y;
 		z = Z;
+
+		positionVector = XMVectorSet(x, y, z, 1.0f);
 		
 	}
 
@@ -277,8 +286,10 @@ namespace Rendering
 	{
 		return XMFLOAT2(XMVectorGetX(mLocalForward), XMVectorGetZ(mLocalForward));
 	}
-	bool Player::CheckCollisions(TextureMaterial mat)
+
+	bool Player::CheckCollisions(BoundingBox box)
 	{
-		return isColliding = mMaterial->mBoundingBox.Intersects(mat.mBoundingBox);
+		//return isColliding = mMaterial->mBoundingBox.Intersects(box);
+		return boundingBox.Intersects(box);
 	}
 }

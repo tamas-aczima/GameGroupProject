@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "Material.h"
 #include <DirectXCollision.h>
+using namespace DirectX;
 
 namespace Library
 {
@@ -25,6 +26,9 @@ namespace Library
 		MATERIAL_VARIABLE_DECLARATION(WorldViewProjection)
 		MATERIAL_VARIABLE_DECLARATION(AmbientColor)
 
+	private:
+		
+
 	public:
 		TextureMaterial();
 
@@ -34,5 +38,7 @@ namespace Library
 		virtual UINT VertexSize() const override;
 
 		DirectX::BoundingBox mBoundingBox;
+		BoundingBox GetBoundinBox();
+
 	};
 }

@@ -6,37 +6,47 @@
 using namespace Library;
 using namespace DirectX;
 
+
 namespace Library
 {
 	class Effect;
 	class TextureMaterial;
 }
 
-namespace Rendering 
+namespace Rendering
 {
-
-	class Rock : public DrawableGameComponent
+	class PlayerBoundingBox : public DrawableGameComponent
 	{
-
-		RTTI_DECLARATIONS(Rock,DrawableGameComponent)
+		RTTI_DECLARATIONS(PlayerBoundingBox, DrawableGameComponent)
 
 	public:
-		Rock(Game& game, Camera& camera);
-		~Rock();
+		PlayerBoundingBox(Game& game, Camera& camera);
+		
+		~PlayerBoundingBox();
 
 		virtual void Initialize() override;
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
-		BoundingBox GetBoundingBox();
+		TextureMaterial* mTextureMaterial;
+
+		BoundingBox mBoundingBox;
+
+		float x;
+		float y;
+		float z;
+		
+		void SetTransform(float X, float Y, float Z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ);
+
 
 	private:
-		Rock();
-		Rock(const Rock& rhs);
-		Rock& operator = (const Rock& rhs);
+		PlayerBoundingBox();
+		PlayerBoundingBox& operator=(const PlayerBoundingBox& rhs);
 
 		Effect* mTextureEffect;
-		TextureMaterial* mTextureMaterial;
+
+		XMCOLOR mAmbientColor;
+
 		ID3D11Buffer* mVertexBuffer;
 		ID3D11Buffer* mIndexBuffer;
 		UINT mIndexCount;
@@ -46,11 +56,6 @@ namespace Rendering
 		ID3D11ShaderResourceView* mTextureShaderResourceView;
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;
 
-		BoundingBox mBoundingBox;
-
 	};
-
 }
-
-
 
