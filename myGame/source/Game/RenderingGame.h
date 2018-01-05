@@ -68,6 +68,8 @@ namespace Rendering
 		SpotLight* mSpotLight6; // mirror4
 		Mirror* mMirror4;		// mirror4
 
+
+		std::vector<SpotLight*> mSpotLights;
 		static const float LightModulationRate;
 		static const XMFLOAT2 LightRotationRate;
 		ProxyModel* mProxyModel1;

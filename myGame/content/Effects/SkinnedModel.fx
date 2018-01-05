@@ -107,6 +107,15 @@ cbuffer CBufferPerFrame
 	float3 LightPosition = { 0.0f, 0.0f, 0.0f };
 	float LightRadius = 10.0f;
 	float3 CameraPosition;
+
+	//spotlight
+	float3 pos;
+	float range;
+	float3 dir;
+	float cone;
+	float3 att;
+	float4 ambient;
+	float4 diffuse;
 }
 
 cbuffer CBufferPerObject
@@ -180,9 +189,9 @@ VS_OUTPUT vertex_shader(VS_INPUT IN)
 
 /************* Pixel Shaders *************/
 
-float4 pixel_shader(VS_OUTPUT IN) : SV_Target
+float4 pixel_shader(VS_OUTPUT input) : SV_Target
 {
-	float4 OUT = (float4)0;
+	/*float4 OUT = (float4)0;
 
 	float3 lightDirection = LightPosition - IN.WorldPosition;
 	lightDirection = normalize(lightDirection);
@@ -204,7 +213,53 @@ float4 pixel_shader(VS_OUTPUT IN) : SV_Target
 	OUT.rgb = ambient + diffuse + specular;
 	OUT.a = 1.0f;
 
-	return OUT;
+	return OUT;*/
+
+	input.Normal = normalize(input.Normal);
+
+	float4 diffuseTexture = ColorTexture.Sample(ColorSampler, input.TextureCoordinate);
+
+	float3 finalColor = float3(0.0f, 0.0f, 0.0f);
+
+	//Create the vector between light position and pixels position
+	float3 lightToPixelVec = pos - input.WorldPosition;
+
+	//Find the distance between the light pos and pixel pos
+	float d = length(lightToPixelVec);
+
+	//Add the ambient light
+	float3 finalAmbient = diffuseTexture * ambient;
+
+	//If pixel is too far, return pixel color with ambient light
+	if (d > range)
+	return float4(finalAmbient, diffuseTexture.a);
+
+	//Turn lightToPixelVec into a unit length vector describing
+	//the pixels direction from the lights position
+	lightToPixelVec /= d;
+
+	//Calculate how much light the pixel gets by the angle
+	//in which the light strikes the pixels surface
+	float howMuchLight = dot(lightToPixelVec, input.Normal);
+
+	//If light is striking the front side of the pixel
+	if (howMuchLight > 0.0f)
+	{
+		//Add light to the finalColor of the pixel
+		finalColor += diffuseTexture * diffuse;
+
+		//Calculate Light's Distance Falloff factor
+		finalColor /= (att[0] + (att[1] * d)) + (att[2] * (d*d));
+
+		//Calculate falloff from center to edge of pointlight cone
+		finalColor *= pow(max(dot(-lightToPixelVec, dir), 0.0f), cone);
+	}
+
+	//make sure the values are between 1 and 0, and add the ambient
+	finalColor = saturate(finalColor + finalAmbient);
+
+	//Return Final Color
+	return float4(finalColor, diffuse.a);
 }
 
 /************* Techniques *************/
