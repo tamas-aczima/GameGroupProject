@@ -211,7 +211,9 @@ IF EXIST "$(ProjectDir)content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Content\Effects\DepthMap.fx" />
     <FxCompile Include="Content\Effects\DiffuseLighting.fx" />
+    <FxCompile Include="Content\Effects\DiffuseLightingWithShadow.fx" />
     <FxCompile Include="Content\Effects\SkinnedModel.fx" />
     <FxCompile Include="Content\Effects\TextureEffect.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>

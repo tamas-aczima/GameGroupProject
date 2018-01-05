@@ -8,11 +8,22 @@ namespace Library
 {
 	class Effect;
 	class SpotLight;
+	class DepthMapMaterial;
+	class DepthMap;
+	class ShadowMappingMaterial;
 }
 
 namespace Rendering
 {
-	class DiffuseLightingMaterial;
+	enum ShadowMappingTechnique
+	{
+		ShadowMappingTechniqueSimple = 0,
+	};
+
+	const std::string ShadowMappingTechniqueNames[] = { "shadow_mapping"};
+	const std::string ShadowMappingDisplayNames[] = { "Shadow Mapping Simple"};
+	const std::string DepthMappingTechniqueNames[] = { "create_depthmap", "create_depthmap", "create_depthmap_w_bias", };
+
 	class Wall : public DrawableGameComponent
 	{
 		RTTI_DECLARATIONS(Wall, DrawableGameComponent)
@@ -31,7 +42,7 @@ namespace Rendering
 		Wall& operator=(const Wall& rhs);
 
 		Effect* mEffect;
-		DiffuseLightingMaterial* mMaterial;
+		ShadowMappingMaterial* mMaterial;
 		XMCOLOR mAmbientColor;
 
 		ID3D11Buffer* mVertexBuffer;
@@ -44,5 +55,10 @@ namespace Rendering
 
 		ID3D11ShaderResourceView* mTextureShaderResourceView;
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;
+
+		Effect* mDepthMapEffect;
+		DepthMapMaterial* mDepthMapMaterial;
+		DepthMap* mDepthMap;
+		bool mDrawDepthMap;
 	};
 }

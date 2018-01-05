@@ -11,6 +11,8 @@
 #include "DiffuseLightingMaterial.h"
 #include <WICTextureLoader.h>
 #include "SpotLight.h"
+#include "DepthMapMaterial.h"
+#include "ShadowMappingMaterial.h"
 
 namespace Rendering
 {
@@ -46,9 +48,15 @@ namespace Rendering
 
 		// Initialize the material
 		mEffect = new Effect(*mGame);
-		mEffect->CompileFromFile(L"Content\\Effects\\DiffuseLighting.fx");
-		mMaterial = new DiffuseLightingMaterial();
+		mEffect->CompileFromFile(L"Content\\Effects\\DiffuseLightingWithShadow.fx");
+		mMaterial = new ShadowMappingMaterial();
 		mMaterial->Initialize(mEffect);
+
+		mDepthMapEffect = new Effect(*mGame);
+		mDepthMapEffect->CompileFromFile(L"Content\\Effects\\DepthMap.fx");
+
+		mDepthMapMaterial = new DepthMapMaterial();
+		mDepthMapMaterial->Initialize(mDepthMapEffect);
 
 		// Create the vertex and index buffers
 		Mesh* mesh = model->Meshes().at(0);

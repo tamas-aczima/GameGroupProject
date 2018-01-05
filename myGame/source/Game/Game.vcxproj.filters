@@ -151,5 +151,11 @@
     <FxCompile Include="Content\Effects\DiffuseLighting.fx">
       <Filter>Resource Files\Effects</Filter>
     </FxCompile>
+    <FxCompile Include="Content\Effects\DepthMap.fx">
+      <Filter>Resource Files\Effects</Filter>
+    </FxCompile>
+    <FxCompile Include="Content\Effects\DiffuseLightingWithShadow.fx">
+      <Filter>Resource Files\Effects</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

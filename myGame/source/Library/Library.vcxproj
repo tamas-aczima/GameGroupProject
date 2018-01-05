@@ -171,6 +171,8 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColorHelper.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="DepthMap.h" />
+    <ClInclude Include="DepthMapMaterial.h" />
     <ClInclude Include="DiffuseLightingMaterial.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DrawableGameComponent.h" />
@@ -197,9 +199,11 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="RasterizerStates.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderStateHelper.h" />
+    <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="RTTI.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="ServiceContainer.h" />
+    <ClInclude Include="ShadowMappingMaterial.h" />
     <ClInclude Include="SkinnedModelMaterial.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Technique.h" />
@@ -218,6 +222,8 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="BufferContainer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColorHelper.cpp" />
+    <ClCompile Include="DepthMap.cpp" />
+    <ClCompile Include="DepthMapMaterial.cpp" />
     <ClCompile Include="DiffuseLightingMaterial.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="DrawableGameComponent.cpp" />
@@ -244,8 +250,10 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="RasterizerStates.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RenderStateHelper.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="ServiceContainer.cpp" />
+    <ClCompile Include="ShadowMappingMaterial.cpp" />
     <ClCompile Include="SkinnedModelMaterial.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Technique.cpp" />
