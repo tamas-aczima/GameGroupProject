@@ -99,7 +99,7 @@ namespace Rendering
 		mProxyModel2->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
 		mComponents.push_back(mProxyModel2);
 
-		mMirror1 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight1, *mSpotLight2);
+		mMirror1 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight1, *mSpotLight2, 1);
 		mComponents.push_back(mMirror1);
 		mMirror1->SetPosition(33.0f, 10.0f, 73.0f);
 		mMirror1->ApplyRotation(XMMatrixRotationY(1.57f));
@@ -122,7 +122,7 @@ namespace Rendering
 		mSpotLight4->SetOuterAngle(60.0f);
 		mSpotLight4->ApplyRotation(XMMatrixRotationY(1.57f));
 
-		mMirror2 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight3, *mSpotLight4);
+		mMirror2 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight3, *mSpotLight4, 2);
 		mComponents.push_back(mMirror2);
 		mMirror2->SetPosition(-190.0f, 12.0f, 40.0f);
 		mMirror2->ApplyRotation(XMMatrixRotationY(1.57f));
@@ -136,7 +136,7 @@ namespace Rendering
 		mSpotLight5->SetOuterAngle(60.0f);
 		mSpotLight5->ApplyRotation(XMMatrixRotationY(-1.57f));
 
-		mMirror3 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight4, *mSpotLight5);
+		mMirror3 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight4, *mSpotLight5, 3);
 		mComponents.push_back(mMirror3);
 		mMirror3->SetPosition(-234.0f, 12.0f, 80.0f);
 		mMirror3->ApplyRotation(XMMatrixRotationY(-1.57f));
@@ -150,7 +150,7 @@ namespace Rendering
 		mSpotLight6->SetOuterAngle(60.0f);
 		mSpotLight6->ApplyRotation(XMMatrixRotationY(1.57f));
 
-		mMirror4 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight5, *mSpotLight6);
+		mMirror4 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight5, *mSpotLight6, 4);
 		mComponents.push_back(mMirror4);
 		mMirror4->SetPosition(-183.0f, 12.0f, 115.0f);
 		mMirror4->ApplyRotation(XMMatrixRotationY(1.57f));
