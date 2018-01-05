@@ -19,7 +19,7 @@ namespace Rendering
 		RTTI_DECLARATIONS(Mirror, DrawableGameComponent)
 
 	public:
-		Mirror(Game& game, Camera& camera, Mouse& mouse, SpotLight& spotLight1, SpotLight& spotLight2);
+		Mirror(Game& game, Camera& camera, Mouse& mouse, SpotLight& spotLight1, SpotLight& spotLight2, int id);
 		~Mirror();
 
 		const XMFLOAT3& Position() const;
@@ -42,6 +42,8 @@ namespace Rendering
 		virtual void Initialize() override;
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
+
+		int GetID();
 
 	private:
 		Mirror();
@@ -70,6 +72,8 @@ namespace Rendering
 		XMFLOAT3 mDirection;
 		XMFLOAT3 mUp;
 		XMFLOAT3 mRight;
+
+		int mID;
 
 		ID3D11ShaderResourceView* mTextureShaderResourceView;
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;

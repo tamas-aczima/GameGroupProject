@@ -9,27 +9,31 @@
 #include "TextureMaterial.h"
 #include <WICTextureLoader.h>
 #include "ColorHelper.h"
+#include "SpotLight.h"
+#include "DiffuseLightingMaterial.h"
 
 namespace Rendering
 {
 	RTTI_DEFINITIONS(Floor)
 
-		Floor::Floor(Game& game, Camera& camera)
+		Floor::Floor(Game& game, Camera& camera, SpotLight& spotLight)
 		: DrawableGameComponent(game, camera),
-		mTextureMaterial(nullptr), mTextureEffect(nullptr),
+		mMaterial(nullptr), mEffect(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr),
 		mAmbientColor(reinterpret_cast<const float*>(&ColorHelper::White))
 	{
 		mWorldMatrix = MatrixHelper::Identity;
+		mSpotLight = &spotLight;
 	}
 
 	Floor::~Floor()
 	{
 		ReleaseObject(mColorTextureVariable);
 		ReleaseObject(mTextureShaderResourceView);
-		DeleteObject(mTextureMaterial);
-		DeleteObject(mTextureEffect);
+		DeleteObject(mMaterial);
+		DeleteObject(mEffect);
+		DeleteObject(mSpotLight);
 		ReleaseObject(mVertexBuffer);
 		ReleaseObject(mIndexBuffer);
 	}
@@ -42,18 +46,18 @@ namespace Rendering
 		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\Cube.obj", true));
 
 		// Initialize the material
-		mTextureEffect = new Effect(*mGame);
-		mTextureEffect->CompileFromFile(L"Content\\Effects\\TextureEffect.fx");
-		mTextureMaterial = new TextureMaterial();
-		mTextureMaterial->Initialize(mTextureEffect);
+		mEffect = new Effect(*mGame);
+		mEffect->CompileFromFile(L"Content\\Effects\\DiffuseLighting.fx");
+		mMaterial = new DiffuseLightingMaterial();
+		mMaterial->Initialize(mEffect);
 
 		// Create the vertex and index buffers
 		Mesh* mesh = model->Meshes().at(0);
-		mTextureMaterial->CreateVertexBuffer(mGame->Direct3DDevice(), *mesh, &mVertexBuffer);
+		mMaterial->CreateVertexBuffer(mGame->Direct3DDevice(), *mesh, &mVertexBuffer);
 		mesh->CreateIndexBuffer(&mIndexBuffer);
 		mIndexCount = mesh->Indices().size();
 
-		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
+		mColorTextureVariable = mEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();
 		//Load the texture
 		mTextureName = L"Content\\Textures\\floor.jpg";
 
@@ -72,11 +76,11 @@ namespace Rendering
 		ID3D11DeviceContext* direct3DDeviceContext = mGame->Direct3DDeviceContext();
 		direct3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		Pass* pass = mTextureMaterial->CurrentTechnique()->Passes().at(0);
-		ID3D11InputLayout* inputLayout = mTextureMaterial->InputLayouts().at(pass);
+		Pass* pass = mMaterial->CurrentTechnique()->Passes().at(0);
+		ID3D11InputLayout* inputLayout = mMaterial->InputLayouts().at(pass);
 		direct3DDeviceContext->IASetInputLayout(inputLayout);
 
-		UINT stride = mTextureMaterial->VertexSize();
+		UINT stride = mMaterial->VertexSize();
 		UINT offset = 0;
 		direct3DDeviceContext->IASetVertexBuffers(0, 1, &mVertexBuffer, &stride, &offset);
 		direct3DDeviceContext->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
@@ -84,11 +88,18 @@ namespace Rendering
 		XMMATRIX worldMatrix = XMLoadFloat4x4(&mWorldMatrix);
 		XMMATRIX wvp = worldMatrix * mCamera->ViewMatrix() * mCamera->ProjectionMatrix();
 
-		mAmbientColor.a = 255;
+		mAmbientColor.a = 100;
 		XMVECTOR ambientColor = XMLoadColor(&mAmbientColor);
 
-		mTextureMaterial->WorldViewProjection() << wvp;
-		mTextureMaterial->AmbientColor() << ambientColor;
+		mMaterial->WorldViewProjection() << wvp;
+		mMaterial->World() << worldMatrix;
+		mMaterial->pos() << mSpotLight->PositionVector();
+		mMaterial->range() << mSpotLight->Radius();
+		mMaterial->dir() << mSpotLight->DirectionVector();
+		mMaterial->cone() << mSpotLight->OuterAngle();
+		mMaterial->att() << XMFLOAT3(0.4f, 0.02f, 0.000f);
+		mMaterial->ambient() << XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+		mMaterial->diffuse() << XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		mColorTextureVariable->SetResource(mTextureShaderResourceView);
 

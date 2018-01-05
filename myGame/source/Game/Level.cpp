@@ -337,11 +337,11 @@ namespace Rendering
 		#pragma region Floors
 
 
-		Floor* floor = new Floor(game, camera);//floor1
+		Floor* floor = new Floor(game, camera, spotLight2);//floor1
 		tempCompVector.push_back(floor);
 		floor->SetPosition(5, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor2
+		floor = new Floor(game, camera, spotLight2);//floor2
 		tempCompVector.push_back(floor);
 		floor->SetPosition(5, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
@@ -350,15 +350,15 @@ namespace Rendering
 		#pragma region Section2
 
 		//85.4 increments
-		floor = new Floor(game, camera);//floor3
+		floor = new Floor(game, camera, spotLight1);//floor3
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-80.5, 0, 25, 0, 0, 0, 5, 0.01, 5);
 		
-		floor = new Floor(game, camera);//floor5
+		floor = new Floor(game, camera, spotLight1);//floor5
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-80.5, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor5
+		floor = new Floor(game, camera, spotLight1);//floor5
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-105, -17, 110.5, 0, 0, 0, 7, 1, 5);
 
@@ -369,19 +369,19 @@ namespace Rendering
 		wall->SetPosition(-50, -90, 10, 0, 0, 0, 14, 5, 0.5);
 
 		//pillers
-		floor = new Floor(game, camera);//pillar
+		floor = new Floor(game, camera, spotLight1);//pillar
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-80.5, -80, 160.5, 0, 0, 0, 0.5, 5, 0.7);
 
-		floor = new Floor(game, camera);//pillar 2
+		floor = new Floor(game, camera, spotLight1);//pillar 2
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-100.5, -80, 180.5, 0, 0, 0, 0.5, 5, 0.7);
 
-		floor = new Floor(game, camera);//pillar 3
+		floor = new Floor(game, camera, spotLight1);//pillar 3
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-120.5, -80, 200.5, 0, 0, 0, 0.5, 5, 0.7);
 
-		floor = new Floor(game, camera);//pillar 4
+		floor = new Floor(game, camera, spotLight1);//pillar 4
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-150.5, -80, 220.5, 0, 0, 0, 0.5, 5, 0.7);
 
@@ -423,39 +423,39 @@ namespace Rendering
 
 		#pragma endregion
 
-		floor = new Floor(game, camera);//floor4
+		floor = new Floor(game, camera, spotLight1);//floor4
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-165.9, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor8
+		floor = new Floor(game, camera, spotLight1);//floor8
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-165.9, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor7
+		floor = new Floor(game, camera, spotLight1);//floor7
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-210.9, 0, 196, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor6
+		floor = new Floor(game, camera, spotLight1);//floor6
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-251.3, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor8
+		floor = new Floor(game, camera, spotLight1);//floor8
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-251.3, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor7
+		floor = new Floor(game, camera, spotLight1);//floor7
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-296.3, 0, 196, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor8
+		floor = new Floor(game, camera, spotLight1);//floor8
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-336.7, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor7
+		floor = new Floor(game, camera, spotLight1);//floor7
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-381.7, 0, 196, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor6
+		floor = new Floor(game, camera, spotLight1);//floor6
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-336.7, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
@@ -464,27 +464,27 @@ namespace Rendering
 		//section 3 
 
 		#pragma region Section3
-		floor = new Floor(game, camera);//floor2
+		floor = new Floor(game, camera, spotLight1);//floor2
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-422.1, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor8
+		floor = new Floor(game, camera, spotLight1);//floor8
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-422.1, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor1
+		floor = new Floor(game, camera, spotLight1);//floor1
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-467.1, 0, 196, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor2
+		floor = new Floor(game, camera, spotLight1);//floor2
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-507.5, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor8
+		floor = new Floor(game, camera, spotLight1);//floor8
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-507.5, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor1
+		floor = new Floor(game, camera, spotLight1);//floor1
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-552.5, -85.5, 196, 0, 0, 0, 5, 5, 5);
 
@@ -508,7 +508,7 @@ namespace Rendering
 		tempCompVector.push_back(lava);
 		lava->SetPosition(-678.3, -60, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		floor = new Floor(game, camera);//floor1
+		floor = new Floor(game, camera, spotLight1);//floor1
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-637.9, -85.5, 196, 0, 0, 0, 5, 5, 5);
 

@@ -19,13 +19,14 @@
 #include "Shlwapi.h"
 #include "ScreenMessage.h"
 #include "ColorHelper.h"
+#include "SpotLight.h"
 
 namespace Rendering
 {
 	
 	RTTI_DEFINITIONS(Player)
 
-	Player::Player(Game& game, Camera& camera)
+	Player::Player(Game& game, Camera& camera, std::vector<SpotLight*> spotLights)
 		: DrawableGameComponent(game, camera),
 		mMaterial(nullptr), mEffect(nullptr),
 		mVertexBuffers(), mIndexBuffers(), mIndexCounts(), mColorTextures(),
@@ -33,8 +34,9 @@ namespace Rendering
 		mSkinnedModel(nullptr), mAnimationPlayer(nullptr),
 		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
-		mWorldMatrix = MatrixHelper::Identity;		
-
+		mWorldMatrix = MatrixHelper::Identity;
+		mSpotLights = spotLights;
+		mClosestSpotLight = mSpotLights[0];
 	}
 
 	Player::~Player()
@@ -216,6 +218,30 @@ namespace Rendering
 
 		mAnimationPlayer->Update(gameTime);
 
+		//check for closest spotlight
+		for (int i = 0; i < mSpotLights.size(); i++)
+		{
+			XMVECTOR playerPosition = XMLoadFloat3(&getPosition());
+			XMVECTOR spotLightPosition = XMLoadFloat3(&mSpotLights[i]->Position());
+			XMVECTOR closestSpotLightPosition = XMLoadFloat3(&mClosestSpotLight->Position());
+
+			XMVECTOR closestDiff = playerPosition - closestSpotLightPosition;
+			XMVECTOR closestDistanceVector = XMVector3Length(closestDiff);
+			float closestDistance;
+			XMStoreFloat(&closestDistance, closestDistanceVector);
+
+			XMVECTOR diff = playerPosition - spotLightPosition;
+			XMVECTOR distanceVector = XMVector3Length(diff);
+			float distance;
+			XMStoreFloat(&distance, distanceVector);
+
+			if (distance < closestDistance)
+			{
+				mClosestSpotLight = mSpotLights[i];
+			}
+			
+		}
+
 	}
 
 	void Rendering::Player::Draw(const GameTime & gameTime)
@@ -252,6 +278,13 @@ namespace Rendering
 				mMaterial->ColorTexture() << colorTexture;
 				mMaterial->CameraPosition() << mCamera->PositionVector();
 				mMaterial->BoneTransforms() << mAnimationPlayer->BoneTransforms();
+				mMaterial->pos() << mClosestSpotLight->PositionVector();
+				mMaterial->range() << mClosestSpotLight->Radius();
+				mMaterial->dir() << mClosestSpotLight->DirectionVector();
+				mMaterial->cone() << mClosestSpotLight->OuterAngle();
+				mMaterial->att() << XMFLOAT3(0.1f, 0.01f, 0.000f);
+				mMaterial->ambient() << XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+				mMaterial->diffuse() << XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 				pass->Apply(0, direct3DDeviceContext);
 

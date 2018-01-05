@@ -13,6 +13,7 @@ namespace Library
 	class Model;
 	class AnimationPlayer;
 	class AnimationClip;
+	class SpotLight;
 }
 
 namespace Rendering
@@ -22,7 +23,7 @@ namespace Rendering
 		RTTI_DECLARATIONS(Player, DrawableGameComponent)
 
 	public:
-		Player(Game& game, Camera& camera);
+		Player(Game& game, Camera& camera, std::vector<SpotLight*> spotLights);
 		~Player();
 
 		virtual void Initialize() override;
@@ -88,6 +89,9 @@ namespace Rendering
 		XMVECTOR mLocalForward;
 
 		bool isFPS = false;
+
+		std::vector<SpotLight*> mSpotLights;
+		SpotLight* mClosestSpotLight;
 
 	};
 }

@@ -120,12 +120,32 @@ namespace Rendering
 
 	void LightLockDiffuseLight::Update(const GameTime& gameTime)
 	{
-		if (mMirror != NULL && mMirror->Direction().x < 0.1f && mMirror->Direction().x > -0.1f)
+		if (mMirror != NULL)
 		{
-			mOpenDoor = true;
-		}
-		else {
-			mOpenDoor = false;
+			switch (mMirror->GetID())
+			{
+			case 1:
+				if (mMirror->Direction().x < 0.1f && mMirror->Direction().x > -0.1f)
+				{
+					mOpenDoor = true;
+				}
+				else 
+				{
+					mOpenDoor = false;
+				}
+				break;
+			case 4:
+				if (mMirror->Direction().x < -0.75f && mMirror->Direction().x > -0.8f)
+				{
+					mOpenDoor = true;
+				}
+				else
+				{
+					mOpenDoor = false;
+				}
+				break;
+			}
+			
 		}
 
 		if (mOpenDoor)
@@ -178,10 +198,10 @@ namespace Rendering
 		mSpriteBatch->Begin();
 
 		std::wostringstream helpLabel;
-		helpLabel << L"Ambient Intensity (+PgUp/-PgDn): " << mAmbientColor.a << "\n";
-		helpLabel << L"Directional Light Intensity (+Home/-End): " << mSpotLight->Color().a << "\n";
-		helpLabel << L"Rotate Directional Light (Arrow Keys)\n";
-		if (mMirror != NULL)
+		//helpLabel << L"Ambient Intensity (+PgUp/-PgDn): " << mAmbientColor.a << "\n";
+		//helpLabel << L"Directional Light Intensity (+Home/-End): " << mSpotLight->Color().a << "\n";
+		//helpLabel << L"Rotate Directional Light (Arrow Keys)\n";
+		if (mMirror != NULL && mMirror->GetID() == 4)
 		{
 			helpLabel << L"Directionx: " << mMirror->Direction().x << "y: " << mMirror->Direction().y << "z: " << mMirror->Direction().z;
 			//helpLabel << L"Open: " << mOpenDoor;

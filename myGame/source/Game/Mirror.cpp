@@ -19,7 +19,7 @@ namespace Rendering
 
 		const XMFLOAT2 Mirror::LightRotationRate = XMFLOAT2(XM_PIDIV4, XM_PIDIV4);
 
-		Mirror::Mirror(Game& game, Camera& camera, Mouse& mouse, SpotLight& spotLight1, SpotLight& spotLight2)
+		Mirror::Mirror(Game& game, Camera& camera, Mouse& mouse, SpotLight& spotLight1, SpotLight& spotLight2, int id)
 		: DrawableGameComponent(game, camera),
 		mMaterial(nullptr), mEffect(nullptr),
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
@@ -31,6 +31,7 @@ namespace Rendering
 		mSpotLight1 = &spotLight1;
 		mSpotLight2 = &spotLight2;
 		mMouse = &mouse;
+		mID = id;
 	}
 
 	Mirror::~Mirror()
@@ -260,5 +261,10 @@ namespace Rendering
 		pass->Apply(0, direct3DDeviceContext);
 
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
+	}
+
+	int Mirror::GetID()
+	{
+		return mID;
 	}
 }
