@@ -67,7 +67,15 @@ namespace Rendering
 		Mirror* mMirror3;		// mirror3
 		SpotLight* mSpotLight6; // mirror4
 		Mirror* mMirror4;		// mirror4
+		
+		
+		TreasureChest* mChest;
+		TreasureChest* mChest1;
+		TreasureChest* mChest2;
+		TreasureChest* mChest3;
+		TreasureChest* mChest4;
 
+		void Interaction(const GameTime& gameTime, TreasureChest* chest);
 
 		std::vector<SpotLight*> mSpotLights;
 		static const float LightModulationRate;
