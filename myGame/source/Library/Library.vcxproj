@@ -195,6 +195,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Pass.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Projector.h" />
     <ClInclude Include="ProxyModel.h" />
     <ClInclude Include="RasterizerStates.h" />
     <ClInclude Include="Ray.h" />
@@ -246,6 +247,7 @@ IF EXIST "$(TargetDir)Content" xcopy /E /Y "$(TargetDir)Content" "$(SolutionDir)
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pass.cpp" />
     <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="Projector.cpp" />
     <ClCompile Include="ProxyModel.cpp" />
     <ClCompile Include="RasterizerStates.cpp" />
     <ClCompile Include="Ray.cpp" />

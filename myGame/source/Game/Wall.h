@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DrawableGameComponent.h"
+#include "RenderStateHelper.h"
 
 using namespace Library;
 
@@ -11,6 +12,7 @@ namespace Library
 	class DepthMapMaterial;
 	class DepthMap;
 	class ShadowMappingMaterial;
+	class Projector;
 }
 
 namespace Rendering
@@ -41,6 +43,10 @@ namespace Rendering
 		Wall(const Wall& rhs);
 		Wall& operator=(const Wall& rhs);
 
+		void InitializeProjectedTextureScalingMatrix();
+
+		RenderStateHelper mRenderStateHelper;
+
 		Effect* mEffect;
 		ShadowMappingMaterial* mMaterial;
 		XMCOLOR mAmbientColor;
@@ -48,6 +54,12 @@ namespace Rendering
 		ID3D11Buffer* mVertexBuffer;
 		ID3D11Buffer* mIndexBuffer;
 		UINT mIndexCount;
+
+		ID3D11Buffer* mPlanePositionVertexBuffer;
+		ID3D11Buffer* mPlanePositionUVNormalVertexBuffer;
+		ID3D11Buffer* mPlaneIndexBuffer;
+		UINT mPlaneVertexCount;
+		XMFLOAT4X4 mPlaneWorldMatrix;
 
 		SpotLight* mSpotLight;
 
@@ -60,5 +72,11 @@ namespace Rendering
 		DepthMapMaterial* mDepthMapMaterial;
 		DepthMap* mDepthMap;
 		bool mDrawDepthMap;
+		Projector* mProjector;
+		ID3D11RasterizerState* mDepthBiasState;
+		static const UINT DepthMapWidth;
+		static const UINT DepthMapHeight;
+
+		XMFLOAT4X4 mProjectedTextureScalingMatrix;
 	};
 }

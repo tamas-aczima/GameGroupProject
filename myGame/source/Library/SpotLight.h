@@ -33,11 +33,16 @@ namespace Library
 		static const float DefaultInnerAngle;
 		static const float DefaultOuterAngle;
 
+		void SetRotationMatrix(XMMATRIX rotMatrix);
+		XMMATRIX GetRotationMatrix();
+
 	protected:
 		XMFLOAT3 mDirection;
 		XMFLOAT3 mUp;
 		XMFLOAT3 mRight;
 		float mInnerAngle;
 		float mOuterAngle;
+
+		XMMATRIX rotationMatrix;
 	};
 }

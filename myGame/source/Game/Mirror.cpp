@@ -224,6 +224,7 @@ namespace Rendering
 			if (rotationAmount.x != 0.0f)
 			{
 				mSpotLight2->ApplyRotation(lightRotationMatrix);
+				mSpotLight2->SetRotationMatrix(lightRotationMatrix);
 				this->ApplyRotation(lightRotationMatrix);				
 			}
 		}

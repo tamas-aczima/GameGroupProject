@@ -92,4 +92,14 @@ namespace Library
         XMMATRIX transformMatrix = XMLoadFloat4x4(&transform);
         ApplyRotation(transformMatrix);
     }
+
+	void SpotLight::SetRotationMatrix(XMMATRIX rotMatrix)
+	{
+		rotationMatrix = rotMatrix;
+	}
+
+	XMMATRIX SpotLight::GetRotationMatrix()
+	{
+		return rotationMatrix;
+	}
 }
