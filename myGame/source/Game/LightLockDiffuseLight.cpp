@@ -125,7 +125,7 @@ namespace Rendering
 			switch (mMirror->GetID())
 			{
 			case 1:
-				if (mMirror->Direction().x < 0.1f && mMirror->Direction().x > -0.1f)
+				if (mMirror->Direction().x < 0.1f && mMirror->Direction().x > -0.1f && mMirror->Direction().z < 0)
 				{
 					mOpenDoor = true;
 				}
@@ -135,7 +135,17 @@ namespace Rendering
 				}
 				break;
 			case 4:
-				if (mMirror->Direction().x < -0.75f && mMirror->Direction().x > -0.8f)
+				if (mMirror->Direction().x < -0.75f && mMirror->Direction().x > -0.8f && mMirror->Direction().z < 0)
+				{
+					mOpenDoor = true;
+				}
+				else
+				{
+					mOpenDoor = false;
+				}
+				break;
+			case 7:
+				if (mMirror->Direction().x < -0.9f && mMirror->Direction().x > -0.95f && mMirror->Direction().z < 0)
 				{
 					mOpenDoor = true;
 				}
@@ -194,23 +204,23 @@ namespace Rendering
 
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
 
-		mRenderStateHelper->SaveAll();
-		mSpriteBatch->Begin();
+		//mRenderStateHelper->SaveAll();
+		//mSpriteBatch->Begin();
 
-		std::wostringstream helpLabel;
+		//std::wostringstream helpLabel;
 		//helpLabel << L"Ambient Intensity (+PgUp/-PgDn): " << mAmbientColor.a << "\n";
 		//helpLabel << L"Directional Light Intensity (+Home/-End): " << mSpotLight->Color().a << "\n";
 		//helpLabel << L"Rotate Directional Light (Arrow Keys)\n";
-		if (mMirror != NULL && mMirror->GetID() == 4)
-		{
-			helpLabel << L"Directionx: " << mMirror->Direction().x << "y: " << mMirror->Direction().y << "z: " << mMirror->Direction().z;
-			//helpLabel << L"Open: " << mOpenDoor;
-		}
+		//if (mMirror != NULL && mMirror->GetID() == 3)
+		//{
+		//	helpLabel << L"Directionx: " << mMirror->Direction().x << "y: " << mMirror->Direction().y << "z: " << mMirror->Direction().z;
+		//	//helpLabel << L"Open: " << mOpenDoor;
+		//}
 
 
-		mSpriteFont->DrawString(mSpriteBatch, helpLabel.str().c_str(), mTextPosition);
+		//mSpriteFont->DrawString(mSpriteBatch, helpLabel.str().c_str(), mTextPosition);
 
-		mSpriteBatch->End();
-		mRenderStateHelper->RestoreAll();
+		//mSpriteBatch->End();
+		//mRenderStateHelper->RestoreAll();
 	}
 }
