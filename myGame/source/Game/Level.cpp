@@ -8,15 +8,18 @@
 #include "Door.h"
 #include "BasicDoor.h"
 #include "LightLock.h"
+#include "TreasureChest.h"
 #include "LightLockDiffuseLight.h"
 #include "Mirror.h"
+#include "Mouse.h"
 
 namespace Rendering
 {
 	RTTI_DEFINITIONS(Level)
 	
-	Level::Level(Game& game, Camera& camera, SpotLight& spotLight1, SpotLight& spotLight2, SpotLight& spotLight3, 
-		SpotLight& spotLight4, SpotLight& spotLight5, SpotLight& spotLight6, Mirror& mirror1, Mirror& mirror2, Mirror& mirror3, Mirror& mirror4)
+	Level::Level(Game& game, Camera& camera, SpotLight& spotLight1, SpotLight& spotLight2, SpotLight& spotLight3,
+		SpotLight& spotLight4, SpotLight& spotLight5, SpotLight& spotLight6, Mirror& mirror1, Mirror& mirror2, Mirror& mirror3, Mirror& mirror4,
+		TreasureChest& chest1)
 		: DrawableGameComponent(game, camera)
 	{
 
@@ -276,13 +279,17 @@ namespace Rendering
 
 		#pragma region InnerBuildings
 
-		wall = new Wall(game, camera, spotLight2);
+		/*wall = new Wall(game, camera, spotLight2);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-500, 0, 85, 0, -1.6, 0, 3, 1.5, 0.5);
+		wall->SetPosition(-500, 0, 85, 0, -1.6, 0, 3, 1.5, 0.5);*/
 
 		wall = new Wall(game, camera, spotLight2);
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-502, 0, 135.5, 0, -1.6, 0, 3, 1.5, 0.5);
+
+		wall = new Wall(game, camera, spotLight2); // Devider Wall
+		tempCompVector.push_back(wall);
+		wall->SetPosition(-470, 0, 35.5, 0, -1.6, 0, 3, 1.5, 0.5);
 
 		wall = new Wall(game, camera, spotLight2); //Left  backwall 
 		tempCompVector.push_back(wall);
@@ -371,19 +378,51 @@ namespace Rendering
 		//pillers
 		floor = new Floor(game, camera, spotLight1);//pillar
 		tempCompVector.push_back(floor);
-		floor->SetPosition(-80.5, -80, 160.5, 0, 0, 0, 0.5, 5, 0.7);
+		floor->SetPosition(-80.5, -85.5, 160.5, 0, 0, 0, 0.4, 5, 0.4);
 
 		floor = new Floor(game, camera, spotLight1);//pillar 2
 		tempCompVector.push_back(floor);
-		floor->SetPosition(-100.5, -80, 180.5, 0, 0, 0, 0.5, 5, 0.7);
+		floor->SetPosition(-90.5, -85.5, 170.5, 0, 0, 0, 0.4, 5, 0.4);
 
 		floor = new Floor(game, camera, spotLight1);//pillar 3
 		tempCompVector.push_back(floor);
-		floor->SetPosition(-120.5, -80, 200.5, 0, 0, 0, 0.5, 5, 0.7);
+		floor->SetPosition(-100.5, -85.5, 180.5, 0, 0, 0, 0.4, 5, 0.4);
 
 		floor = new Floor(game, camera, spotLight1);//pillar 4
 		tempCompVector.push_back(floor);
-		floor->SetPosition(-150.5, -80, 220.5, 0, 0, 0, 0.5, 5, 0.7);
+		floor->SetPosition(-110.5, -85.5, 190.5, 0, 0, 0, 0.4, 5, 0.4);
+
+		floor = new Floor(game, camera, spotLight1);//pillar 5
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-100.5, -85.5, 200.5, 0, 0, 0, 0.4, 5, 0.4);
+
+		floor = new Floor(game, camera, spotLight1);//pillar 6
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-90.5, -85.5, 210.5, 0, 0, 0, 0.4, 5, 0.4);
+
+		floor = new Floor(game, camera, spotLight1);//pillar 7
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-90.5, -85.5, 220.5, 0, 0, 0, 0.4, 5, 0.4);
+
+		floor = new Floor(game, camera, spotLight1);//pillar 8
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-90.5, -85.5, 230.5, 0, 0, 0, 0.4, 5, 0.4);
+
+		floor = new Floor(game, camera, spotLight1);//pillar 8
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-100.5, -85.5, 235.5, 0, 0, 0, 0.4, 5, 0.4);
+
+		floor = new Floor(game, camera, spotLight1);//DummyPillar
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-80.5, -85.5, 190.5, 0, 0, 0, 0.4, 5, 0.4);
+
+		floor = new Floor(game, camera, spotLight1);//DummyPillar
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-126.5, -85.5, 215, 0, 0, 0, 0.4, 5, 0.4);
+
+		floor = new Floor(game, camera, spotLight1);//Platform
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-100, -85.5, 260, 0, 0, 0, 4, 5, 2);
 
 		Lava* lava = new Lava(game, camera);//  LAVA
 		tempCompVector.push_back(lava);
@@ -587,9 +626,19 @@ namespace Rendering
 		//Source 3
 		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
 		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 1, 1.57, 0.5, -500, 12, 150);
+
+		//mirror 3.1
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
 		lightLock->SetPosition(0, 1, 1.57, 0.5, -544, 12, 150);
 
-		//mirror 3
+		//mirror 3.2
+		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		tempCompVector.push_back(lightLock);
+		lightLock->SetPosition(0, 1.57, 1.57, 0.5, -440, 12, 15);
+
+		//mirror 3.3
 		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
 		tempCompVector.push_back(lightLock);
 		lightLock->SetPosition(0, 1.57, 1.57, 0.5, -505, 12, 15);
@@ -616,6 +665,18 @@ namespace Rendering
 #pragma endregion
 
 
+		// Treasure Chests
+		#pragma region Chest
+
+		//TreasureChest* chest = new TreasureChest(game, camera);
+		//tempCompVector.push_back(chest);
+		//chest->SetPosition(12, 0, 5, 0, 3.14, 0, 3.0, 3.0, 3.0);
+
+
+
+#pragma endregion
+
+
 	}
 
 	Level::~Level()
@@ -631,4 +692,5 @@ namespace Rendering
 
 		return mComponents;
 	}
+
 }

@@ -32,7 +32,7 @@ namespace Rendering
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
 		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr),
-		 mRenderStateHelper(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr), mChest(nullptr), key1(nullptr)
+		 mRenderStateHelper(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr), mChest(nullptr), mChest1(nullptr), mChest2(nullptr), mChest3(nullptr) ,mChest4(nullptr), key1(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -182,13 +182,26 @@ namespace Rendering
 		mChest->SetPosition(12, 0, 5, 0, 3.14, 0, 3.0, 3.0, 3.0);
 
 
-
 		key1 = new GoldKey(*this, *mCamera, *mMouse);
 		mComponents.push_back(key1);
 		key1->SetPosition(12.0, 0, 50.0, 0, 1.57, 0, 0.05, 0.05, 0.05);
 
 
+		mChest1 = new TreasureChest(*this, *mCamera, *mMouse, 100); //Chest2
+		mComponents.push_back(mChest1);
+		mChest1->SetPosition(-100, 0, 260, 0, 0, 0, 3.0, 3.0, 3.0);
 
+		mChest2 = new TreasureChest(*this, *mCamera, *mMouse, 100);//Chest3
+		mComponents.push_back(mChest2);
+		mChest2->SetPosition(-100, 0, 30, 0, 1.57, 0, 3.0, 3.0, 3.0);
+
+		mChest3 = new TreasureChest(*this, *mCamera, *mMouse, 100);//Chest4
+		mComponents.push_back(mChest3);
+		mChest3->SetPosition(-265, 0, 10, 0, 3.14, 0, 3.0, 3.0, 3.0);
+
+		mChest4 = new TreasureChest(*this, *mCamera, *mMouse, 100);//Chest5
+		mComponents.push_back(mChest4);
+		mChest4->SetPosition(-265, 0, 100, 0, 0 , 0, 3.0, 3.0, 3.0);
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
@@ -385,6 +398,7 @@ namespace Rendering
 			
 		}
 
+
 		//Enable/Disabel Editing Mode
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_O))
 		{
@@ -401,8 +415,6 @@ namespace Rendering
 		}
 		Game::Update(gameTime);
 	}
-
-
 
 
 	void RenderingGame::Draw(const GameTime &gameTime)
@@ -484,6 +496,10 @@ namespace Rendering
 		DeleteObject(mSpotLight2);
 		DeleteObject(mChest);
 		DeleteObject(key1);
+		DeleteObject(mChest1);
+		DeleteObject(mChest2);
+		DeleteObject(mChest3);
+		DeleteObject(mChest4);
 		DeleteObject(mProxyModel1);
 		DeleteObject(mProxyModel2);
 		ReleaseObject(mDirectInput);

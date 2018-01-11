@@ -76,6 +76,10 @@ namespace Rendering
 		
 		TreasureChest* mChest;
 		GoldKey * key1;
+		TreasureChest* mChest1;
+		TreasureChest* mChest2;
+		TreasureChest* mChest3;
+		TreasureChest* mChest4;
 
 		std::vector<SpotLight*> mSpotLights;
 		static const float LightModulationRate;
