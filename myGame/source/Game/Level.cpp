@@ -18,8 +18,7 @@ namespace Rendering
 	RTTI_DEFINITIONS(Level)
 	
 	Level::Level(Game& game, Camera& camera, SpotLight& spotLight1, SpotLight& spotLight2, SpotLight& spotLight3,
-		SpotLight& spotLight4, SpotLight& spotLight5, SpotLight& spotLight6, Mirror& mirror1, Mirror& mirror2, Mirror& mirror3, Mirror& mirror4,
-		TreasureChest& chest1)
+		SpotLight& spotLight4, SpotLight& spotLight5, SpotLight& spotLight6, Mirror& mirror1, Mirror& mirror2, Mirror& mirror3, Mirror& mirror4)
 		: DrawableGameComponent(game, camera)
 	{
 
