@@ -47,6 +47,8 @@ namespace Rendering
 		void UpdateGoldValue(int goldValue);
 		void UpdateKeyAmount(int keyAmt);
 
+		void UpdateAllChests(const GameTime &gameTime);
+
 		int mKeyNo, mGold;
 	protected:
 		virtual void Shutdown() override;

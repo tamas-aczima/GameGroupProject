@@ -24,6 +24,7 @@ namespace Rendering
 	{
 		mWorldMatrix = MatrixHelper::Identity;
 		mMouse = &mouse;
+		mCollected = false;
 	}
 
 	GoldKey::~GoldKey()
@@ -60,16 +61,16 @@ namespace Rendering
 		{
 			throw GameException("CreateWICTextureFromFile() failed.", hr);
 		}
-
 		mColorTextureVariable = mTextureEffect->GetEffect()->GetVariableByName("ColorTexture")->AsShaderResource();			
 	}
 
 	void GoldKey::Update(const GameTime& gameTime)
 	{
-		if (this->Visible())
-		{
-			Interaction(gameTime);
-		}		
+	}
+
+	void GoldKey::chestCollected()
+	{
+		mCollected = true;
 	}
 
 	void GoldKey::Interaction(const GameTime& gameTime)//, TreasureChest* chest)
