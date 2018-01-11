@@ -204,7 +204,7 @@ namespace Rendering
 					mSpotLight2->SetRadius(mDefaultRadius);
 				}
 			case 4:
-				if (this->Direction().x < -0.7f || mSpotLight1->Direction().x < -0.7f || mSpotLight1->Direction().x > -0.4f || mSpotLight1->Radius() == 0)
+				if (this->Direction().x < -0.7f || mSpotLight1->Direction().x < 0.7f || mSpotLight1->Direction().x > 0.9f || mSpotLight1->Radius() == 0)
 				{
 					mSpotLight2->SetRadius(0);
 				}
@@ -314,9 +314,9 @@ namespace Rendering
 		mSpriteBatch->Begin();
 
 		std::wostringstream helpLabel;
-		if (mID == 2)
+		if (mID == 3)
 		{
-			helpLabel << L"Directionx: " << this->Direction().x << "y: " << this->Direction().y << "z: " << this->Direction().z;
+			helpLabel << L"Direction x: " << this->Direction().x << " y: " << this->Direction().y << " z: " << this->Direction().z << L" SpotLight x: " << mSpotLight1->Direction().x;
 		}
 
 
