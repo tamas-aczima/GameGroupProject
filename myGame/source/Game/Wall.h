@@ -3,6 +3,7 @@
 #include "DrawableGameComponent.h"
 
 using namespace Library;
+using namespace DirectX;
 
 namespace Library
 {
@@ -24,6 +25,16 @@ namespace Rendering
 		virtual void Initialize() override;
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
+
+		void SetTransform(float X, float Y, float Z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ);
+
+		float x;
+		float y;
+		float z;
+		XMVECTOR positionVector;
+
+		XMFLOAT4X4* WorldMatrix() { return &mWorldMatrix; }
+		bool Collision(XMVECTOR playerPos);
 
 	private:
 		Wall();

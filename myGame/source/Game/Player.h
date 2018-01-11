@@ -35,6 +35,8 @@ namespace Rendering
 		float y;
 		float z;
 
+		XMVECTOR positionVector;
+
 		XMFLOAT3 getPosition();
 
 		XMFLOAT2 GetLocalForward();

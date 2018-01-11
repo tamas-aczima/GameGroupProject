@@ -3,6 +3,7 @@
 #include "DrawableGameComponent.h"
 
 using namespace Library;
+using namespace std;
 
 namespace Library
 {
@@ -25,9 +26,10 @@ namespace Rendering
 
 		std::vector<GameComponent*> UpdateComponent(std::vector<GameComponent*> mComponents);
 
+		std::vector<Wall*> wallsList;
+
 	private:
 		std::vector<GameComponent*> tempCompVector;
-		
 
 	};
 }

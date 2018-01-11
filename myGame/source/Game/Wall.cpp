@@ -40,7 +40,7 @@ namespace Rendering
 	void Wall::Initialize()
 	{
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
-
+		
 		// Load the model
 		std::unique_ptr<Model> model(new Model(*mGame, "Content\\Models\\Cube.obj", true));
 
@@ -67,6 +67,26 @@ namespace Rendering
 	{
 
 		
+
+	}
+
+	void Wall::SetTransform(float X, float Y, float Z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ)
+	{
+
+		this->SetPosition(X, Y, Z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
+
+		x = X;
+		y = Y;
+		z = Z;
+
+		positionVector = XMVectorSet(x, y, z, 1.0f);
+
+		/*XMMATRIX scaleMatrix = XMMatrixScaling(scaleX, scaleY, scaleZ);
+		XMMATRIX translationMatrix = XMMatrixTranslation(x, y, z);
+
+		this->mTextureMaterial->mBoundingBox.Transform(this->mTextureMaterial->mBoundingBox, translationMatrix);
+		*/
+		//mBoundingBox.Transform(mBoundingBox, translationMatrix);
 
 	}
 

@@ -242,6 +242,8 @@ namespace Rendering
 			
 		}
 
+		positionVector = XMVectorSet(x, y, z, 1.0f);
+
 	}
 
 	void Rendering::Player::Draw(const GameTime & gameTime)
@@ -300,6 +302,8 @@ namespace Rendering
 		x = X;
 		y = Y;
 		z = Z;
+
+		positionVector = XMVectorSet(x, y, z, 1.0f);
 		
 	}
 

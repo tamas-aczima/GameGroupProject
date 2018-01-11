@@ -19,6 +19,7 @@
 #include "SpotLight.h"
 #include "ProxyModel.h"
 #include "Mirror.h"
+#include "Wall.h"
 
 namespace Rendering
 {
@@ -320,7 +321,7 @@ namespace Rendering
 			}
 			
 			//Player movement------
-			if (mKeyboard->IsKeyDown(DIK_W))
+			if (mKeyboard->IsKeyDown(DIK_W) && !isColliding)
 			{
 				player->x -= player->GetLocalForward().x * gameTime.ElapsedGameTime() * 10;
 				player->z -= player->GetLocalForward().y * gameTime.ElapsedGameTime() * 10;
@@ -351,6 +352,8 @@ namespace Rendering
 			}
 		}
 
+		CollisionDetection(player->x, player->z);
+
 		Game::Update(gameTime);
 	}
 
@@ -374,7 +377,8 @@ namespace Rendering
 		//Player Location
 		std::wostringstream playerLocation;
 		XMFLOAT2 messageLoc = XMFLOAT2(5, 30);
-		playerLocation << "x " << player->getPosition().x << "    " << "z " << player->getPosition().z;
+		//playerLocation << "x " << player->getPosition().x << "    " << "z " << player->getPosition().z;
+		playerLocation << distance << " distance 2 " << distance2;
 		mSpriteFont->DrawString(mSpriteBatch, playerLocation.str().c_str(), messageLoc, Colors::White);
 		
 		std::wostringstream CameraPositon;
@@ -394,6 +398,14 @@ namespace Rendering
 		CameraRot << "Rotation " << mRotation;
 		mSpriteFont->DrawString(mSpriteBatch, CameraRot.str().c_str(), RotLoc);
 
+		//Bounding box test
+		if (isColliding)
+		{
+			std::wostringstream coll;
+			XMFLOAT2 collLoc = XMFLOAT2(5, 180);
+			coll << "Collision";
+			mSpriteFont->DrawString(mSpriteBatch, coll.str().c_str(), collLoc);
+		}
 
 		mSpriteBatch->End();
 
@@ -460,6 +472,87 @@ namespace Rendering
 			ScreenMessage::ClearMessages();
 		}
 		
+
+	}
+
+	float RenderingGame::Distance(const XMVECTOR& point1, const XMVECTOR& point2)
+	{
+		float distance = sqrt((XMVectorGetX(point1) - XMVectorGetX(point2)) * (XMVectorGetX(point1) - XMVectorGetX(point2)) +
+			(XMVectorGetY(point1) - XMVectorGetY(point2)) * (XMVectorGetY(point1) - XMVectorGetY(point2)) +
+			(XMVectorGetZ(point1) - XMVectorGetZ(point2)) * (XMVectorGetZ(point1) - XMVectorGetZ(point2)));
+		return distance;
+	}
+
+	void RenderingGame::CollisionDetection(float playerX, float playerZ)
+	{
+		//loop all objects in the map
+		/*if (mLevel->wallsList.at(objectView)->Visible())
+		{
+		gameObjects.push_back(mLevel->wallsList.at(objectView));
+		}*/
+
+
+
+		XMFLOAT4X4 P;
+		XMStoreFloat4x4(&P, mCamera->ProjectionMatrix());
+
+		XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+		XMVECTOR rayDir = XMVectorSet(playerX, 1.0f, playerZ, 0.0f);
+
+		// Tranform ray to local space of Mesh via the inverse of both of view and world transform
+		XMMATRIX V = mCamera->ViewMatrix();
+		XMMATRIX invView = XMMatrixInverse(&XMMatrixDeterminant(V), V);
+
+
+		XMMATRIX W = XMLoadFloat4x4(mLevel->wallsList.at(objectView)->WorldMatrix());
+		XMMATRIX invWorld = XMMatrixInverse(&XMMatrixDeterminant(W), W);
+
+		XMMATRIX toLocal = XMMatrixMultiply(invView, invWorld);
+
+		rayOrigin = XMVector3TransformCoord(rayOrigin, toLocal);
+		rayDir = XMVector3TransformNormal(rayDir, toLocal);
+		rayDir = XMVector3TransformNormal(rayDir, toLocal);
+
+
+		// Make the ray direction unit length for the intersection tests.
+		rayDir = XMVector3Normalize(rayDir);
+
+		float tmin = 0.0;
+		//Check if visible
+		/*if (mLevel->wallsList.at(objectView)->mTextureMaterial->mBoundingBox.Intersects(rayOrigin, rayDir, tmin))
+		{
+		LookingAtObject = objectView;
+		}*/
+		for (int i = 0; i < mLevel->wallsList.size(); i++)
+		{
+			distance = Distance(player->positionVector, mLevel->wallsList.at(i)->positionVector);
+			if (distance < 7)
+			{
+				LookingAtObject = i;
+			}
+
+			distance2 = Distance(player->positionVector, mLevel->wallsList.at(LookingAtObject)->positionVector);
+			if (distance2 < 6.5)//6.5
+			{
+				isColliding = true;
+			}
+			else
+			{
+				isColliding = false;
+			}
+		}
+		//check distance
+		//distance = Distance(player->positionVector, mLevel->wallsList.at(LookingAtObject)->positionVector);
+
+		/*if (distance < 6.5)
+		isColliding = true;
+		else
+		isColliding = false;*/
+
+		//Reset the loop
+		/*objectView++;
+		if (objectView > mLevel->wallsList.size() - 1)
+		objectView = 0;*/
 
 	}
 

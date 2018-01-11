@@ -387,7 +387,7 @@ namespace Library
 		ZeroMemory(&fullScreenDesc, sizeof(fullScreenDesc));
 		fullScreenDesc.RefreshRate.Numerator = mFrameRate;
 		fullScreenDesc.RefreshRate.Denominator = 1;
-		fullScreenDesc.Windowed = mIsFullScreen; //Full screen without window
+		fullScreenDesc.Windowed = !mIsFullScreen; //Full screen without window
 
 		if (FAILED(hr = dxgiFactory->CreateSwapChainForHwnd(dxgiDevice, mWindowHandle, &swapChainDesc, &fullScreenDesc, nullptr, &mSwapChain)))
 		{

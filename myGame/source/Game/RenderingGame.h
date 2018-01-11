@@ -89,6 +89,17 @@ namespace Rendering
 
 		void showMessages();
 
+		//Collision
+		void CollisionDetection(float playerX, float playerZ);
+
+		bool isColliding = false;
+		float distance;
+		float distance2;
+		float Distance(const XMVECTOR& point1, const XMVECTOR& point2);
+		int objectView = 0;
+		int LookingAtObject = 0;
+		//-----------------------------
+
 		float zoomY = 17.0f;
 		float zoom = 17.0f;//20
 		float zoomX = 0;
