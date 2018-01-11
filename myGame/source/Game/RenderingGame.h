@@ -32,6 +32,7 @@ namespace Rendering
 	class Player;
 	class PlayerAnimation;
 	class Mirror;
+	class GoldKey;
 
 	class RenderingGame : public Game
 	{
@@ -43,6 +44,10 @@ namespace Rendering
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
+		void UpdateGoldValue(int goldValue);
+		void UpdateKeyAmount(int keyAmt);
+
+		int mKeyNo, mGold;
 	protected:
 		virtual void Shutdown() override;
 
@@ -76,12 +81,11 @@ namespace Rendering
 		Mirror* mMirror7;		// mirror7
 		
 		TreasureChest* mChest;
+		GoldKey * key1;
 		TreasureChest* mChest1;
 		TreasureChest* mChest2;
 		TreasureChest* mChest3;
 		TreasureChest* mChest4;
-
-		//void Interaction(const GameTime& gameTime, TreasureChest* chest);
 
 		std::vector<SpotLight*> mSpotLights;
 		static const float LightModulationRate;
@@ -90,7 +94,7 @@ namespace Rendering
 		ProxyModel* mProxyModel2;
 
 		Level* mLevel;
-		TreasureChest* mTreasureChest;
+		//TreasureChest* mTreasureChest;
 		Rock* mRock;
 
 		SpriteBatch* mSpriteBatch;
@@ -132,6 +136,9 @@ namespace Rendering
 		bool isUp = true;
 		bool isDown = false;
 
+		HBITMAP mGameLogoImage;
 
+		HWND mGameLogo;
+		
 	};
 }
