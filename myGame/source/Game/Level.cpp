@@ -182,7 +182,7 @@ namespace Rendering
 		wall28->SetPosition(-225, 0, 0, 0, 0, 0, 5, 1.5, 0.5);
 		wallsList.push_back(wall28);
 
-		Wall* wall29 = new Wall(game, camera, spotLight2); //rightroom backwall 4
+		Wall* wall29 = new Wall(game, camera, spotLight7); //rightroom backwall 4
 		tempCompVector.push_back(wall29);
 		wall29->SetPosition(-310, 0, 0, 0, 0, 0, 5, 1.5, 0.5);
 		wallsList.push_back(wall29);
@@ -241,7 +241,7 @@ namespace Rendering
 
 		//section 2.2
 		
-		wall = new Wall(game, camera, spotLight4); //Left Roomm backwall 4
+		wall = new Wall(game, camera, spotLight8); //Left Roomm backwall 4
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-310, 0, 40, 0, -1.6, 0, 5, 1.5, 0.5);
 
@@ -285,7 +285,7 @@ namespace Rendering
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-277, 0, 190, 0, 0, 0, 4.5, 1.5, 0.5);
 
-		wall = new Wall(game, camera, spotLight2); //left Roomm 
+		wall = new Wall(game, camera, spotLight8); //left Roomm 
 		tempCompVector.push_back(wall);
 		wall->SetPosition(-310, 0, 120, 0, -1.6, 0, 5, 1.5, 0.5);
 
@@ -329,7 +329,7 @@ namespace Rendering
 
 		wall = new Wall(game, camera, spotLight8); // Devider Wall
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-445, 0, 28, 0, -1.6, 0, 3, 1.5, 0.5);
+		wall->SetPosition(-440, 0, 28, 0, -1.6, 0, 3, 1.5, 0.5);
 
 		wall = new Wall(game, camera, spotLight10); //Left  backwall 
 		tempCompVector.push_back(wall);

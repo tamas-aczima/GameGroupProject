@@ -120,42 +120,30 @@ namespace Rendering
 
 	void LightLockDiffuseLight::Update(const GameTime& gameTime)
 	{
-		if (mMirror != NULL)
-		{
-			switch (mMirror->GetID())
-			{
+		if (mMirror != NULL) {
+			switch (mMirror->GetID()) {
 			case 1:
-				if (mMirror->Direction().x < 0.1f && mMirror->Direction().x > -0.1f && mMirror->Direction().z < 0)
-				{
+				if (mMirror->Direction().x < 0.1f && mMirror->Direction().x > -0.1f && mMirror->Direction().z < 0 && mSpotLight->Radius() != 0) {
 					mOpenDoor = true;
-				}
-				else 
-				{
+				} else {
 					mOpenDoor = false;
 				}
 				break;
 			case 4:
-				if (mMirror->Direction().x < -0.75f && mMirror->Direction().x > -0.8f && mMirror->Direction().z < 0)
-				{
+				if (mMirror->Direction().x < -0.75f && mMirror->Direction().x > -0.8f && mMirror->Direction().z < 0 && mSpotLight->Radius() != 0) {
 					mOpenDoor = true;
-				}
-				else
-				{
+				} else {
 					mOpenDoor = false;
 				}
 				break;
 			case 7:
-				if (mMirror->Direction().x < -0.9f && mMirror->Direction().x > -0.95f && mMirror->Direction().z < 0)
-				{
+				if (mMirror->Direction().x < -0.9f && mMirror->Direction().x > -0.95f && mMirror->Direction().z < 0 && mSpotLight->Radius() != 0) {
 					mOpenDoor = true;
-				}
-				else
-				{
+				} else {
 					mOpenDoor = false;
 				}
 				break;
 			}
-			
 		}
 
 		if (mOpenDoor)
