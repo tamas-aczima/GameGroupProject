@@ -137,7 +137,7 @@ namespace Rendering
 				}
 				break;
 			case 7:
-				if (mMirror->Direction().x < -0.9f && mMirror->Direction().x > -0.95f && mMirror->Direction().z < 0 && mSpotLight->Radius() != 0) {
+				if (mMirror->Direction().x < -0.9f && mMirror->Direction().x > -0.97f && mMirror->Direction().z < 0 && mSpotLight->Radius() != 0) {
 					mOpenDoor = true;
 				} else {
 					mOpenDoor = false;

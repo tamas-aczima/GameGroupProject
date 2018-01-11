@@ -774,20 +774,20 @@ namespace Rendering
 		tempCompVector.push_back(lightLock);
 		lightLock->SetPosition(0, 1, 1.57, 0.5, -544, 12, 150);
 
-		// lock 4
-		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
-		tempCompVector.push_back(lightLock);
-		lightLock->SetPosition(0, -1, 1.57, 0.5, -561, 12, 150);
+		//// lock 4
+		//lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		//tempCompVector.push_back(lightLock);
+		//lightLock->SetPosition(0, -1, 1.57, 0.5, -561, 12, 150);
 
-		// Mirror 4
-		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
-		tempCompVector.push_back(lightLock);
-		lightLock->SetPosition(0, 1.57, 1.57, 0.5, -650, 12, 55);
+		//// Mirror 4
+		//lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		//tempCompVector.push_back(lightLock);
+		//lightLock->SetPosition(0, 1.57, 1.57, 0.5, -650, 12, 55);
 
-		// Source 4
-		lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
-		tempCompVector.push_back(lightLock);
-		lightLock->SetPosition(0, 1.57, 1.57, 0.5, -650, 12, 214);
+		//// Source 4
+		//lightLock = new LightLockDiffuseLight(game, camera, spotLight2);
+		//tempCompVector.push_back(lightLock);
+		//lightLock->SetPosition(0, 1.57, 1.57, 0.5, -650, 12, 214);
 #pragma endregion
 
 
