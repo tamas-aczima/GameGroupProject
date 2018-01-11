@@ -19,6 +19,10 @@
 #include "SpotLight.h"
 #include "ProxyModel.h"
 #include "Mirror.h"
+#include "Camera.h"
+#include "GoldKey.h"
+#include "DiffuseLightingMaterial.h"
+#include "Game.h"
 
 namespace Rendering
 {
@@ -28,7 +32,7 @@ namespace Rendering
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
 		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr),
-		 mRenderStateHelper(nullptr), mTreasureChest(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr)
+		 mRenderStateHelper(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr), mChest(nullptr), key1(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -45,6 +49,8 @@ namespace Rendering
 			throw GameException("DirectInput8Create() failed");
 		}
 
+		mGameLogoImage = (HBITMAP)LoadImageW(NULL, L"Content\\Textures\\Gold.bmp", IMAGE_BITMAP, 256, 256, LR_LOADFROMFILE);
+
 		mKeyboard = new Keyboard(*this, mDirectInput);
 		mComponents.push_back(mKeyboard);
 		mServices.AddService(Keyboard::TypeIdClass(), mKeyboard);
@@ -59,8 +65,9 @@ namespace Rendering
 
 		//FpsComponent changes some render states because of SpriteBatch system, 
 		//so we have to save states, draw FpsComponent, then restore states 
-		mFpsComponent = new FpsComponent(*this);
-		mFpsComponent->Initialize();
+		
+	
+
 		//mComponents.push_back(mFpsComponent);
 
 		mRenderStateHelper = new RenderStateHelper(*this);
@@ -169,7 +176,25 @@ namespace Rendering
 		player->SetUpPosition(13, 0, 45);
 		mComponents.push_back(player);
 
+
+		mChest = new TreasureChest(*this, *mCamera, *mMouse, 100);
+		mComponents.push_back(mChest);
+		mChest->SetPosition(12, 0, 5, 0, 3.14, 0, 3.0, 3.0, 3.0);
+
+
+
+		key1 = new GoldKey(*this, *mCamera, *mMouse);
+		mComponents.push_back(key1);
+		key1->SetPosition(12.0, 0, 50.0, 0, 1.57, 0, 0.05, 0.05, 0.05);
+
+
+
+
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
+
+
+		mFpsComponent = new FpsComponent(*this);
+		mFpsComponent->Initialize();
 
 		mSpriteBatch = new SpriteBatch(mDirect3DDeviceContext);
 		mSpriteFont = new SpriteFont(mDirect3DDevice, L"Content\\Fonts\\Arial_14_Regular.spritefont");
@@ -183,10 +208,35 @@ namespace Rendering
 		
 	}
 
+	void RenderingGame::UpdateGoldValue(int goldValue)
+	{
+		mGold += goldValue;
+	}
+
+	void RenderingGame::UpdateKeyAmount(int keyAmt)
+	{
+		mKeyNo += keyAmt;
+	}
+
 	void RenderingGame::Update(const GameTime &gameTime)
 	{
 
 		mFpsComponent->Update(gameTime);
+
+
+		if (mChest->Visible())
+		{
+			mChest->Interaction(gameTime);
+		}
+		else
+		{
+			if (!mChest->collected())
+			{
+				mGold += mChest->GoldValue();
+
+				mChest->chestCollected();
+			}
+		}
 
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_ESCAPE))
 		{
@@ -334,7 +384,6 @@ namespace Rendering
 			//----------------------------
 			
 		}
-	
 
 		//Enable/Disabel Editing Mode
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_O))
@@ -350,9 +399,11 @@ namespace Rendering
 				break;
 			}
 		}
-
 		Game::Update(gameTime);
 	}
+
+
+
 
 	void RenderingGame::Draw(const GameTime &gameTime)
 	{
@@ -366,6 +417,11 @@ namespace Rendering
 		mSpriteBatch->Begin();
 
 		mFpsComponent->Draw(mGameTime);
+	
+
+
+		//SendMessageW(mGameLogo, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)mGameLogoImage);
+
 
 		std::wostringstream mouseLabel;
 		mouseLabel << L"Mouse Position: " << mMouse->X() << ", " << mCurrentMouseY << " Mouse Wheel: " << mMouse->Wheel();
@@ -394,6 +450,9 @@ namespace Rendering
 		CameraRot << "Rotation " << mRotation;
 		mSpriteFont->DrawString(mSpriteBatch, CameraRot.str().c_str(), RotLoc);
 
+		std::wostringstream goldLabel;
+		goldLabel << L"Gold: " << mGold << "\n";
+		mSpriteFont->DrawString(mSpriteBatch, goldLabel.str().c_str(), XMFLOAT2(Game::DefaultScreenWidth - 200, 50.0f), Colors::Gray);
 
 		mSpriteBatch->End();
 
@@ -423,6 +482,8 @@ namespace Rendering
 		DeleteObject(mSpriteBatch);
 		DeleteObject(mSpotLight1);
 		DeleteObject(mSpotLight2);
+		DeleteObject(mChest);
+		DeleteObject(key1);
 		DeleteObject(mProxyModel1);
 		DeleteObject(mProxyModel2);
 		ReleaseObject(mDirectInput);
