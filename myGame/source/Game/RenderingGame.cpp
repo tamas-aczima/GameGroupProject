@@ -20,6 +20,9 @@
 #include "ProxyModel.h"
 #include "Mirror.h"
 #include "Wall.h"
+#include "Camera.h"
+#include "DiffuseLightingMaterial.h"
+#include "Game.h"
 
 namespace Rendering
 {
@@ -29,7 +32,7 @@ namespace Rendering
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
 		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr),
-		 mRenderStateHelper(nullptr), mTreasureChest(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr)
+		 mRenderStateHelper(nullptr), mTreasureChest(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr), mChest(nullptr), mChest1(nullptr), mChest2(nullptr), mChest3(nullptr) ,mChest4(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -92,20 +95,20 @@ namespace Rendering
 		mSpotLight2->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
 		mSpotLight2->SetInnerAngle(0.005f);
 		mSpotLight2->SetOuterAngle(60.0f);
-		mSpotLight2->ApplyRotation(XMMatrixRotationY(1.57f));
+		mSpotLight2->ApplyRotation(XMMatrixRotationY(0.78f));
 		mSpotLights.push_back(mSpotLight2);
 
 		//arrow for mirror1
 		mProxyModel2 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
 		mProxyModel2->Initialize();
-		mProxyModel2->SetPosition(33.0f, 10.0f, 73.0f);
-		mProxyModel2->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
+		mProxyModel2->SetPosition(-495.0f, 12.0f, 120.0f);
+		mProxyModel2->ApplyRotation(XMMatrixRotationY(0.78f));
 		mComponents.push_back(mProxyModel2);
 
 		mMirror1 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight1, *mSpotLight2, 1);
 		mComponents.push_back(mMirror1);
 		mMirror1->SetPosition(33.0f, 10.0f, 73.0f);
-		mMirror1->ApplyRotation(XMMatrixRotationY(1.57f));
+		mMirror1->ApplyRotation(XMMatrixRotationY(0.78f));
 
 		//spotlight3 coming from lightsource2
 		mSpotLight3 = new SpotLight(*this);
@@ -162,13 +165,93 @@ namespace Rendering
 		mMirror4->SetPosition(-183.0f, 12.0f, 115.0f);
 		mMirror4->ApplyRotation(XMMatrixRotationY(1.57f));
 
-		mLevel = new Level(*this, *mCamera, *mSpotLight1, *mSpotLight2, *mSpotLight3, *mSpotLight4, *mSpotLight5, *mSpotLight6, *mMirror1, *mMirror2, *mMirror3, *mMirror4);
+		//spotlight7 for lightsource3
+		mSpotLight7 = new SpotLight(*this);
+		mSpotLight7->SetRadius(200.0f);
+		mSpotLight7->SetPosition(-495.0f, 12.0f, 120.0f);
+		mSpotLight7->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight7->SetInnerAngle(0.005f);
+		mSpotLight7->SetOuterAngle(160.0f);
+		mSpotLight7->ApplyRotation(XMMatrixRotationY(-0.78f));
+		mSpotLights.push_back(mSpotLight7);
+
+		//spotlight8 for mirror5
+		mSpotLight8 = new SpotLight(*this);
+		mSpotLight8->SetRadius(200.0f);
+		mSpotLight8->SetPosition(-400.0f, 12.0f, 15.0f);
+		mSpotLight8->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight8->SetInnerAngle(0.005f);
+		mSpotLight8->SetOuterAngle(60.0f);
+		mSpotLight8->ApplyRotation(XMMatrixRotationY(3.14f));
+		mSpotLights.push_back(mSpotLight8);
+
+		mMirror5 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight7, *mSpotLight8, 5);
+		mComponents.push_back(mMirror5);
+		mMirror5->SetPosition(-400.0f, 12.0f, 15.0f);
+		mMirror5->ApplyRotation(XMMatrixRotationY(3.14f));
+
+		//spotlight9 for mirror6
+		mSpotLight9 = new SpotLight(*this);
+		mSpotLight9->SetRadius(200.0f);
+		mSpotLight9->SetPosition(-425.0f, 12.0f, 116.5f);
+		mSpotLight9->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight9->SetInnerAngle(0.005f);
+		mSpotLight9->SetOuterAngle(60.0f);
+		//mSpotLight9->ApplyRotation(XMMatrixRotationY(1.57f));
+		mSpotLights.push_back(mSpotLight8);
+
+		mMirror6 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight8, *mSpotLight9, 6);
+		mComponents.push_back(mMirror6);
+		mMirror6->SetPosition(-425.0f, 12.0f, 116.5f);
+		//mMirror6->ApplyRotation(XMMatrixRotationY(1.57f));
+
+		//spotlight10 for mirror7
+		mSpotLight10 = new SpotLight(*this);
+		mSpotLight10->SetRadius(200.0f);
+		mSpotLight10->SetPosition(-505.0f, 12.0f, 15.0f);
+		mSpotLight10->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
+		mSpotLight10->SetInnerAngle(0.005f);
+		mSpotLight10->SetOuterAngle(60.0f);
+		mSpotLight10->ApplyRotation(XMMatrixRotationY(3.14f));
+		mSpotLights.push_back(mSpotLight10);
+
+		mMirror7 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight9, *mSpotLight10, 7);
+		mComponents.push_back(mMirror7);
+		mMirror7->SetPosition(-505.0f, 12.0f, 15.0f);
+		mMirror7->ApplyRotation(XMMatrixRotationY(3.14f));
+
+		mLevel = new Level(*this, *mCamera, *mSpotLight1, *mSpotLight2, *mSpotLight3, 
+			*mSpotLight4, *mSpotLight5, *mSpotLight6, *mSpotLight7, *mSpotLight8, 
+			*mSpotLight9, *mSpotLight10, *mMirror1, *mMirror2, *mMirror3, *mMirror4, 
+			*mMirror5, *mMirror6, *mMirror7, *mTreasureChest);
 		mComponents = mLevel->UpdateComponent(mComponents);
 
 	    player = new Player(*this, *mCamera, mSpotLights);
 		player->Initialize();
 		player->SetUpPosition(13, 0, 45);
 		mComponents.push_back(player);
+
+
+		mChest = new TreasureChest(*this, *mCamera);//Chest 1
+		mComponents.push_back(mChest);
+		mChest->SetPosition(12, 0, 5, 0, 3.14, 0, 3.0, 3.0, 3.0);
+
+
+		mChest1 = new TreasureChest(*this, *mCamera); //Chest2
+		mComponents.push_back(mChest1);
+		mChest1->SetPosition(-100, 0, 260, 0, 0, 0, 3.0, 3.0, 3.0);
+
+		mChest2 = new TreasureChest(*this, *mCamera);//Chest3
+		mComponents.push_back(mChest2);
+		mChest2->SetPosition(-100, 0, 30, 0, 1.57, 0, 3.0, 3.0, 3.0);
+
+		mChest3 = new TreasureChest(*this, *mCamera);//Chest4
+		mComponents.push_back(mChest3);
+		mChest3->SetPosition(-265, 0, 10, 0, 3.14, 0, 3.0, 3.0, 3.0);
+
+		mChest4 = new TreasureChest(*this, *mCamera);//Chest5
+		mComponents.push_back(mChest4);
+		mChest4->SetPosition(-265, 0, 100, 0, 0 , 0, 3.0, 3.0, 3.0);
 
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
@@ -336,6 +419,11 @@ namespace Rendering
 			
 		}
 	
+		/*Interaction(gameTime, mChest);
+		Interaction(gameTime, mChest1);
+		Interaction(gameTime, mChest2);
+		Interaction(gameTime, mChest3);
+		Interaction(gameTime, mChest4);*/
 
 		//Enable/Disabel Editing Mode
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_O))
@@ -356,6 +444,60 @@ namespace Rendering
 
 		Game::Update(gameTime);
 	}
+
+
+	//void RenderingGame::Interaction(const GameTime& gameTime, TreasureChest* chest)
+	//{
+	//	XMFLOAT4X4 P;
+	//	XMStoreFloat4x4(&P, mCamera->ProjectionMatrix());
+
+
+	//	//Compute picking ray in view space.
+	//	float vx = (+2.0f*Game::screenX / Game::DefaultScreenWidth - 1.0f) / P(0, 0);
+	//	float vy = (-2.0f*Game::screenY / Game::DefaultScreenHeight + 1.0f) / P(1, 1);
+
+	//	// Ray definition in view space.
+	//	XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	//	XMVECTOR rayDir = XMVectorSet(vx, vy, -1.0f, 0.0f);
+
+	//	// Tranform ray to local space of Mesh via the inverse of both of view and world transform
+
+	//	XMMATRIX V = mCamera->ViewMatrix();
+	//	XMMATRIX invView = XMMatrixInverse(&XMMatrixDeterminant(V), V);
+
+
+	//	XMMATRIX W = XMLoadFloat4x4(chest->WorldMatrix());//&mWorldMatrix);
+	//	XMMATRIX invWorld = XMMatrixInverse(&XMMatrixDeterminant(W), W);
+
+	//	XMMATRIX toLocal = XMMatrixMultiply(invView, invWorld);
+
+	//	rayOrigin = XMVector3TransformCoord(rayOrigin, toLocal);
+	//	rayDir = XMVector3TransformNormal(rayDir, toLocal);
+
+	//	// Make the ray direction unit length for the intersection tests.
+	//	rayDir = XMVector3Normalize(rayDir);
+
+	//	float tmin = 0.0;
+	//	if (chest->mBoundingBox.Intersects(rayOrigin, rayDir, tmin))
+	//	{
+	//		float elapsedTime = (float)gameTime.ElapsedGameTime();
+
+	//		if (mMouse->IsButtonDown(MouseButtonLeft))
+	//		{
+	//			int result = MessageBox(0, L"Treasure Found!", L"Surprise!", MB_ICONASTERISK || MB_YESNO);
+
+	//			if (result == IDYES)
+	//			{
+	//				chest->SetVisible(false);
+
+	//				DeleteObject(chest);
+	//			}
+	//		}
+
+	//	}
+	//}
+
+
 
 	void RenderingGame::Draw(const GameTime &gameTime)
 	{
@@ -435,6 +577,11 @@ namespace Rendering
 		DeleteObject(mSpriteBatch);
 		DeleteObject(mSpotLight1);
 		DeleteObject(mSpotLight2);
+		DeleteObject(mChest);
+		DeleteObject(mChest1);
+		DeleteObject(mChest2);
+		DeleteObject(mChest3);
+		DeleteObject(mChest4);
 		DeleteObject(mProxyModel1);
 		DeleteObject(mProxyModel2);
 		ReleaseObject(mDirectInput);

@@ -12,6 +12,10 @@
 #include "SpotLight.h"
 #include "VectorHelper.h"
 #include "Mouse.h"
+#include "SpriteBatch.h"
+#include "SpriteFont.h"
+#include "RenderStateHelper.h"
+#include <sstream>
 
 namespace Rendering
 {
@@ -25,17 +29,22 @@ namespace Rendering
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
 		mWorldMatrix(MatrixHelper::Identity), mScaleMatrix(MatrixHelper::Identity),
 		mPosition(Vector3Helper::Zero), mDirection(Vector3Helper::Right), mUp(Vector3Helper::Forward), mRight(Vector3Helper::Up),
-		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
+		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr), mTextPosition(0.0f, 120.0f),
+		mRenderStateHelper(nullptr), mSpriteBatch(nullptr), mSpriteFont(nullptr)
 	{
 		mWorldMatrix = MatrixHelper::Identity;
 		mSpotLight1 = &spotLight1;
 		mSpotLight2 = &spotLight2;
 		mMouse = &mouse;
 		mID = id;
+		mDefaultRadius = mSpotLight2->Radius();
 	}
 
 	Mirror::~Mirror()
 	{
+		DeleteObject(mSpriteFont);
+		DeleteObject(mSpriteBatch);
+		DeleteObject(mRenderStateHelper);
 		ReleaseObject(mColorTextureVariable);
 		ReleaseObject(mTextureShaderResourceView);
 		DeleteObject(mMaterial);
@@ -151,6 +160,11 @@ namespace Rendering
 		mTextureName = L"Content\\Textures\\LightLock.png";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
+
+		mRenderStateHelper = new RenderStateHelper(*mGame);
+
+		mSpriteBatch = new SpriteBatch(mGame->Direct3DDeviceContext());
+		mSpriteFont = new SpriteFont(mGame->Direct3DDevice(), L"Content\\Fonts\\Arial_14_Regular.spritefont");
 	}
 
 	void Mirror::Update(const GameTime& gameTime)
@@ -164,6 +178,42 @@ namespace Rendering
 		XMStoreFloat4x4(&mWorldMatrix, XMLoadFloat4x4(&mScaleMatrix) * worldMatrix);
 
 		Rotate(gameTime);
+
+		switch (mID)
+		{
+			case 1:
+				if (this->Direction().x < -0.65f) {
+					mSpotLight2->SetRadius(0);
+				} else {
+					mSpotLight2->SetRadius(mDefaultRadius);
+				}
+				break;
+			case 2:
+				if (this->Direction().x < -0.76f) {
+					mSpotLight2->SetRadius(0);
+				} else {
+					mSpotLight2->SetRadius(mDefaultRadius);
+				}
+				break;
+			case 3:
+				if (this->Direction().x < -0.7f || mSpotLight1->Direction().x < -0.7f || mSpotLight1->Direction().x > -0.5f || mSpotLight1->Radius() == 0)
+				{
+					mSpotLight2->SetRadius(0);
+				}
+				else {
+					mSpotLight2->SetRadius(mDefaultRadius);
+				}
+			case 4:
+				if (this->Direction().x < -0.7f || mSpotLight1->Direction().x < -0.7f || mSpotLight1->Direction().x > -0.4f || mSpotLight1->Radius() == 0)
+				{
+					mSpotLight2->SetRadius(0);
+				}
+				else {
+					mSpotLight2->SetRadius(mDefaultRadius);
+				}
+				break;
+
+		}
 	}
 
 	void Mirror::Rotate(const GameTime& gameTime)
@@ -196,8 +246,6 @@ namespace Rendering
 
 		// Make the ray direction unit length for the intersection tests.
 		rayDir = XMVector3Normalize(rayDir);
-
-
 
 		float tmin = 0.0;
 		if (mMaterial->mBoundingBox.Intersects(rayOrigin, rayDir, tmin))
@@ -261,6 +309,21 @@ namespace Rendering
 		pass->Apply(0, direct3DDeviceContext);
 
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
+
+		mRenderStateHelper->SaveAll();
+		mSpriteBatch->Begin();
+
+		std::wostringstream helpLabel;
+		if (mID == 2)
+		{
+			helpLabel << L"Directionx: " << this->Direction().x << "y: " << this->Direction().y << "z: " << this->Direction().z;
+		}
+
+
+		mSpriteFont->DrawString(mSpriteBatch, helpLabel.str().c_str(), mTextPosition);
+
+		mSpriteBatch->End();
+		mRenderStateHelper->RestoreAll();
 	}
 
 	int Mirror::GetID()

@@ -7,11 +7,14 @@ using namespace Library;
 namespace Library
 {
 	class Effect;
-	class TextureMaterial;
+	//class TextureMaterial;
+	//class DiffuseLightingMaterial;
 }
 
 namespace Rendering
 {
+	class DiffuseLightingMaterial;
+
 	class TreasureChest : public DrawableGameComponent
 	{
 		RTTI_DECLARATIONS(TreasureChest, DrawableGameComponent)
@@ -30,7 +33,7 @@ namespace Rendering
 		TreasureChest& operator=(const TreasureChest& rhs);
 
 		Effect* mTextureEffect;
-		TextureMaterial* mTextureMaterial;
+		DiffuseLightingMaterial* mMaterial;
 		ID3D11Buffer* mVertexBuffer;
 		ID3D11Buffer* mIndexBuffer;
 		UINT mIndexCount;
