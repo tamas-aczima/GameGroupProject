@@ -33,6 +33,7 @@ namespace Rendering
 	class PlayerAnimation;
 	class Mirror;
 	class GoldKey;
+	class BasicDoor;
 
 	class RenderingGame : public Game
 	{
@@ -44,10 +45,9 @@ namespace Rendering
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
-		void UpdateGoldValue(int goldValue);
-		void UpdateKeyAmount(int keyAmt);
-
+		void UpdateAllDoors(const GameTime &gameTime);
 		void UpdateAllChests(const GameTime &gameTime);
+		void UpdateAllKeys(const GameTime &gameTime);
 
 		int mKeyNo, mGold;
 	protected:
@@ -91,6 +91,8 @@ namespace Rendering
 		TreasureChest* mChest2;
 		TreasureChest* mChest3;
 		TreasureChest* mChest4;
+		BasicDoor* door1;
+		BasicDoor* door2;
 
 		std::vector<SpotLight*> mSpotLights;
 		static const float LightModulationRate;

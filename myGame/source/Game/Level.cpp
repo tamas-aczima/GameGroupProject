@@ -689,17 +689,7 @@ namespace Rendering
 		//basic door
 
 		#pragma region Doors
-
-
-		//right
-		BasicDoor* basicdoor = new BasicDoor(game, camera);
-		tempCompVector.push_back(basicdoor);
-		basicdoor->SetPosition(-275, 0, 40, 0, 1.57, 0, 4, 3.2, 4);
-		//left
-		basicdoor = new BasicDoor(game, camera);
-		tempCompVector.push_back(basicdoor);
-		basicdoor->SetPosition(-275, 0, 80, 0, 1.57, 0, 4, 3.2, 4);
-
+		
 		// first door
 		Door* door1 = new Door(game, camera);
 		tempCompVector.push_back(door1);
