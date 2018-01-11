@@ -231,23 +231,108 @@ namespace Rendering
 		mKeyNo += keyAmt;
 	}
 
+#pragma region UpdateAllChests
+	void RenderingGame::UpdateAllChests(const GameTime &gameTime)
+	{
+			if (mChest->Visible())
+			{
+				if (mKeyNo > 0)
+				{
+					mChest->Interaction(gameTime);
+
+					
+				}
+			}
+			else
+			{
+				if (!mChest->collected())
+				{
+					mGold += mChest->GoldValue();
+
+					mKeyNo--;
+
+					mChest->chestCollected();
+				}
+			}
+
+			if (mChest1->Visible())
+			{
+				mChest1->Interaction(gameTime);
+			}
+			else
+			{
+				if (!mChest1->collected())
+				{
+					mGold += mChest1->GoldValue();
+
+					mChest1->chestCollected();
+				}
+			}
+		
+			if (mChest2->Visible())
+			{
+				mChest2->Interaction(gameTime);
+			}
+			else
+			{
+				if (!mChest2->collected())
+				{
+					mGold += mChest2->GoldValue();
+
+					mChest2->chestCollected();
+				}
+			}
+
+			if (mChest3->Visible())
+			{
+				mChest3->Interaction(gameTime);
+			}
+			else
+			{
+				if (!mChest3->collected())
+				{
+					mGold += mChest3->GoldValue();
+
+					mChest3->chestCollected();
+				}
+			}
+
+			if (mChest4->Visible())
+			{
+				mChest4->Interaction(gameTime);
+			}
+			else
+			{
+				if (!mChest4->collected())
+				{
+					mGold += mChest4->GoldValue();
+
+					mChest4->chestCollected();
+				}
+			}
+	}
+#pragma endregion
+
+
 	void RenderingGame::Update(const GameTime &gameTime)
 	{
 
 		mFpsComponent->Update(gameTime);
 
+		UpdateAllChests(gameTime);
 
-		if (mChest->Visible())
+
+		if (key1->Visible())
 		{
-			mChest->Interaction(gameTime);
+			key1->Interaction(gameTime);
 		}
 		else
 		{
-			if (!mChest->collected())
+			if (!key1->collected())
 			{
-				mGold += mChest->GoldValue();
+				mKeyNo ++;
 
-				mChest->chestCollected();
+				key1->chestCollected();
 			}
 		}
 
@@ -393,11 +478,8 @@ namespace Rendering
 			{
 				player->x += player->GetLocalForward().x * gameTime.ElapsedGameTime() * 10;
 				player->z += player->GetLocalForward().y * gameTime.ElapsedGameTime() * 10;
-			}
-			//----------------------------
-			
+			}			
 		}
-
 
 		//Enable/Disabel Editing Mode
 		if (mKeyboard->WasKeyPressedThisFrame(DIK_O))
@@ -465,6 +547,10 @@ namespace Rendering
 		std::wostringstream goldLabel;
 		goldLabel << L"Gold: " << mGold << "\n";
 		mSpriteFont->DrawString(mSpriteBatch, goldLabel.str().c_str(), XMFLOAT2(Game::DefaultScreenWidth - 200, 50.0f), Colors::Gray);
+
+		std::wostringstream keyLabel;
+		keyLabel << L"Keys: " << mKeyNo << "\n";
+		mSpriteFont->DrawString(mSpriteBatch, keyLabel.str().c_str(), XMFLOAT2(Game::DefaultScreenWidth/2, 50.0f), Colors::Gray);
 
 		mSpriteBatch->End();
 

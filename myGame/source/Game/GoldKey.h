@@ -29,6 +29,11 @@ namespace Rendering
 		virtual void Draw(const GameTime& gameTime) override;
 
 		DirectX::BoundingBox mBoundingBox;
+		bool const collected() { return mCollected; }
+
+		void chestCollected();
+
+		void Interaction(const GameTime& gameTime);
 
 		XMFLOAT4X4* WorldMatrix() { return &mWorldMatrix; }
 
@@ -45,8 +50,7 @@ namespace Rendering
 
 		Mouse* mMouse;
 		float mAngle;
-
-		void Interaction(const GameTime& gameTime);
+		bool mCollected;
 
 		std::wstring mTextureName;
 

@@ -73,10 +73,6 @@ namespace Rendering
 
 	void TreasureChest::Update(const GameTime& gameTime )
 	{
-		/*	if (this->Visible())
-			{
-				Interaction(gameTime);
-			}	*/
 	}
 
 	void TreasureChest::chestCollected()
@@ -119,12 +115,9 @@ namespace Rendering
 
 		if (this->mBoundingBox.Intersects(rayOrigin, rayDir, tmin))
 		{
-
 			if (mMouse->IsButtonDown(MouseButtonLeft))
 			{
-					this->SetVisible(false);
-
-					
+					this->SetVisible(false);			
 			}
 		}
 	}
