@@ -84,6 +84,9 @@ namespace Rendering
 		
 		TreasureChest* mChest;
 		GoldKey * key1;
+		GoldKey * key2;
+		GoldKey * key3;
+		GoldKey * key4;
 		TreasureChest* mChest1;
 		TreasureChest* mChest2;
 		TreasureChest* mChest3;

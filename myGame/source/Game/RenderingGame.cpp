@@ -34,7 +34,7 @@ namespace Rendering
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
 		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr),
-		 mRenderStateHelper(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr), mChest(nullptr), mChest1(nullptr), mChest2(nullptr), mChest3(nullptr) ,mChest4(nullptr), key1(nullptr)
+		 mRenderStateHelper(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr), mChest(nullptr), mChest1(nullptr), mChest2(nullptr), mChest3(nullptr) ,mChest4(nullptr), key1(nullptr), key2(nullptr), key3(nullptr), key4(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -251,9 +251,21 @@ namespace Rendering
 		mComponents.push_back(mChest1);
 		mChest1->SetPosition(-100, 0, 260, 0, 0, 0, 3.0, 3.0, 3.0);
 
+		key2 = new GoldKey(*this, *mCamera, *mMouse);
+		mComponents.push_back(key2);
+		key2->SetPosition(-90.5, 0, 210.5, 0, 1.57, 0, 0.05, 0.05, 0.05);
+
+		key3 = new GoldKey(*this, *mCamera, *mMouse);
+		mComponents.push_back(key3);
+		key3->SetPosition(-50.5, 0, 25, 0, 1.57, 0, 0.05, 0.05, 0.05);
+
+		key4 = new GoldKey(*this, *mCamera, *mMouse);
+		mComponents.push_back(key4);
+		key4->SetPosition(-160, 0, 15, 0, 1.57, 0, 0.05, 0.05, 0.05);
+
 		mChest2 = new TreasureChest(*this, *mCamera, *mMouse, 100);//Chest3
 		mComponents.push_back(mChest2);
-		mChest2->SetPosition(-100, 0, 30, 0, 1.57, 0, 3.0, 3.0, 3.0);
+		mChest2->SetPosition(-125, 0, 65, 0, 0, 0, 3.0, 3.0, 3.0);
 
 		mChest3 = new TreasureChest(*this, *mCamera, *mMouse, 100);//Chest4
 		mComponents.push_back(mChest3);
@@ -654,6 +666,9 @@ namespace Rendering
 		DeleteObject(mSpotLight2);
 		DeleteObject(mChest);
 		DeleteObject(key1);
+		DeleteObject(key2);
+		DeleteObject(key3);
+		DeleteObject(key4);
 		DeleteObject(mChest1);
 		DeleteObject(mChest2);
 		DeleteObject(mChest3);
