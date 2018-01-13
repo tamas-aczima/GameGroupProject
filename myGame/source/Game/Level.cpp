@@ -241,144 +241,176 @@ namespace Rendering
 
 		//section 2.2
 		
-		wall = new Wall(game, camera, spotLight8); //Left Roomm backwall 4
+		Wall* wall40 = new Wall(game, camera, spotLight8); //Left Roomm backwall 4
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-310, 0, 40, 0, -1.6, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-310, 0, 40, 0, -1.6, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall40);
 
-		wall = new Wall(game, camera, spotLight5); //Left Roomm 
+		Wall* wall41 = new Wall(game, camera, spotLight5); //Left Roomm 
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-185, 0, 25, 0, -1.6, 0, 3, 1.5, 0.5);
+		wall->SetTransform(-185, 0, 25, 0, -1.6, 0, 3, 1.5, 0.5);
+		wallsList.push_back(wall41);
 
-		wall = new Wall(game, camera, spotLight4); //Left Roomm
+		Wall* wall42 = new Wall(game, camera, spotLight4); //Left Roomm
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-240, 0, 20, 0, -1.6, 0, 3, 1.5, 0.5);
+		wall->SetTransform(-240, 0, 20, 0, -1.6, 0, 3, 1.5, 0.5);
+		wallsList.push_back(wall42);
 
-		wall = new Wall(game, camera, spotLight2); //right room entrance wall
+		Wall* wall43 = new Wall(game, camera, spotLight2); //right room entrance wall
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-256, 0, 40, 0, 0, 0, 1.5, 1.5, 0.5);
+		wall->SetTransform(-256, 0, 40, 0, 0, 0, 1.5, 1.5, 0.5);
+		wallsList.push_back(wall43);
 
-		wall = new Wall(game, camera, spotLight2); //left Roomm 
+		Wall* wall44 = new Wall(game, camera, spotLight2); //left Roomm 
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-294, 0, 40, 0, 0, 0, 1.5, 1.5, 0.5);
+		wall->SetTransform(-294, 0, 40, 0, 0, 0, 1.5, 1.5, 0.5);
+		wallsList.push_back(wall44);
 
-		wall = new Wall(game, camera, spotLight4); //left Roomm
+		Wall* wall45 = new Wall(game, camera, spotLight4); //left Roomm
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-240, 0, 95, 0, -1.6, 0, 3, 1.5, 0.5);
+		wall->SetTransform(-240, 0, 95, 0, -1.6, 0, 3, 1.5, 0.5);
+		wallsList.push_back(wall45);
 
-		wall = new Wall(game, camera, spotLight6); //left Roomm
+		Wall* wall46 = new Wall(game, camera, spotLight6); //left Roomm
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-240, 0, 145, 0, -1.6, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-240, 0, 145, 0, -1.6, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall46);
 
-		wall = new Wall(game, camera, spotLight2); //left room
+		Wall* wall47 = new Wall(game, camera, spotLight2); //left room
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-275, 0, 130, 0, 0, 0, 4.5, 1.5, 0.5);
+		wall->SetTransform(-275, 0, 130, 0, 0, 0, 4.5, 1.5, 0.5);
+		wallsList.push_back(wall47);
 
-		wall = new Wall(game, camera, spotLight4); //left room
+		Wall* wall48 = new Wall(game, camera, spotLight4); //left room
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-256, 0, 80, 0, 0, 0, 1.5, 1.5, 0.5);
+		wall->SetTransform(-256, 0, 80, 0, 0, 0, 1.5, 1.5, 0.5);
+		wallsList.push_back(wall48);
 
-		wall = new Wall(game, camera, spotLight4); //left room entrance wall
+		Wall* wall49 = new Wall(game, camera, spotLight4); //left room entrance wall
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-294, 0, 80, 0, 0, 0, 1.5, 1.5, 0.5);
+		wall->SetTransform(-294, 0, 80, 0, 0, 0, 1.5, 1.5, 0.5);
+		wallsList.push_back(wall49);
 
-		wall = new Wall(game, camera, spotLight6); //left room
+		Wall* wall50 = new Wall(game, camera, spotLight6); //left room
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-277, 0, 190, 0, 0, 0, 4.5, 1.5, 0.5);
+		wall->SetTransform(-277, 0, 190, 0, 0, 0, 4.5, 1.5, 0.5);
+		wallsList.push_back(wall50);
 
-		wall = new Wall(game, camera, spotLight8); //left Roomm 
+		Wall* wall51 = new Wall(game, camera, spotLight8); //left Roomm 
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-310, 0, 120, 0, -1.6, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-310, 0, 120, 0, -1.6, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall51);
 
-		wall = new Wall(game, camera, spotLight2); //Left Roomm backwall 3
+		Wall* wall52 = new Wall(game, camera, spotLight2); //Left Roomm backwall 3
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-210, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-210, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall52);
 
 		// section 3 
 
-		wall = new Wall(game, camera, spotLight2);
+		Wall* wall53 = new Wall(game, camera, spotLight2);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-295, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-295, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall53);
 
-		wall = new Wall(game, camera, spotLight2);
+		Wall* wall54 = new Wall(game, camera, spotLight2);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-380, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-380, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall54);
 
-		wall = new Wall(game, camera, spotLight2);
+		Wall* wall55 = new Wall(game, camera, spotLight2);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-463.2, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-463.2, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall55);
 
-		wall = new Wall(game, camera, spotLight7);
+		Wall* wall56 = new Wall(game, camera, spotLight7);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-395, 0, 0, 0, 0, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-395, 0, 0, 0, 0, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall56);
 
-		wall = new Wall(game, camera, spotLight9);
+		Wall* wall57 = new Wall(game, camera, spotLight9);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-480, 0, 0, 0, 0, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-480, 0, 0, 0, 0, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall57);
 
 		//inner buildings 
 
 		#pragma region InnerBuildings
 
-		wall = new Wall(game, camera, spotLight10);
+		Wall* wall58 = new Wall(game, camera, spotLight10);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-500, 0, 85, 0, -1.6, 0, 3, 1.5, 0.5);
+		wall->SetTransform(-500, 0, 85, 0, -1.6, 0, 3, 1.5, 0.5);
+		wallsList.push_back(wall58);
 
-		wall = new Wall(game, camera, spotLight10);
+		Wall* wall59 = new Wall(game, camera, spotLight10);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-502, 0, 135.5, 0, -1.6, 0, 3, 1.5, 0.5);
+		wall->SetTransform(-502, 0, 135.5, 0, -1.6, 0, 3, 1.5, 0.5);
+		wallsList.push_back(wall59);
 
-		wall = new Wall(game, camera, spotLight8); // Devider Wall
+		Wall* wall60 = new Wall(game, camera, spotLight8); // Devider Wall
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-440, 0, 28, 0, -1.6, 0, 3, 1.5, 0.5);
+		wall->SetTransform(-440, 0, 28, 0, -1.6, 0, 3, 1.5, 0.5);
+		wallsList.push_back(wall60);
 
-		wall = new Wall(game, camera, spotLight10); //Left  backwall 
+		Wall* wall61 = new Wall(game, camera, spotLight10); //Left  backwall 
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-530, 0, 177, 0, 0, 0, 4.5, 1.5, 2.0);
+		wall->SetTransform(-530, 0, 177, 0, 0, 0, 4.5, 1.5, 2.0);
+		wallsList.push_back(wall61);
 
-		wall = new Wall(game, camera, spotLight10); //Left  backwall 
+		Wall* wall62 = new Wall(game, camera, spotLight10); //Left  backwall 
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-550, -60, 32.8, 0, -1.6, 0,  5, 5, 0.5);
+		wall->SetTransform(-550, -60, 32.8, 0, -1.6, 0,  5, 5, 0.5);
+		wallsList.push_back(wall62);
 
-		wall = new Wall(game, camera, spotLight10); //right  backwall 
+		Wall* wall63 = new Wall(game, camera, spotLight10); //right  backwall 
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-552, -60, 118.2, 0, -1.6, 0, 5, 5, 0.5);
+		wall->SetTransform(-552, -60, 118.2, 0, -1.6, 0, 5, 5, 0.5);
+		wallsList.push_back(wall63);
 
 		// big wall
-		wall = new Wall(game, camera, spotLight8); //right  backwall 
+		Wall* wall64 = new Wall(game, camera, spotLight8); //right  backwall 
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-390, 0, 145, 0, -1.6, 0, 3, 1.5, 5.5);
+		wall->SetTransform(-390, 0, 145, 0, -1.6, 0, 3, 1.5, 5.5);
+		wallsList.push_back(wall64);
 
 		#pragma endregion
 		//section 4 
 
-		wall = new Wall(game, camera, spotLight2);
+		Wall* wall65 = new Wall(game, camera, spotLight2);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-548.6, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-548.6, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall65);
 
-		wall = new Wall(game, camera, spotLight2);
+		Wall* wall66 = new Wall(game, camera, spotLight2);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-634, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wall->SetTransform(-634, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		wallsList.push_back(wall66);
 
-		wall = new Wall(game, camera, spotLight9);
+		Wall* wall67 = new Wall(game, camera, spotLight9);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-565, -60, 0, 0, 0, 0, 5, 5, 0.5);
+		wall->SetTransform(-565, -60, 0, 0, 0, 0, 5, 5, 0.5);
+		wallsList.push_back(wall67);
 
-		wall = new Wall(game, camera, spotLight2); //frontwall 
+		Wall* wall68 = new Wall(game, camera, spotLight2); //frontwall 
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-650, -60, 0, 0, 0, 0, 5, 5, 0.5);
+		wall->SetTransform(-650, -60, 0, 0, 0, 0, 5, 5, 0.5);
+		wallsList.push_back(wall68);
 
-		wall = new Wall(game, camera, spotLight2); //frontwall 2
+		Wall* wall69 = new Wall(game, camera, spotLight2); //frontwall 2
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-670, -60, 42.8, 0, -1.6, 0, 5, 5, 0.5);
+		wall->SetTransform(-670, -60, 42.8, 0, -1.6, 0, 5, 5, 0.5);
+		wallsList.push_back(wall69);
 
-		wall = new Wall(game, camera, spotLight2); //backwall 
+		Wall* wall70 = new Wall(game, camera, spotLight2); //backwall 
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-672, -60, 128.2, 0, -1.6, 0, 5, 5, 0.5);
+		wall->SetTransform(-672, -60, 128.2, 0, -1.6, 0, 5, 5, 0.5);
+		wallsList.push_back(wall70);
 
-		wall = new Wall(game, camera, spotLight2); //backwall 2
+		Wall* wall71 = new Wall(game, camera, spotLight2); //backwall 2
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-674, -60, 213.8, 0, -1.6, 0, 5, 5, 0.5);
-		
+		wall->SetTransform(-674, -60, 213.8, 0, -1.6, 0, 5, 5, 0.5);
+		wallsList.push_back(wall71);
+
 		//floor
 
 		#pragma region Floors
@@ -411,9 +443,10 @@ namespace Rendering
 
 		#pragma region LavaLevel
 
-		wall = new Wall(game, camera, spotLight2);
+		Wall* wall72 = new Wall(game, camera, spotLight2);
 		tempCompVector.push_back(wall);
-		wall->SetPosition(-50, -90, 10, 0, 0, 0, 14, 5, 0.5);
+		wall->SetTransform(-50, -90, 10, 0, 0, 0, 14, 5, 0.5);
+		wallsList.push_back(wall72);
 
 		//pillers
 		floor = new Floor(game, camera, spotLight1);//pillar
@@ -789,20 +822,6 @@ namespace Rendering
 		//tempCompVector.push_back(lightLock);
 		//lightLock->SetPosition(0, 1.57, 1.57, 0.5, -650, 12, 214);
 #pragma endregion
-
-
-		// Treasure Chests
-		#pragma region Chest
-
-		//TreasureChest* chest = new TreasureChest(game, camera);
-		//tempCompVector.push_back(chest);
-		//chest->SetPosition(12, 0, 5, 0, 3.14, 0, 3.0, 3.0, 3.0);
-
-
-
-#pragma endregion
-
-
 	}
 
 	Level::~Level()
