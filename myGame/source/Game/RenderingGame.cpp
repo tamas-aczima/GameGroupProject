@@ -35,9 +35,12 @@ namespace Rendering
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
 		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr),
-		 mRenderStateHelper(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr), 
+		 mRenderStateHelper(nullptr), mSpotLight1(nullptr), mSpotLight2(nullptr), mSpotLight3(nullptr), mSpotLight4(nullptr), 
+		mSpotLight5(nullptr), mSpotLight6(nullptr), mSpotLight7(nullptr), mSpotLight8(nullptr), mSpotLight9(nullptr), 
+		mSpotLight10(nullptr), mMirror1(nullptr), mMirror2(nullptr), mMirror3(nullptr), mMirror4(nullptr), 
+		mMirror5(nullptr), mMirror6(nullptr), mMirror7(nullptr), mProxyModel1(nullptr), mProxyModel2(nullptr), mProxyModel3(nullptr),
 		mChest(nullptr), mChest1(nullptr), mChest2(nullptr), mChest3(nullptr) ,mChest4(nullptr), key1(nullptr), key2(nullptr), key3(nullptr), key4(nullptr),
-		door1(nullptr), door2(nullptr)
+		door1(nullptr), door2(nullptr), mLevel(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -70,9 +73,6 @@ namespace Rendering
 
 		//FpsComponent changes some render states because of SpriteBatch system, 
 		//so we have to save states, draw FpsComponent, then restore states 
-		
-	
-
 		//mComponents.push_back(mFpsComponent);
 
 		mRenderStateHelper = new RenderStateHelper(*this);
@@ -84,17 +84,16 @@ namespace Rendering
 		mSpotLight1->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
 		mSpotLight1->SetInnerAngle(0.005f);
 		mSpotLight1->SetOuterAngle(60.0f);
+		mSpotLight1->ApplyRotation(XMMatrixRotationY(-2.36f));
 		mSpotLights.push_back(mSpotLight1);
 
 		//arrow for lightsource1
-		mProxyModel1 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
+		mProxyModel1 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);
 		mProxyModel1->Initialize();
 		mProxyModel1->SetPosition(0.0f, 10.0f, 36.0f);
 		mProxyModel1->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
-		mComponents.push_back(mProxyModel1);
-
-		mSpotLight1->ApplyRotation(XMMatrixRotationY(-2.36f));
 		mProxyModel1->ApplyRotation(XMMatrixRotationY(-2.36f));
+		mComponents.push_back(mProxyModel1);	
 
 		//spotlight2 for mirror1
 		mSpotLight2 = new SpotLight(*this);
@@ -105,13 +104,6 @@ namespace Rendering
 		mSpotLight2->SetOuterAngle(60.0f);
 		mSpotLight2->ApplyRotation(XMMatrixRotationY(0.78f));
 		mSpotLights.push_back(mSpotLight2);
-
-		//arrow for mirror1
-		mProxyModel2 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);//PointLightProxy.obj", 1.0f);
-		mProxyModel2->Initialize();
-		mProxyModel2->SetPosition(-495.0f, 12.0f, 120.0f);
-		mProxyModel2->ApplyRotation(XMMatrixRotationY(0.78f));
-		mComponents.push_back(mProxyModel2);
 
 		mMirror1 = new Mirror(*this, *mCamera, *mMouse, *mSpotLight1, *mSpotLight2, 1);
 		mComponents.push_back(mMirror1);
@@ -127,6 +119,14 @@ namespace Rendering
 		mSpotLight3->SetOuterAngle(60.0f);
 		mSpotLight3->ApplyRotation(XMMatrixRotationY(-2.36f));
 		mSpotLights.push_back(mSpotLight3);
+
+		//arrow for lightsource2
+		mProxyModel2 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);
+		mProxyModel2->Initialize();
+		mProxyModel2->SetPosition(-225.0f, 12.0f, 10.0f);
+		mProxyModel2->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
+		mProxyModel2->ApplyRotation(XMMatrixRotationY(-2.36f));
+		mComponents.push_back(mProxyModel2);
 
 		//spotlight4 for mirror2
 		mSpotLight4 = new SpotLight(*this);
@@ -182,6 +182,14 @@ namespace Rendering
 		mSpotLight7->SetOuterAngle(160.0f);
 		mSpotLight7->ApplyRotation(XMMatrixRotationY(-0.78f));
 		mSpotLights.push_back(mSpotLight7);
+
+		//arrow for lightsource3
+		mProxyModel3 = new ProxyModel(*this, *mCamera, "Content\\Models\\DirectionalLightProxy.obj", 1.0f);
+		mProxyModel3->Initialize();
+		mProxyModel3->SetPosition(-495.0f, 12.0f, 120.0f);
+		mProxyModel3->ApplyRotation(XMMatrixRotationY(XM_PIDIV2));
+		mProxyModel3->ApplyRotation(XMMatrixRotationY(-0.78f));
+		mComponents.push_back(mProxyModel3);
 
 		//spotlight8 for mirror5
 		mSpotLight8 = new SpotLight(*this);
@@ -760,8 +768,6 @@ namespace Rendering
 		DeleteObject(mFpsComponent);
 		DeleteObject(mSpriteFont);
 		DeleteObject(mSpriteBatch);
-		DeleteObject(mSpotLight1);
-		DeleteObject(mSpotLight2);
 		DeleteObject(mChest);
 		DeleteObject(key1);
 		DeleteObject(key2);
@@ -775,6 +781,25 @@ namespace Rendering
 		DeleteObject(door2);
 		DeleteObject(mProxyModel1);
 		DeleteObject(mProxyModel2);
+		DeleteObject(mProxyModel3);
+		DeleteObject(mSpotLight1);
+		DeleteObject(mSpotLight2);
+		DeleteObject(mSpotLight3);
+		DeleteObject(mSpotLight4);
+		DeleteObject(mSpotLight5);
+		DeleteObject(mSpotLight6);
+		DeleteObject(mSpotLight7);
+		DeleteObject(mSpotLight8);
+		DeleteObject(mSpotLight9);
+		DeleteObject(mSpotLight10);
+		DeleteObject(mMirror1);
+		DeleteObject(mMirror2);
+		DeleteObject(mMirror3);
+		DeleteObject(mMirror4);
+		DeleteObject(mMirror5);
+		DeleteObject(mMirror6);
+		DeleteObject(mMirror7);
+		DeleteObject(mLevel);
 		ReleaseObject(mDirectInput);
 
 		Game::Shutdown();

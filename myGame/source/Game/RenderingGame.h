@@ -99,16 +99,14 @@ namespace Rendering
 		static const XMFLOAT2 LightRotationRate;
 		ProxyModel* mProxyModel1;
 		ProxyModel* mProxyModel2;
+		ProxyModel* mProxyModel3;
 
 		Level* mLevel;
-		//TreasureChest* mTreasureChest;
-		Rock* mRock;
 
 		SpriteBatch* mSpriteBatch;
 		SpriteFont* mSpriteFont;
 
 		Player* player;
-		PlayerAnimation* mAnimation;
 
 		XMFLOAT2 mMouseTextPosition;
 
