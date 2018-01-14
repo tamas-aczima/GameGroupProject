@@ -29,7 +29,7 @@
 
 namespace Rendering
 {
-	const XMVECTORF32 RenderingGame::BackGroundColor = ColorHelper::CornflowerBlue;
+	const XMVECTORF32 RenderingGame::BackGroundColor = ColorHelper::Black;
 	const float RenderingGame::LightModulationRate = UCHAR_MAX;
 	const XMFLOAT2 RenderingGame::LightRotationRate = XMFLOAT2(XM_PI, XM_PI);
 
@@ -683,49 +683,49 @@ namespace Rendering
 
 		mSpriteBatch->Begin();
 
-		mFpsComponent->Draw(mGameTime);
+		//mFpsComponent->Draw(mGameTime);
 	
-
+		// ------ Debugging -----------
 
 		//SendMessageW(mGameLogo, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)mGameLogoImage);
 
 
-		std::wostringstream mouseLabel;
-		mouseLabel << L"Mouse Position: " << mMouse->X() << ", " << mCurrentMouseY << " Mouse Wheel: " << mMouse->Wheel();
-		mSpriteFont->DrawString(mSpriteBatch, mouseLabel.str().c_str(), mMouseTextPosition);
+		//std::wostringstream mouseLabel;
+		//mouseLabel << L"Mouse Position: " << mMouse->X() << ", " << mCurrentMouseY << " Mouse Wheel: " << mMouse->Wheel();
+		//mSpriteFont->DrawString(mSpriteBatch, mouseLabel.str().c_str(), mMouseTextPosition);
 
-		//Player Location
-		std::wostringstream playerLocation;
-		XMFLOAT2 messageLoc = XMFLOAT2(5, 30);
-		//playerLocation << "x " << player->getPosition().x << "    " << "z " << player->getPosition().z;
-		playerLocation << distance << " distance 2 " << distance2;
-		mSpriteFont->DrawString(mSpriteBatch, playerLocation.str().c_str(), messageLoc, Colors::White);
-		
-		std::wostringstream CameraPositon;
-		XMFLOAT2 cameraPosLabelLoc = XMFLOAT2(5, 90);
-		CameraPositon << L"Camera Position: Y: " << mCamera->Position().y << ", " << " Z: " << mCamera->Position().z;
-		mSpriteFont->DrawString(mSpriteBatch, CameraPositon.str().c_str(), cameraPosLabelLoc);
+		////Player Location
+		//std::wostringstream playerLocation;
+		//XMFLOAT2 messageLoc = XMFLOAT2(5, 30);
+		////playerLocation << "x " << player->getPosition().x << "    " << "z " << player->getPosition().z;
+		//playerLocation << distance << " distance 2 " << distance2;
+		//mSpriteFont->DrawString(mSpriteBatch, playerLocation.str().c_str(), messageLoc, Colors::White);
+		//
+		//std::wostringstream CameraPositon;
+		//XMFLOAT2 cameraPosLabelLoc = XMFLOAT2(5, 90);
+		//CameraPositon << L"Camera Position: Y: " << mCamera->Position().y << ", " << " Z: " << mCamera->Position().z;
+		//mSpriteFont->DrawString(mSpriteBatch, CameraPositon.str().c_str(), cameraPosLabelLoc);
 
-		//player forward
-		std::wostringstream playerForward;
-		XMFLOAT2 forwardLoc = XMFLOAT2(5, 110);
-		playerForward << "Player forward x: " << player->GetLocalForward().x << ", z: " << player->GetLocalForward().y;
-		mSpriteFont->DrawString(mSpriteBatch, playerForward.str().c_str(), forwardLoc);
-		
+		////player forward
+		//std::wostringstream playerForward;
+		//XMFLOAT2 forwardLoc = XMFLOAT2(5, 110);
+		//playerForward << "Player forward x: " << player->GetLocalForward().x << ", z: " << player->GetLocalForward().y;
+		//mSpriteFont->DrawString(mSpriteBatch, playerForward.str().c_str(), forwardLoc);
+		//
 
-		std::wostringstream CameraRot;
-		XMFLOAT2 RotLoc = XMFLOAT2(5, 150);
-		CameraRot << "Rotation " << mRotation;
-		mSpriteFont->DrawString(mSpriteBatch, CameraRot.str().c_str(), RotLoc);
+		//std::wostringstream CameraRot;
+		//XMFLOAT2 RotLoc = XMFLOAT2(5, 150);
+		//CameraRot << "Rotation " << mRotation;
+		//mSpriteFont->DrawString(mSpriteBatch, CameraRot.str().c_str(), RotLoc);
 
-		//Bounding box test
-		if (isColliding)
-		{
-			std::wostringstream coll;
-			XMFLOAT2 collLoc = XMFLOAT2(5, 180);
-			coll << "Collision";
-			mSpriteFont->DrawString(mSpriteBatch, coll.str().c_str(), collLoc);
-		}
+		////Bounding box test
+		//if (isColliding)
+		//{
+		//	std::wostringstream coll;
+		//	XMFLOAT2 collLoc = XMFLOAT2(5, 180);
+		//	coll << "Collision";
+		//	mSpriteFont->DrawString(mSpriteBatch, coll.str().c_str(), collLoc);
+		//}
 		std::wostringstream goldLabel;
 		goldLabel << L"Gold: " << mGold << "\n";
 		mSpriteFont->DrawString(mSpriteBatch, goldLabel.str().c_str(), XMFLOAT2(Game::DefaultScreenWidth - 200, 50.0f), Colors::Gray);
@@ -736,11 +736,11 @@ namespace Rendering
 
 		mSpriteBatch->End();
 
-		//On screen message system-----------------------
+		////On screen message system-----------------------
 
-		//showMessages();
+		////showMessages();
 
-		//------------------------------------------------
+		////------------------------------------------------
 
 		mRenderStateHelper->RestoreAll();
 

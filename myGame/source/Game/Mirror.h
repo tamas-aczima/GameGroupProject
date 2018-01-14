@@ -9,13 +9,6 @@ namespace Library
 	class Mouse;
 	class Effect;
 	class SpotLight;
-	class RenderStateHelper;
-}
-
-namespace DirectX
-{
-	class SpriteBatch;
-	class SpriteFont;
 }
 
 namespace Rendering
@@ -85,9 +78,5 @@ namespace Rendering
 
 		ID3D11ShaderResourceView* mTextureShaderResourceView;
 		ID3DX11EffectShaderResourceVariable* mColorTextureVariable;
-		RenderStateHelper* mRenderStateHelper;
-		SpriteBatch* mSpriteBatch;
-		SpriteFont* mSpriteFont;
-		XMFLOAT2 mTextPosition;
 	};
 }

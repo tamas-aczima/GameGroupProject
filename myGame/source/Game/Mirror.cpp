@@ -12,10 +12,6 @@
 #include "SpotLight.h"
 #include "VectorHelper.h"
 #include "Mouse.h"
-#include "SpriteBatch.h"
-#include "SpriteFont.h"
-#include "RenderStateHelper.h"
-#include <sstream>
 
 namespace Rendering
 {
@@ -29,8 +25,7 @@ namespace Rendering
 		mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0),
 		mWorldMatrix(MatrixHelper::Identity), mScaleMatrix(MatrixHelper::Identity),
 		mPosition(Vector3Helper::Zero), mDirection(Vector3Helper::Right), mUp(Vector3Helper::Forward), mRight(Vector3Helper::Up),
-		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr), mTextPosition(0.0f, 120.0f),
-		mRenderStateHelper(nullptr), mSpriteBatch(nullptr), mSpriteFont(nullptr)
+		mTextureShaderResourceView(nullptr), mColorTextureVariable(nullptr)
 	{
 		mWorldMatrix = MatrixHelper::Identity;
 		mSpotLight1 = &spotLight1;
@@ -42,9 +37,6 @@ namespace Rendering
 
 	Mirror::~Mirror()
 	{
-		DeleteObject(mSpriteFont);
-		DeleteObject(mSpriteBatch);
-		DeleteObject(mRenderStateHelper);
 		ReleaseObject(mColorTextureVariable);
 		ReleaseObject(mTextureShaderResourceView);
 		DeleteObject(mMaterial);
@@ -160,11 +152,6 @@ namespace Rendering
 		mTextureName = L"Content\\Textures\\LightLock.png";
 
 		DirectX::CreateWICTextureFromFile(mGame->Direct3DDevice(), mGame->Direct3DDeviceContext(), mTextureName.c_str(), nullptr, &mTextureShaderResourceView);
-
-		mRenderStateHelper = new RenderStateHelper(*mGame);
-
-		mSpriteBatch = new SpriteBatch(mGame->Direct3DDeviceContext());
-		mSpriteFont = new SpriteFont(mGame->Direct3DDevice(), L"Content\\Fonts\\Arial_14_Regular.spritefont");
 	}
 
 	void Mirror::Update(const GameTime& gameTime)
@@ -330,21 +317,6 @@ namespace Rendering
 		pass->Apply(0, direct3DDeviceContext);
 
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
-
-		mRenderStateHelper->SaveAll();
-		mSpriteBatch->Begin();
-
-		std::wostringstream helpLabel;
-		if (mID == 7)
-		{
-			helpLabel << L"Direction x: " << this->Direction().x << " z: " << this->Direction().z << L" SpotLight x: " << mSpotLight1->Direction().x << L" SpotLight z: " << mSpotLight1->Direction().z << L" incoming radius" << mSpotLight1->Radius() << L" outgoing radius" << mSpotLight2->Radius();
-		}
-
-
-		mSpriteFont->DrawString(mSpriteBatch, helpLabel.str().c_str(), mTextPosition);
-
-		mSpriteBatch->End();
-		mRenderStateHelper->RestoreAll();
 	}
 
 	int Mirror::GetID()

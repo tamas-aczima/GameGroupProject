@@ -167,12 +167,12 @@ namespace Rendering
 		wall25->SetTransform(-135, 0, 70, 0, 0, 0, 6.5, 1.5, 0.5);
 		wallsList.push_back(wall25);
 
-		Wall* wall26 = new Wall(game, camera, spotLight2); //rightroom backwall 1
+		Wall* wall26 = new Wall(game, camera, spotLight7); //rightroom backwall 1
 		tempCompVector.push_back(wall26);
 		wall26->SetTransform(-60, 0, 0, 0, 0, 0, 5, 1.5, 0.5);
 		wallsList.push_back(wall26);
 
-		Wall* wall27 = new Wall(game, camera, spotLight2); //rightroom backwall 2
+		Wall* wall27 = new Wall(game, camera, spotLight7); //rightroom backwall 2
 		tempCompVector.push_back(wall27);
 		wall27->SetTransform(-145, 0, 0, 0, 0, 0, 5, 1.5, 0.5);
 		wallsList.push_back(wall27);
@@ -267,8 +267,8 @@ namespace Rendering
 		wallsList.push_back(wall44);
 
 		Wall* wall45 = new Wall(game, camera, spotLight4); //left Roomm
-		tempCompVector.push_back(wall);
-		wall->SetTransform(-240, 0, 95, 0, -1.6, 0, 3, 1.5, 0.5);
+		tempCompVector.push_back(wall45);
+		wall45->SetTransform(-240, 0, 95, 0, -1.6, 0, 3, 1.5, 0.5);
 		wallsList.push_back(wall45);
 
 		Wall* wall46 = new Wall(game, camera, spotLight6); //left Roomm
@@ -282,8 +282,8 @@ namespace Rendering
 		wallsList.push_back(wall47);
 
 		Wall* wall48 = new Wall(game, camera, spotLight4); //left room
-		tempCompVector.push_back(wall);
-		wall->SetTransform(-256, 0, 80, 0, 0, 0, 1.5, 1.5, 0.5);
+		tempCompVector.push_back(wall48);
+		wall48->SetTransform(-256, 0, 80, 0, 0, 0, 1.5, 1.5, 0.5);
 		wallsList.push_back(wall48);
 
 		Wall* wall49 = new Wall(game, camera, spotLight4); //left room entrance wall
@@ -309,8 +309,8 @@ namespace Rendering
 		// section 3 
 
 		Wall* wall53 = new Wall(game, camera, spotLight2);
-		tempCompVector.push_back(wall52);
-		wall52->SetTransform(-295, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
+		tempCompVector.push_back(wall53);
+		wall53->SetTransform(-295, 0, 220, 0, 0, 0, 5, 1.5, 0.5);
 		wallsList.push_back(wall53);
 
 		Wall* wall54 = new Wall(game, camera, spotLight2);
@@ -387,8 +387,8 @@ namespace Rendering
 		wallsList.push_back(wall66);
 
 		Wall* wall67 = new Wall(game, camera, spotLight9);
-		tempCompVector.push_back(wall);
-		wall->SetTransform(-565, -60, 0, 0, 0, 0, 5, 5, 0.5);
+		tempCompVector.push_back(wall67);
+		wall67->SetTransform(-565, -60, 0, 0, 0, 0, 5, 5, 0.5);
 		wallsList.push_back(wall67);
 
 		Wall* wall68 = new Wall(game, camera, spotLight2); //frontwall 
@@ -416,35 +416,30 @@ namespace Rendering
 		#pragma region Floors
 
 
-		Floor* floor1 = new Floor(game, camera, spotLight2);//floor1
-		tempCompVector.push_back(floor1);
-		floor1->SetPosition(5, 0, 25, 0, 0, 0, 5, 0.01, 5);
-		floorList.push_back(floor1);
+		Floor* floor = new Floor(game, camera, spotLight2);//floor1
+		tempCompVector.push_back(floor);
+		floor->SetPosition(5, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		Floor* floor2 = new Floor(game, camera, spotLight2);//floor2
-		tempCompVector.push_back(floor2);
-		floor2->SetPosition(5, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
-		floorList.push_back(floor2);
+		floor = new Floor(game, camera, spotLight2);//floor2
+		tempCompVector.push_back(floor);
+		floor->SetPosition(5, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
 		//section 2 floor
 
 		#pragma region Section2
 
 		//85.4 increments
-		Floor* floor3 = new Floor(game, camera, spotLight1);//floor3
-		tempCompVector.push_back(floor3);
-		floor3->SetPosition(-80.5, 0, 25, 0, 0, 0, 5, 0.01, 5);
-		floorList.push_back(floor3);
+		floor = new Floor(game, camera, spotLight1);//floor3
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-80.5, 0, 25, 0, 0, 0, 5, 0.01, 5);
 
-		Floor* floor4 = new Floor(game, camera, spotLight1);//floor5
-		tempCompVector.push_back(floor4);
-		floor4->SetPosition(-80.5, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
-		floorList.push_back(floor4);
+		floor = new Floor(game, camera, spotLight1);//floor5
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-80.5, 0, 110.5, 0, 0, 0, 5, 0.01, 5);
 
-		Floor* floor5 = new Floor(game, camera, spotLight1);//floor5
-		tempCompVector.push_back(floor5);
-		floor5->SetPosition(-105, -17, 110.5, 0, 0, 0, 7, 1, 5);
-		floorList.push_back(floor5);
+		floor = new Floor(game, camera, spotLight1);//floor5
+		tempCompVector.push_back(floor);
+		floor->SetPosition(-105, -17, 110.5, 0, 0, 0, 7, 1, 5);
 
 		#pragma region LavaLevel
 
@@ -454,7 +449,7 @@ namespace Rendering
 		wallsList.push_back(wall72);
 
 		//pillers
-		Floor* floor = new Floor(game, camera, spotLight1);//pillar
+		floor = new Floor(game, camera, spotLight1);//pillar
 		tempCompVector.push_back(floor);
 		floor->SetPosition(-80.5, -85.5, 160.5, 0, 0, 0, 0.4, 5, 0.4);
 
