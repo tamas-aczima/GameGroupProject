@@ -31,6 +31,7 @@ namespace Rendering
 		std::vector<GameComponent*> UpdateComponent(std::vector<GameComponent*> mComponents);
 
 		std::vector<Wall*> wallsList;
+		std::vector<Floor*> floorList;
 
 	private:
 		std::vector<GameComponent*> tempCompVector;
